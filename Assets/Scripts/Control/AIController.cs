@@ -10,6 +10,8 @@ namespace RPG.Control
     public class AIController : MonoBehaviour
     {
         [SerializeField] float chaseDistance = 5f;
+        public float suspicionTime = 3f;
+        public float timeSinceLastSawPlayer;
 
         Fighter fighter;
         GameObject player;
@@ -27,21 +29,30 @@ namespace RPG.Control
             mover = GetComponent<Mover>();
 
             guardPosition = transform.position;
+            
         }
 
         // Update is called once per frame
         void Update()
         {
+            
             if (health.GetIsDead() == true) return;
+            
 
             if(InAttackRangeOfPlayer() && fighter.CanAttack(player))
             {
                 fighter.Attack(player);
+                timeSinceLastSawPlayer = 0f;
             }
             else
             {
-                fighter.Cancel();
-                mover.StartMoveAction(guardPosition);
+                timeSinceLastSawPlayer += Time.deltaTime;
+                mover.Cancel();
+                if (timeSinceLastSawPlayer >= suspicionTime)
+                {
+                    mover.StartMoveAction(guardPosition);
+                }
+                
             }
         }
 
@@ -55,5 +66,5 @@ namespace RPG.Control
             Gizmos.DrawWireSphere(transform.position, chaseDistance);
         }
     }
-}//e
+}//eeee
 
