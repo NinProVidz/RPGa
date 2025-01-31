@@ -20,6 +20,11 @@ namespace RPG.Core
             // if we are currently not doing an action and we want to do action
             currentAction = action;
         }
+
+        public void CancelCurrentAction()
+        {
+            StartAction(null);
+        }
     }
 }
 
