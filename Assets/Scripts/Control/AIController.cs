@@ -35,25 +35,37 @@ namespace RPG.Control
         // Update is called once per frame
         void Update()
         {
-            
+           
             if (health.GetIsDead() == true) return;
-            
 
             if(InAttackRangeOfPlayer() && fighter.CanAttack(player))
             {
-                fighter.Attack(player);
                 timeSinceLastSawPlayer = 0f;
+                AttackBehaviour();
+            }
+            else if(timeSinceLastSawPlayer < suspicionTime)
+            {
+                SuspicionBehaviour();
             }
             else
             {
-                timeSinceLastSawPlayer += Time.deltaTime;
-                mover.Cancel();
-                if (timeSinceLastSawPlayer >= suspicionTime)
-                {
-                    mover.StartMoveAction(guardPosition);
-                }
-                
+                GuardBehaviour();
             }
+            timeSinceLastSawPlayer += Time.deltaTime;
+        }
+
+        public void GuardBehaviour()
+        {
+            mover.StartMoveAction(guardPosition);
+        }
+        private void SuspicionBehaviour()
+        {
+            GetComponent<ActionScheduler>().CancelCurrentAction();
+        }
+
+        private void AttackBehaviour()
+        {
+            fighter.Attack(player);
         }
 
         private bool InAttackRangeOfPlayer()
