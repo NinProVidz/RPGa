@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using RPG.Combat;
 using RPG.Core;
+using RPG.Movement;
 
 namespace RPG.Control
 {
@@ -13,6 +14,9 @@ namespace RPG.Control
         Fighter fighter;
         GameObject player;
         Health health;
+        Mover mover;
+
+        Vector3 guardPosition;
 
         // Start is called before the first frame update
         void Start()
@@ -20,6 +24,9 @@ namespace RPG.Control
             fighter = GetComponent<Fighter>();
             player = GameObject.FindWithTag("Player");
             health = GetComponent<Health>();
+            mover = GetComponent<Mover>();
+
+            guardPosition = transform.position;
         }
 
         // Update is called once per frame
@@ -34,12 +41,18 @@ namespace RPG.Control
             else
             {
                 fighter.Cancel();
+                mover.StartMoveAction(guardPosition);
             }
         }
 
         private bool InAttackRangeOfPlayer()
         {
             return Vector3.Distance(transform.position, player.transform.position) <= chaseDistance;
+        }
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, chaseDistance);
         }
     }
 }//e
