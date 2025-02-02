@@ -5,6 +5,7 @@ using RPG.Movement;
 using RPG.Combat;
 using System;
 using RPG.Core;
+using TMPro;
 
 namespace RPG.Control
 {
@@ -12,6 +13,9 @@ namespace RPG.Control
     {
         Mover mover;
         Health health;
+
+        public GameObject circlePrefab;
+        private GameObject currentCircle;
 
         // Start is called before the first frame update
         void Start()
@@ -54,6 +58,10 @@ namespace RPG.Control
                 {
                     transform.LookAt(target.transform);
                     GetComponent<Fighter>().Attack(target.gameObject);
+                    //Instantiate(circlePrefab, target.transform.position, Quaternion.identity);
+                    //Gizmos.color = Color.yellow;
+                    //Gizmos.DrawWireSphere(target.transform.position, 1f);
+                    
                 }
 
                 return true;
