@@ -4,16 +4,19 @@ using UnityEngine;
 using RPG.Combat;
 using RPG.Core;
 using RPG.Movement;
+using System;
 
 namespace RPG.Control
 {
     public class AIController : MonoBehaviour
     {
+        public PatrolPath patrolPath;
         public Canvas healthCanvas;
 
-        [SerializeField] float chaseDistance = 5f;
+        public float chaseDistance = 5f;
         public float suspicionTime = 3f;
         public float timeSinceLastSawPlayer;
+        public float waypointTolerance = 1f;
 
         Fighter fighter;
         GameObject player;
@@ -51,17 +54,44 @@ namespace RPG.Control
             }
             else
             {
-                GuardBehaviour();
+                PatrolBehaviour();
             }
             timeSinceLastSawPlayer += Time.deltaTime;
         }
 
-        public void GuardBehaviour()
+        public void PatrolBehaviour()
         {
-            mover.StartMoveAction(guardPosition);
+            Vector3 nextPosition = guardPosition;
+            if(patrolPath != null)
+            {
+                if(AtWaypoint() == true)
+                {
+                    CycleWaypoint();
+                }
+                nextPosition = GetCurrentWaypointPosition();
+            }
+            mover.StartMoveAction(nextPosition);
         }
+
+        private bool AtWaypoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void CycleWaypoint()
+        {
+            throw new NotImplementedException();
+        }
+
+        private Vector3 GetCurrentWaypointPosition()
+        {
+            throw new NotImplementedException();
+        }
+
         private void SuspicionBehaviour()
         {
+            
+
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 

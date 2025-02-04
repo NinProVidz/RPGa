@@ -21,7 +21,11 @@ namespace RPG.Control
 
         private int GetNextWaypoint(int i)
         {
-            return (i + 1) % transform.childCount;
+            if (i + 1 == transform.childCount)
+            {
+                return 0; //stops function
+            }
+                return i + 1;
         }
 
         private Vector3 GetWaypoint(int i)
