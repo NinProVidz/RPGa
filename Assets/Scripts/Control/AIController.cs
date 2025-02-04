@@ -9,6 +9,8 @@ namespace RPG.Control
 {
     public class AIController : MonoBehaviour
     {
+        public Canvas healthCanvas;
+
         [SerializeField] float chaseDistance = 5f;
         public float suspicionTime = 3f;
         public float timeSinceLastSawPlayer;
@@ -35,7 +37,7 @@ namespace RPG.Control
         // Update is called once per frame
         void Update()
         {
-           
+            healthCanvas.transform.LookAt(Camera.main.transform);
             if (health.GetIsDead() == true) return;
 
             if(InAttackRangeOfPlayer() && fighter.CanAttack(player))

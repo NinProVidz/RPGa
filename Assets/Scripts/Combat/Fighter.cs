@@ -76,6 +76,7 @@ namespace RPG.Combat
         {
             GetComponent<ActionScheduler>().StartAction(this);
             target = combatTarget.GetComponent<Health>();
+            transform.LookAt(target.transform.position);
         }
 
         public void Cancel()

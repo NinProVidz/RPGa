@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UI;
@@ -16,6 +17,8 @@ namespace RPG.Core
         bool Isdead = false;
         [SerializeField] float health;
         public float maxhealth;
+
+        [SerializeField] TextMeshProUGUI text;
 
 
         private void Start()
@@ -39,6 +42,7 @@ namespace RPG.Core
         private void Update()
         {
             HealthBar();
+            EnemyHealthDisplay();
 
             if (health <= 0)
             {
@@ -55,11 +59,8 @@ namespace RPG.Core
         }
 
         private void HealthBar()
-        {
-            if(gameObject.CompareTag("Player"))
-            {
-                healthBar.fillAmount = Mathf.Clamp(health / maxhealth, 0, 1);
-            }
+        { 
+            healthBar.fillAmount = Mathf.Clamp(health / maxhealth, 0, 1);
         }
 
         private void Die()
@@ -83,6 +84,14 @@ namespace RPG.Core
             if (chromaticAberration != null)
             {
                 chromaticAberration.enabled.value = enable; // Enable or disable the Chromatic Aberration effect
+            }
+        }
+
+        private void EnemyHealthDisplay()
+        {
+            if(gameObject.CompareTag("Enemy"))
+            {
+                text.text = health.ToString() + "/" + maxhealth.ToString();
             }
         }
     }
