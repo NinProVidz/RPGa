@@ -17,6 +17,7 @@ namespace RPG.Control
         public float suspicionTime = 3f;
         public float timeSinceLastSawPlayer;
         public float waypointTolerance = 1f;
+        public int currentWaypointindex;
 
         Fighter fighter;
         GameObject player;
@@ -75,23 +76,21 @@ namespace RPG.Control
 
         private bool AtWaypoint()
         {
-            throw new NotImplementedException();
+           return Vector3.Distance(transform.position, patrolPath.GetWaypoint(currentWaypointindex)) < waypointTolerance;
         }
 
         private void CycleWaypoint()
         {
-            throw new NotImplementedException();
+            currentWaypointindex =  patrolPath.GetNextWaypoint(currentWaypointindex); 
         }
 
         private Vector3 GetCurrentWaypointPosition()
         {
-            throw new NotImplementedException();
+            return patrolPath.GetWaypoint(currentWaypointindex);
         }
 
         private void SuspicionBehaviour()
         {
-            
-
             GetComponent<ActionScheduler>().CancelCurrentAction();
         }
 

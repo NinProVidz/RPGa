@@ -10,7 +10,7 @@ namespace RPG.Control
 
         private void OnDrawGizmos()
         {
-            for(int i = 0; 1 < transform.childCount; i++)
+            for(int i = 0; i < transform.childCount; i++)
             {
                 
                 int j = GetNextWaypoint(i);
@@ -19,7 +19,7 @@ namespace RPG.Control
             }
         }
 
-        private int GetNextWaypoint(int i)
+        public int GetNextWaypoint(int i)
         {
             if (i + 1 == transform.childCount)
             {
@@ -28,7 +28,7 @@ namespace RPG.Control
                 return i + 1;
         }
 
-        private Vector3 GetWaypoint(int i)
+        public Vector3 GetWaypoint(int i)
         {
             return transform.GetChild(i).position;
         }
