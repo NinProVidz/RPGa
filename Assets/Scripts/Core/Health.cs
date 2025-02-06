@@ -15,7 +15,7 @@ namespace RPG.Core
         [SerializeField] Image healthBar;
 
         bool Isdead = false;
-        [SerializeField] float health;
+        public float health;
         public float maxhealth;
 
         [SerializeField] TextMeshProUGUI text;
@@ -94,6 +94,8 @@ namespace RPG.Core
                 text.text = health.ToString() + "/" + maxhealth.ToString();
             }
         }
+
+        
     }
 }//e
 
