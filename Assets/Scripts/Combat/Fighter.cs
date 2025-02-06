@@ -13,6 +13,7 @@ namespace RPG.Combat
         Mover mover;
         public float timeBetweenAttacks;
         public float timeSinceLastAttack = Mathf.Infinity;
+        [Range(0,1)]public float chaseSpeedFraction = 1f;
 
         [SerializeField] float weaponRange = 2f;
 
@@ -39,7 +40,7 @@ namespace RPG.Combat
 
             if (GetIsInRange() == false)
             {
-                mover.MoveTo(target.transform.position);
+                mover.MoveTo(target.transform.position, chaseSpeedFraction);
             }
             else
             {
