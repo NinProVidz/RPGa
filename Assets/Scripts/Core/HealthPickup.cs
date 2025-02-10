@@ -1,3 +1,4 @@
+using RPG.Combat;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,10 @@ namespace RPG.Core
     public class HealthPickup : MonoBehaviour
     {
         public float healthamount;
+        public float damageIncrease;
 
         Health health;
+        Fighter fighter;
 
         // Start is called before the first frame update
         void Start()
@@ -24,13 +27,27 @@ namespace RPG.Core
 
         private void OnTriggerEnter(Collider other)
         {
-            if(other.tag == ("Player"))
+            if(gameObject.CompareTag("Health"))
             {
-                health = other.GetComponent<Health>();
-                health.health = Mathf.Min(health.health + healthamount, health.maxhealth);
-                Destroy(gameObject);
+                if (other.tag == ("Player"))
+                {
+                    health = other.GetComponent<Health>();
+                    health.health = Mathf.Min(health.health + healthamount, health.maxhealth);
+                    Destroy(gameObject);
+                }
+            }
+            if (gameObject.CompareTag("DamageUpgrade"))
+            {
+                if (other.tag == ("Player"))
+                {
+                    fighter = other.GetComponent<Fighter>();
+                    fighter.damage += damageIncrease;
+                    Destroy(gameObject);
+                }
             }
         }
+
+
     }
-}//e
+}//eee
 
