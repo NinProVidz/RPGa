@@ -418,23 +418,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.9
+      value: 10.030001
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.34
+      value: 0.3399999
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 13.28
+      value: 8.150005
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.0031174768
+      value: 0.90250343
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalRotation.x
@@ -442,7 +442,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.9999952
+      value: -0.43068263
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalRotation.z
@@ -454,7 +454,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -179.643
+      value: -51.022
       objectReference: {fileID: 0}
     - target: {fileID: 1658895590210485788, guid: b0330b224e5180e4eb83618769bfd636, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -565,10 +565,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2310dc7561505b84e928cac662c017ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  timeSinceArrivedAtWaypoint: 0
+  waypointDwellTime: 2
+  patrolSpeedFraction: 0.2
+  patrolPath: {fileID: 0}
   healthCanvas: {fileID: 6211474775889281250}
   chaseDistance: 10
   suspicionTime: 3
   timeSinceLastSawPlayer: 0
+  waypointTolerance: 1
+  currentWaypointindex: 0
 --- !u!114 &1744130301647564561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -583,6 +589,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeBetweenAttacks: 1
   timeSinceLastAttack: 0
+  chaseSpeedFraction: 0.77
   weaponRange: 1
   damage: 1
 --- !u!114 &5249836123785931723
@@ -598,6 +605,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
+  maxSpeed: 6
 --- !u!1001 &8800148725731656001
 PrefabInstance:
   m_ObjectHideFlags: 0
