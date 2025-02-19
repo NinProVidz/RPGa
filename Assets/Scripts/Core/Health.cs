@@ -13,6 +13,7 @@ namespace RPG.Core
         private ChromaticAberration chromaticAberration;
 
         [SerializeField] Image healthBar;
+        [SerializeField] GameObject cameray;
 
         bool Isdead = false;
         public float health;
@@ -23,14 +24,14 @@ namespace RPG.Core
 
         private void Start()
         {
-            if(gameObject.CompareTag("Player"))
-            {
-                // Get the ChromaticAberration effect from the profile
-                if (volume.profile.HasSettings<ChromaticAberration>())
-                {
-                    volume.profile.TryGetSettings(out chromaticAberration);
-                }
-            }
+            //if(gameObject.CompareTag("Player"))
+            //{
+            //    // Get the ChromaticAberration effect from the profile
+            //    if (volume.profile.HasSettings<ChromaticAberration>())
+            //    {
+            //        volume.profile.TryGetSettings(out chromaticAberration);
+            //    }
+            //}
             health = maxhealth;
         }
         public void TakeDamage(float damage)
