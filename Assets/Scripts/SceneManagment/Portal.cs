@@ -8,8 +8,15 @@ namespace RPG.SceneManagment
 {
     public class Portal : MonoBehaviour
     {
+
+        enum DestinationIdentifier
+        {
+            A, B, C, D
+        }
+
         [SerializeField] int sceneToLoad = 1;
         [SerializeField] Transform spawnPoint;
+        [SerializeField] DestinationIdentifier destination;
 
         private void OnTriggerEnter(Collider other)
         {
@@ -35,10 +42,11 @@ namespace RPG.SceneManagment
             foreach(Portal portal in FindObjectsOfType<Portal>())
             {
                 if (portal == this) continue;//if same portal thats running the code, continue
+                if (portal.destination != destination) continue;
 
                 return portal;
             }
-
+            
             return null;
         }
 
@@ -46,6 +54,7 @@ namespace RPG.SceneManagment
         {
             GameObject player = GameObject.FindWithTag("Player");
             player.transform.position = otherPortal.spawnPoint.position;
+            player.transform.rotation = otherPortal.spawnPoint.rotation;
         }
 
     }
