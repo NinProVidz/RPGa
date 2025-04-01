@@ -1,18 +1,26 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Clock : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public event EventHandler<TimeSpan> ClockChange;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] public float dayLength;
+
+    private TimeSpan currentTime;
+    private float minuteLength => dayLength / ClockConstant.MinutesInDay;
+
+    private IEnumerator AddMinute()
     {
-        
+        currentTime += TimeSpan.FromMinutes(1);
+        ClockChange?.Invoke(this, currentTime);
+        yield return new WaitForSeconds(minuteLength);
+        StartCoroutine(AddMinute());
+    }
+    private void Start()
+    {
+        StartCoroutine(AddMinute());
     }
 }
