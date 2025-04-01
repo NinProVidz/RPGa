@@ -77,7 +77,7 @@ public class PlayerInputManager : MonoBehaviour
         playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
 
         playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
-        playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
+        //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
 
         playerControls.PlayerActions.Run.performed += i => runInput = true;
         playerControls.PlayerActions.Run.canceled += i => runInput = false;
@@ -102,6 +102,7 @@ public class PlayerInputManager : MonoBehaviour
         HandleCameraMovementInput();
         HandleRunInput();
         HandleSprintInput();
+        HandleJumpInput();
     }
 
     private void HandlePlayerMovementInput()
@@ -163,6 +164,8 @@ public class PlayerInputManager : MonoBehaviour
         if (jumpInput)
         {
             jumpInput = false;
+
+            player.playerLocomotionManager.AttemptToPerformJump();
         }
     }
 }
