@@ -10,8 +10,10 @@ public class PlayerLocomotionManager : MonoBehaviour
     public float horizontalMovement;
     public float moveAmount;
 
+    [Header("Movement Settings")]
     private Vector3 moveDirection;
     private Vector3 targetRotationDirection;
+    [SerializeField] float jumpHeight = 4f;
     [SerializeField] float walkingSpeed = 2;
     [SerializeField] float runningSpeed = 5;
     [SerializeField] float sprintingSpeed = 6.5f;
@@ -21,9 +23,14 @@ public class PlayerLocomotionManager : MonoBehaviour
     public bool isRunning;
 
     [Header("Ground Check & Jumping")]
+    [SerializeField] float gravityForce = -5.55f;
+    [SerializeField] LayerMask groundLayer;
+    [SerializeField] float groundCheckSphereRadius = 1;
     [SerializeField] protected Vector3 yVelocity;
     [SerializeField] protected float groundedVelocity = -20;
     [SerializeField] protected float fallStartVelocity = -5;
+    bool fallingVelocityHasBeenSet = false;
+    public float inAirTimer = 0;
 
     private void Awake()
     {
@@ -32,7 +39,45 @@ public class PlayerLocomotionManager : MonoBehaviour
 
     private void Update()
     {
+        HandleGroundCheck();
+        player.animator.SetBool("isGrounded", player.isGrounded);
 
+        if (player.isGrounded)
+        {
+            
+            Debug.Log("susier");
+            if (yVelocity.y < 0)
+            {
+                Debug.Log("sussy");
+                inAirTimer = 0;
+                fallingVelocityHasBeenSet = false;
+                yVelocity.y = groundedVelocity;
+            }
+        }
+        else
+        {
+            if (!player.isJumping && !fallingVelocityHasBeenSet)
+            {
+                fallingVelocityHasBeenSet = true;
+                yVelocity.y = fallStartVelocity;
+            }
+
+            inAirTimer = inAirTimer + Time.deltaTime;
+            player.animator.SetFloat("inAirTimer", inAirTimer);
+            yVelocity.y += gravityForce * Time.deltaTime;
+
+            player.characterController.Move(yVelocity * Time.deltaTime);
+        }
+    }
+
+    private void HandleGroundCheck()
+    {
+        player.isGrounded = Physics.CheckSphere(player.transform.position, groundCheckSphereRadius, groundLayer);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawSphere(player.transform.position, groundCheckSphereRadius);
     }
     public void HandleAllMovement()
     {
@@ -132,18 +177,19 @@ public class PlayerLocomotionManager : MonoBehaviour
             return;
         }
 
-        if (player.isGrounded)
+        if (!player.isGrounded)
         {
             return;
         }
 
-        player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false);
+        Debug.Log("jump");
+        player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
 
         player.isJumping = true;
     }
 
     public void ApplyJumpingVelocity()
     {
-
+        yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
     }
 }
