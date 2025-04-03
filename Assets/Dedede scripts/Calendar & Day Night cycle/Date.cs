@@ -10,6 +10,7 @@ public class Date : MonoBehaviour
     [SerializeField] public int day;
 
     [SerializeField] TextMeshProUGUI dateText;
+    [SerializeField] TextMeshProUGUI weekdayText;
 
     Clock clock;
 
