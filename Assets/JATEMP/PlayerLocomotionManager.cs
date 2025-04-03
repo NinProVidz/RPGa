@@ -44,12 +44,13 @@ public class PlayerLocomotionManager : MonoBehaviour
 
         if (player.isGrounded)
         {
-            
             if (yVelocity.y < 0)
             {
                 inAirTimer = 0;
+                player.animator.SetFloat("inAirTimer", inAirTimer);
+                player.isJumping = false;
                 fallingVelocityHasBeenSet = false;
-                yVelocity.y = groundedVelocity;
+                yVelocity.y = 0;
             }
         }
         else

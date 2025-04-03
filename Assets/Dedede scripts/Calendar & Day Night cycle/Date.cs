@@ -5,11 +5,14 @@ using TMPro;
 
 public class Date : MonoBehaviour
 {
+    string[] names = new string[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
     [SerializeField] public int month;
     [SerializeField] public int day;
+    [SerializeField] public int namesIndex = 2;
 
     [SerializeField] TextMeshProUGUI dateText;
+    [SerializeField] TextMeshProUGUI weekdayText;
 
     Clock clock;
 
@@ -25,7 +28,8 @@ public class Date : MonoBehaviour
     void Update()
     {
         dateText.text = month.ToString() + "/" + day.ToString();
-        if(month == 7 && day == 31 && clock.counterTillDayChange == clock.maxCounter)
+        weekdayText.text = names[namesIndex % 7];
+        if (month == 7 && day == 31 && clock.counterTillDayChange == clock.maxCounter)
         {
             month++;
             day = 0;
