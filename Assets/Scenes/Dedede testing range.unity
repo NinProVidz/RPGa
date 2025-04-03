@@ -873,6 +873,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   month: 7
   day: 2
+  namesIndex: 2
   dateText: {fileID: 1221174371}
   weekdayText: {fileID: 1975830930}
 --- !u!1 &1975830928
