@@ -34,7 +34,7 @@ public class Clock : MonoBehaviour
 
     private void Update()
     {
-        if(counterTillDayChange == maxCounter)
+        if(counterTillDayChange >= maxCounter)
         {
             date.day++;
             date.namesIndex++;
