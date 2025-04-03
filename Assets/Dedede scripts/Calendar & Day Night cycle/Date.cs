@@ -28,11 +28,11 @@ public class Date : MonoBehaviour
     void Update()
     {
         dateText.text = month.ToString() + "/" + day.ToString();
-        weekdayText.text = names[namesIndex % 7];
-        if (month == 7 && day == 31 && clock.counterTillDayChange == clock.maxCounter)
+        if (month == 7 && day >= 32 && clock.counterTillDayChange <= clock.maxCounter)
         {
             month++;
-            day = 0;
+            day = 1;
         }
+        weekdayText.text = names[namesIndex % 7];
     }
 }
