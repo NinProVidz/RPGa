@@ -1427,13 +1427,13 @@ MonoBehaviour:
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
-  jumpHeight: 5
+  jumpHeight: 1000
   walkingSpeed: 2
   runningSpeed: 5
   sprintingSpeed: 6.5
   rotationSpeed: 15
   isSprinting: 0
-  isRunning: 0
+  isRunning: 1
   gravityForce: -5.55
   groundLayer:
     serializedVersion: 2

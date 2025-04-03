@@ -45,10 +45,8 @@ public class PlayerLocomotionManager : MonoBehaviour
         if (player.isGrounded)
         {
             
-            Debug.Log("susier");
             if (yVelocity.y < 0)
             {
-                Debug.Log("sussy");
                 inAirTimer = 0;
                 fallingVelocityHasBeenSet = false;
                 yVelocity.y = groundedVelocity;
@@ -66,8 +64,12 @@ public class PlayerLocomotionManager : MonoBehaviour
             player.animator.SetFloat("inAirTimer", inAirTimer);
             yVelocity.y += gravityForce * Time.deltaTime;
 
-            player.characterController.Move(yVelocity * Time.deltaTime);
+            
         }
+
+        player.characterController.Move(yVelocity * Time.deltaTime);
+
+
     }
 
     private void HandleGroundCheck()
@@ -182,14 +184,17 @@ public class PlayerLocomotionManager : MonoBehaviour
             return;
         }
 
-        Debug.Log("jump");
         player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
 
         player.isJumping = true;
+
+
     }
 
     public void ApplyJumpingVelocity()
     {
+        Debug.Log("jump");
         yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
+        Debug.Log(yVelocity.y);
     }
 }
