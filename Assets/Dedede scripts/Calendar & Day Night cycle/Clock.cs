@@ -37,6 +37,7 @@ public class Clock : MonoBehaviour
         if(counterTillDayChange == maxCounter)
         {
             date.day++;
+            date.namesIndex++;
             counterTillDayChange = counterReset;
         }
     }
