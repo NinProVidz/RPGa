@@ -26,6 +26,13 @@ public class Clock : MonoBehaviour
     [SerializeField] private float sunsetHour;
     [SerializeField] private TimeSpan sunriseTime;
     [SerializeField] private TimeSpan sunsetTime;
+
+    [SerializeField] private Color dayAmbientLight;
+    [SerializeField] private Color nightAmbientLight;
+    [SerializeField] private AnimationCurve lightChangeCurve;
+    [SerializeField] private float maxSunlightIntensity;
+    [SerializeField] private Light moonlight;
+    [SerializeField] private float maxMoonlightIntensity;
     private IEnumerator AddMinute()
     {
         currentTime += TimeSpan.FromMinutes(1);
@@ -48,6 +55,7 @@ public class Clock : MonoBehaviour
     private void Update()
     {
         RotateSun();
+        UpdateLightSettings();
         currentLightTime = currentLightTime.AddSeconds(Time.deltaTime * sunTimeMultiplier);
         if(counterTillDayChange >= maxCounter)
         {
@@ -55,6 +63,14 @@ public class Clock : MonoBehaviour
             date.namesIndex++;
             counterTillDayChange = counterReset;
         }
+    }
+
+    private void UpdateLightSettings()
+    {
+        float dotProduct = Vector3.Dot(sunLight.transform.forward, Vector3.down);
+        sunLight.intensity = Mathf.Lerp(0, maxSunlightIntensity, lightChangeCurve.Evaluate(dotProduct));
+        moonlight.intensity = Mathf.Lerp(maxMoonlightIntensity, 0, lightChangeCurve.Evaluate(dotProduct));
+        RenderSettings.ambientLight = Color.Lerp(nightAmbientLight, dayAmbientLight, lightChangeCurve.Evaluate(dotProduct));
     }
 
     private void RotateSun()
