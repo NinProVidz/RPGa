@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 842115966a08e6a448e25f29212e3dc3, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 7cf49ced6124f90468660e15304f093e, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -147,14 +147,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12717930}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8579367, y: 2.0536463, z: -9.383376}
+  m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 510178783}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
 --- !u!108 &12717932
 Light:
   m_ObjectHideFlags: 0
@@ -333,7 +333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510178782}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.8579367, y: -2.0536463, z: 9.383376}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -890,8 +890,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1503936094}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.8579367, y: 2.0536463, z: -9.383376}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -996,8 +996,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534828891}
   m_LocalRotation: {x: -0.048249815, y: 0.04103729, z: -0.0019893618, w: -0.99799}
-  m_LocalPosition: {x: 0.32213596, y: 0.92736816, z: -2.1533568}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -2.6102, y: -4.7456, z: 9.0245}
+  m_LocalScale: {x: 22.638365, y: 1, z: 40.471302}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1188,7 +1188,7 @@ PrefabInstance:
       objectReference: {fileID: 12717932}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: startHour
-      value: 2
+      value: 24
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: maxCounter
@@ -1216,7 +1216,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: sunTimeMultiplier
-      value: 30
+      value: 2880
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: nightAmbientLight.b
@@ -1244,15 +1244,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].time
-      value: 0.09427386
+      value: 0.09236005
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[2].time
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
+      propertyPath: lightChangeCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].value
-      value: 0.9052361
+      value: 0.80168045
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[2].value
@@ -1264,7 +1268,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].inSlope
-      value: 0.43491596
+      value: 2.2148576
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[0].outSlope
@@ -1272,15 +1276,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].inWeight
-      value: 0.602227
+      value: 0.40395012
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].outSlope
-      value: 0.43491596
+      value: 2.2148576
       objectReference: {fileID: 0}
     - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: lightChangeCurve.m_Curve.Array.data[1].outWeight
-      value: 0.1627344
+      value: 0.1202523
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
+      propertyPath: lightChangeCurve.m_Curve.Array.data[0].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
+      propertyPath: lightChangeCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1561758320637645553, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
+      propertyPath: lightChangeCurve.m_Curve.Array.data[1].weightedMode
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4782781319490681255, guid: c919ecf01e547ed4db256d67b6122f51, type: 3}
       propertyPath: m_Name

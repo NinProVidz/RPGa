@@ -65,6 +65,34 @@ public class Clock : MonoBehaviour
         }
     }
 
+    private void RotateSun()
+    {
+        float sunlightRotation;
+        float moonlightRotation;
+
+        if(currentLightTime.TimeOfDay > sunriseTime && currentLightTime.TimeOfDay < sunsetTime)
+        {
+            TimeSpan sunriseToSunsetDuration = CalculateTimeDifference(sunriseTime, sunsetTime);
+            TimeSpan timeSinceSunrise = CalculateTimeDifference(sunriseTime, currentLightTime.TimeOfDay);
+
+            double percentage = timeSinceSunrise.TotalMinutes / sunriseToSunsetDuration.TotalMinutes;
+            sunlightRotation = Mathf.Lerp(0, 180, (float)percentage);
+            moonlightRotation = Mathf.Lerp(-180, 0, (float)percentage);
+        }
+        else
+        {
+            TimeSpan sunsetToSunriseDuration = CalculateTimeDifference(sunsetTime, sunriseTime);
+            TimeSpan timeSinceSunset = CalculateTimeDifference(sunsetTime, currentLightTime.TimeOfDay);
+
+            double percentage = timeSinceSunset.TotalMinutes / sunsetToSunriseDuration.TotalMinutes;
+            sunlightRotation = Mathf.Lerp(180, 360, (float)percentage);
+            moonlightRotation = Mathf.Lerp(-180, -360, (float)percentage);
+        }
+        sunLight.transform.rotation = Quaternion.AngleAxis(sunlightRotation, Vector3.right);
+        moonlight.transform.rotation = Quaternion.AngleAxis(moonlightRotation, Vector3.right);
+    }
+
+
     private void UpdateLightSettings()
     {
         float dotProduct = Vector3.Dot(sunLight.transform.forward, Vector3.down);
@@ -73,30 +101,6 @@ public class Clock : MonoBehaviour
         RenderSettings.ambientLight = Color.Lerp(nightAmbientLight, dayAmbientLight, lightChangeCurve.Evaluate(dotProduct));
     }
 
-    private void RotateSun()
-    {
-        float sunlightRotation;
-
-        if(currentLightTime.TimeOfDay > sunriseTime && currentLightTime.TimeOfDay < sunsetTime)
-        {
-            TimeSpan sunriseToSunsetDuration = CalculateTimeDifference(sunriseTime, sunsetTime);
-            TimeSpan timeSinceSunrise = CalculateTimeDifference(sunriseTime, currentLightTime.TimeOfDay);
-
-            double percentage = timeSinceSunrise.TotalMinutes / sunriseToSunsetDuration.TotalMinutes;
-
-            sunlightRotation = Mathf.Lerp(0, 180, (float)percentage);
-        }
-        else
-        {
-            TimeSpan sunsetToSunriseDuration = CalculateTimeDifference(sunsetTime, sunriseTime);
-            TimeSpan timeSinceSunset = CalculateTimeDifference(sunsetTime, currentLightTime.TimeOfDay);
-
-            double percentage = timeSinceSunset.TotalMinutes / sunsetToSunriseDuration.TotalMinutes;
-
-            sunlightRotation = Mathf.Lerp(180, 360, (float)percentage);
-        }
-        sunLight.transform.rotation = Quaternion.AngleAxis(sunlightRotation, Vector3.right);
-    }
 
     private TimeSpan CalculateTimeDifference(TimeSpan fromTime, TimeSpan toTime)
     {
