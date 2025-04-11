@@ -15,7 +15,6 @@ public class LightingManager : MonoBehaviour
     {
         if(preset == null)
         {
-            return;
             if(Application.isPlaying)
             {
                 TimeOfDay += Time.deltaTime;
