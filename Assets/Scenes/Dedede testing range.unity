@@ -1898,6 +1898,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2365245075941514846, guid: a8c5ab8b238c9ed49973ac998c19a8ff, type: 3}
+      propertyPath: TimeOfDay
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3740973452436678751, guid: a8c5ab8b238c9ed49973ac998c19a8ff, type: 3}
       propertyPath: m_RootOrder
       value: 11
