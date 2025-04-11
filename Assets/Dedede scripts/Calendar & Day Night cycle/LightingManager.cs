@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -11,13 +12,15 @@ public class LightingManager : MonoBehaviour
     //Variables
     [SerializeField, Range(0, 24)] private float TimeOfDay;
 
+
+
     private void Update()
     {
-        if(preset == null)
+        if(preset != null)
         {
             if(Application.isPlaying)
             {
-                TimeOfDay += Time.deltaTime;
+                TimeOfDay += Time.deltaTime / 115f;
                 TimeOfDay %= 24;
                 UpdateLighting(TimeOfDay / 24f);
             }

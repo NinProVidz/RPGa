@@ -10,7 +10,7 @@ public class GameData
 
     public GameData()
     {
-        this.day = 2;
-        this.month = 7;
+        this.day = 0;
+        this.month = 0;
     }
 }
