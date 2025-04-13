@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class Date : MonoBehaviour
+public class Date : MonoBehaviour, IDataPersistence
 {
     string[] names = new string[] {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -22,6 +22,18 @@ public class Date : MonoBehaviour
         clock = FindObjectOfType<Clock>();
         month = 7;
         day = 2;
+    }
+
+    public void LoadData(GameData data)
+    {
+        this.month = data.month;
+        this.day = data.day;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.month = this.month;
+        data.day = this.day;
     }
 
     // Update is called once per frame

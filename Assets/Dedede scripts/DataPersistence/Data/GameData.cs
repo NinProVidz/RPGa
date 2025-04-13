@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameData : MonoBehaviour
+[System.Serializable]
+public class GameData 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int month;
+    public int day;
 
-    // Update is called once per frame
-    void Update()
+    public GameData()
     {
-        
+        this.day = 0;
+        this.month = 0;
     }
 }
