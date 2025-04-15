@@ -5,7 +5,7 @@ using System.Linq;
 
 public class DataPersistenceManager : MonoBehaviour
 {
-    private GameData gameData;
+    public GameData gameData;
 
     private List<IDataPersistence> dataPersistenceObjects;
     
@@ -54,7 +54,7 @@ public class DataPersistenceManager : MonoBehaviour
             dataPersistenceObj.SaveData(ref gameData);
         }
 
-        Debug.Log("Saved the date" + gameData.month + "/" + gameData.day);
+        Debug.Log("Saved the date " + gameData.month + "/" + gameData.day);
 
         //save data to file using data handler
     }
