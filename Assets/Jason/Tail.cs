@@ -57,9 +57,19 @@ public class Tail : MonoBehaviour
 
     private void Update()
     {
-        transform.LookAt(target);
+        Vector3 directionToTarget = (target.position - transform.position).normalized;
+
+        // Create a rotation that aligns -Y with the direction to the target
+        Quaternion alignDown = Quaternion.FromToRotation(Vector3.down, directionToTarget);
+        transform.rotation = alignDown;
+
+        // Step 2: Smooth each link's forward vector toward the root's forward direction
+        Vector3 targetForward = transform.forward;
 
         for (int i = 0; i < count; i++)
-            links[i].forward = forwards[i] = Vector3.SmoothDamp(forwards[i], links[i].parent.forward, ref velocities[i], delay);
+        {
+            forwards[i] = Vector3.SmoothDamp(forwards[i], targetForward, ref velocities[i], delay);
+            links[i].forward = forwards[i];
+        }
     }
 }
