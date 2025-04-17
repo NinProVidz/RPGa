@@ -20,8 +20,6 @@ public class Date : MonoBehaviour, IDataPersistence
     void Start()
     {
         clock = FindObjectOfType<Clock>();
-        month = 7;
-        day = 2;
     }
 
     public void LoadData(GameData data)
