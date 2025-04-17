@@ -2,54 +2,64 @@ using UnityEngine;
 
 public class Tail : MonoBehaviour
 {
-    public Transform[] segs;      // Tail segments (from base to tip)
-    public Transform body;        // Moving/rotating parent object
+    public Transform[] segs;        // Tail bones, ordered from root to tip
+    public Transform body;          // The main moving object
 
-    public float lag = 5f;        // How slowly the ghost follows (lower = more drag)
-    public float sway = 1f;       // Sway intensity from body movement
-    public float rotSpeed = 10f;  // How fast tail segments align to sway
+    public float stiffness = 5f;    // How fast it follows ghost target
+    public float maxDist = 0.5f;    // Max distance each bone can stretch from parent
+    public float rotSpeed = 10f;    // How fast bones rotate to look at target
+    public float returnStrength = 0.5f; // How fast it returns to default pose
 
-    private Vector3 ghostPos;
-    private Quaternion ghostRot;
+    private Vector3[] defaultLocalPositions; // Local-to-body default offsets
+    private Vector3[] ghostPositions;        // World-space "desired" positions
 
     void Start()
     {
-        ghostPos = body.position;
-        ghostRot = body.rotation;
+        int count = segs.Length;
+        defaultLocalPositions = new Vector3[count];
+        ghostPositions = new Vector3[count];
+
+        for (int i = 0; i < count; i++)
+        {
+            // Store original local position relative to the body
+            defaultLocalPositions[i] = body.InverseTransformPoint(segs[i].position);
+            ghostPositions[i] = segs[i].position;
+        }
     }
 
-    void Update()
+    void LateUpdate()
     {
-        // Track the body's world position & rotation, even if it's the parent
-        Vector3 currentPos = body.position;
-        Quaternion currentRot = body.rotation;
-
-        // Smooth trailing ghost (in world space)
-        ghostPos = Vector3.Lerp(ghostPos, currentPos, Time.deltaTime * lag);
-        ghostRot = Quaternion.Slerp(ghostRot, currentRot, Time.deltaTime * lag);
-
-        // Calculate sway direction from ghost offset
-        Vector3 swayDir = -(currentPos - ghostPos) * sway + (currentRot * Vector3.back - ghostRot * Vector3.back) * sway;
-
-        if (swayDir.sqrMagnitude < 0.0001f) return;
-
-        // Apply to each segment
         for (int i = 0; i < segs.Length; i++)
         {
-            // Get parent-local sway direction
-            Vector3 localSway = segs[i].parent.InverseTransformDirection(swayDir.normalized);
+            Transform seg = segs[i];
+            Transform parent = seg.parent;
+            if (parent == null) continue;
 
-            // Project onto local XZ plane (remove Y component)
-            localSway.y = 0;
+            // Calculate default world-space position (body-relative)
+            Vector3 worldDefaultPos = body.TransformPoint(defaultLocalPositions[i]);
 
-            if (localSway.sqrMagnitude > 0.001f)
+            // Blend ghost position toward the default position
+            ghostPositions[i] = Vector3.Lerp(ghostPositions[i], worldDefaultPos, Time.deltaTime * returnStrength);
+
+            // Constrain ghost to maxDist from parent
+            Vector3 parentPos = parent.position;
+            Vector3 toTarget = ghostPositions[i] - parentPos;
+
+            if (toTarget.magnitude > maxDist)
             {
-                // Get current local forward direction (tail direction)
-                Vector3 currentDir = segs[i].localRotation * Vector3.up;
+                toTarget = toTarget.normalized * maxDist;
+                ghostPositions[i] = parentPos + toTarget;
+            }
 
-                // Create target rotation that only bends in horizontal plane
-                Quaternion targetRot = Quaternion.FromToRotation(Vector3.up, localSway.normalized);
-                segs[i].localRotation = Quaternion.Slerp(segs[i].localRotation, targetRot, Time.deltaTime * rotSpeed);
+            // Smoothly follow ghost position
+            seg.position = Vector3.Lerp(seg.position, ghostPositions[i], Time.deltaTime * stiffness);
+
+            // Rotate the bone to face its target (Z forward assumed)
+            Vector3 lookDir = ghostPositions[i] - parent.position;
+            if (lookDir.sqrMagnitude > 0.001f)
+            {
+                Quaternion targetRot = Quaternion.LookRotation(lookDir, parent.up);
+                seg.rotation = Quaternion.Slerp(seg.rotation, targetRot, Time.deltaTime * rotSpeed);
             }
         }
     }
