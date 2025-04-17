@@ -1261,6 +1261,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7eab3b4fbbaec5c44a9d02f90c274ce0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fileName: depthsData.game
+  gameData:
+    month: 0
+    day: 0
+    timeOfDay: 0
+    playerPosition: {x: 0, y: 0, z: 0}
+    timeCounter: 0
 --- !u!4 &1488800354
 Transform:
   m_ObjectHideFlags: 0

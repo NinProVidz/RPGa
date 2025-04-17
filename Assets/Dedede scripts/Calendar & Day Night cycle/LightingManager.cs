@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 [ExecuteAlways]
-public class LightingManager : MonoBehaviour
+public class LightingManager : MonoBehaviour, IDataPersistence
 {
     //References
     [SerializeField] private Light directionalLight;
@@ -13,6 +13,15 @@ public class LightingManager : MonoBehaviour
     [SerializeField, Range(0, 24)] private float TimeOfDay;
 
 
+    public void LoadData(GameData data)
+    {
+        this.TimeOfDay = data.timeOfDay;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.timeOfDay = this.TimeOfDay;
+    }
 
     private void Update()
     {
@@ -30,6 +39,7 @@ public class LightingManager : MonoBehaviour
             }
         }
     }
+
     private void UpdateLighting(float timePercent)
     {
         RenderSettings.ambientLight = preset.ambientColor.Evaluate(timePercent);
