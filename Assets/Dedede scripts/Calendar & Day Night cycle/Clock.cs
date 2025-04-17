@@ -3,21 +3,32 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock : MonoBehaviour
+public class Clock : MonoBehaviour, IDataPersistence
 {
     public event EventHandler<TimeSpan> ClockChange;
 
     [SerializeField] public float dayLength;
    
-    [SerializeField] public int counterTillDayChange = 0;
+    [SerializeField] public int counterTillDayChange;
     [SerializeField] public int maxCounter = 2880;
     [SerializeField] public int counterReset = 0;
 
     Date date;
 
     [SerializeField] public TimeSpan currentTime;
-    private DateTime currentLightTime;
     [SerializeField] public float minuteLength => dayLength / ClockConstant.MinutesInDay;
+
+    public void LoadData(GameData data)
+    {
+        this.currentTime = data.currentTime;
+        this.counterTillDayChange = data.timeCounter;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.currentTime = this.currentTime;
+        data.timeCounter = this.counterTillDayChange;
+    }
 
     private IEnumerator AddMinute()
     {

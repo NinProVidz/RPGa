@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerLocomotionManager : MonoBehaviour
+public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 {
     PlayerManager player;
 
@@ -31,6 +31,16 @@ public class PlayerLocomotionManager : MonoBehaviour
     [SerializeField] protected float fallStartVelocity = -5;
     bool fallingVelocityHasBeenSet = false;
     public float inAirTimer = 0;
+
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position;
+    }
 
     private void Awake()
     {
