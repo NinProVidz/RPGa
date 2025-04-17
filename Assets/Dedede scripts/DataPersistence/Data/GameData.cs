@@ -11,7 +11,7 @@ public class GameData
     public float timeOfDay;
     public Vector3 playerPosition;
     public int timeCounter;
-    public TimeSpan currentTime;
+    public int currentTime;
 
     public GameData()
     {
@@ -20,6 +20,6 @@ public class GameData
         timeOfDay = 0;
         playerPosition = Vector3.zero;
         timeCounter = 0;
-        currentTime = TimeSpan.Zero;
+        currentTime = 0;
     }
 }

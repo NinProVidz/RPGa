@@ -16,18 +16,19 @@ public class Clock : MonoBehaviour, IDataPersistence
     Date date;
 
     [SerializeField] public TimeSpan currentTime;
+    [SerializeField] public int seconds;
     [SerializeField] public float minuteLength => dayLength / ClockConstant.MinutesInDay;
 
     public void LoadData(GameData data)
     {
-        this.currentTime = data.currentTime;
         this.counterTillDayChange = data.timeCounter;
+        this.seconds = data.currentTime;
     }
 
     public void SaveData(ref GameData data)
     {
-        data.currentTime = this.currentTime;
         data.timeCounter = this.counterTillDayChange;
+        data.currentTime = this.seconds;
     }
 
     private IEnumerator AddMinute()
@@ -52,5 +53,9 @@ public class Clock : MonoBehaviour, IDataPersistence
             date.namesIndex++;
             counterTillDayChange = counterReset;
         }
+    }
+    private void OnApplicationQuit()
+    {
+        int seconds = (int)Math.Round(currentTime.TotalSeconds);
     }
 }
