@@ -2,74 +2,55 @@ using UnityEngine;
 
 public class Tail : MonoBehaviour
 {
-    [Tooltip("Total links count")]
-    public int count = 10;
-    [Tooltip("Single link rotate time")]
-    public float delay = 0.1f;
-    [Tooltip("Tail look target")]
-    public Transform target;
-    [Tooltip("Tail links")]
-    public Transform[] links;
-    [Tooltip("Link forwards")]
-    public Vector3[] forwards;
-    [Tooltip("Link forward velocities")]
-    public Vector3[] velocities;
+    public Transform[] segs;      // Tail segments (from base to tip)
+    public Transform body;        // Moving/rotating parent object
 
-    //private void OnValidate()
-    //{
-    //    if (!Application.isPlaying && gameObject.scene != null)
-    //        Invoke(nameof(Create), 0);
-    //}
+    public float lag = 5f;        // How slowly the ghost follows (lower = more drag)
+    public float sway = 1f;       // Sway intensity from body movement
+    public float rotSpeed = 10f;  // How fast tail segments align to sway
 
-    private void Create()
+    private Vector3 ghostPos;
+    private Quaternion ghostRot;
+
+    void Start()
     {
-        while (transform.childCount > 0)
-            DestroyImmediate(transform.GetChild(0).gameObject);
-
-        if (target == null)
-        {
-            target = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
-            target.name = "Target";
-            target.parent = transform.parent;
-            target.localScale *= 0.5f;
-            target.localPosition = Vector3.forward;
-        }
-
-        links = new Transform[count];
-        var parent = transform;
-        for (int i = 0; i < count; i++)
-        {
-            links[i] = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
-            links[i].name = $"Link{i}";
-            links[i].parent = parent;
-            links[i].localScale = Vector3.one * (1f - 1f * i / count) / parent.lossyScale.x;
-            links[i].localPosition = Vector3.back / 2f;
-            parent = links[i];
-        }
-        links[0].localPosition = Vector3.zero;
-
-        forwards = new Vector3[count];
-        for (int i = 0; i < count; i++)
-            forwards[i] = links[i].forward;
-
-        velocities = new Vector3[count];
+        ghostPos = body.position;
+        ghostRot = body.rotation;
     }
 
-    private void Update()
+    void Update()
     {
-        Vector3 directionToTarget = (target.position - transform.position).normalized;
+        // Track the body's world position & rotation, even if it's the parent
+        Vector3 currentPos = body.position;
+        Quaternion currentRot = body.rotation;
 
-        // Create a rotation that aligns -Y with the direction to the target
-        Quaternion alignDown = Quaternion.FromToRotation(Vector3.down, directionToTarget);
-        transform.rotation = alignDown;
+        // Smooth trailing ghost (in world space)
+        ghostPos = Vector3.Lerp(ghostPos, currentPos, Time.deltaTime * lag);
+        ghostRot = Quaternion.Slerp(ghostRot, currentRot, Time.deltaTime * lag);
 
-        // Step 2: Smooth each link's forward vector toward the root's forward direction
-        Vector3 targetForward = transform.forward;
+        // Calculate sway direction from ghost offset
+        Vector3 swayDir = -(currentPos - ghostPos) * sway + (currentRot * Vector3.back - ghostRot * Vector3.back) * sway;
 
-        for (int i = 0; i < count; i++)
+        if (swayDir.sqrMagnitude < 0.0001f) return;
+
+        // Apply to each segment
+        for (int i = 0; i < segs.Length; i++)
         {
-            forwards[i] = Vector3.SmoothDamp(forwards[i], targetForward, ref velocities[i], delay);
-            links[i].forward = forwards[i];
+            // Get parent-local sway direction
+            Vector3 localSway = segs[i].parent.InverseTransformDirection(swayDir.normalized);
+
+            // Project onto local XZ plane (remove Y component)
+            localSway.y = 0;
+
+            if (localSway.sqrMagnitude > 0.001f)
+            {
+                // Get current local forward direction (tail direction)
+                Vector3 currentDir = segs[i].localRotation * Vector3.up;
+
+                // Create target rotation that only bends in horizontal plane
+                Quaternion targetRot = Quaternion.FromToRotation(Vector3.up, localSway.normalized);
+                segs[i].localRotation = Quaternion.Slerp(segs[i].localRotation, targetRot, Time.deltaTime * rotSpeed);
+            }
         }
     }
 }

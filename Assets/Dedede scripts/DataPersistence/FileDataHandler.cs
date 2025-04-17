@@ -15,10 +15,10 @@ public class FileDataHandler
         this.dataFileName = dataFileName;
     }
 
-    public GameData Load()
-    {
+    //public GameData Load()
+    //{
 
-    }
+    //}
 
     public void Save(GameData data)
     {
