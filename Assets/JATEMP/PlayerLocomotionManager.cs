@@ -23,6 +23,8 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     public bool isRunning;
 
     [Header("Ground Check & Jumping")]
+    [SerializeField] private Transform groundCheckTransform; // Assign an empty GameObject at the feet
+    [SerializeField] private float groundCheckDistance = 0.2f; // Small offset from feet
     [SerializeField] float gravityForce = -5.55f;
     [SerializeField] LayerMask groundLayer;
     [SerializeField] float groundCheckSphereRadius = 1;
@@ -31,6 +33,9 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     [SerializeField] protected float fallStartVelocity = -5;
     bool fallingVelocityHasBeenSet = false;
     public float inAirTimer = 0;
+
+    private bool wasGrounded = true;
+    private bool hasLanded = false;
 
     public void LoadData(GameData data)
     {
@@ -47,13 +52,20 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         player = GetComponent<PlayerManager>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         HandleGroundCheck();
         player.animator.SetBool("isGrounded", player.isGrounded);
 
+        // Detect transition from falling to grounded
         if (player.isGrounded)
         {
+            if (!wasGrounded && !player.isJumping)
+            {
+                hasLanded = true;
+                player.playerAnimatorManager.PlayTargetActionAnimation("Land", false, false); // Play landing animation
+            }
+
             if (yVelocity.y < 0)
             {
                 inAirTimer = 0;
@@ -71,26 +83,35 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
                 yVelocity.y = fallStartVelocity;
             }
 
-            inAirTimer = inAirTimer + Time.deltaTime;
+            inAirTimer += Time.deltaTime;
             player.animator.SetFloat("inAirTimer", inAirTimer);
             yVelocity.y += gravityForce * Time.deltaTime;
-
-            
         }
 
         player.characterController.Move(yVelocity * Time.deltaTime);
 
-
+        wasGrounded = player.isGrounded;
+        hasLanded = false; // Reset after use
     }
 
     private void HandleGroundCheck()
     {
-        player.isGrounded = Physics.CheckSphere(player.transform.position, groundCheckSphereRadius, groundLayer);
+        Vector3 origin = groundCheckTransform.position;
+
+        // Slight upward offset to avoid overlapping inside floor
+        origin += Vector3.up * 0.05f;
+
+        player.isGrounded = Physics.CheckSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawSphere(player.transform.position, groundCheckSphereRadius);
+        if (groundCheckTransform != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckSphereRadius);
+            Gizmos.DrawLine(groundCheckTransform.position + Vector3.up * 0.1f, groundCheckTransform.position + Vector3.down * (groundCheckDistance));
+        }
     }
     public void HandleAllMovement()
     {
@@ -128,7 +149,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
             {
                 player.characterController.Move(moveDirection * walkingSpeed * Time.smoothDeltaTime);
             }
-        }   
+        }
     }
 
     private void HandleRotation()
@@ -184,7 +205,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         {
             return;
         }
-        
+
         if (player.isJumping)
         {
             return;

@@ -7,6 +7,8 @@ public class PlayerInputManager : MonoBehaviour
     public static PlayerInputManager instance;
     public PlayerManager player;
 
+    public bool inputEnabled = true;
+
     private PlayerControls playerControls; 
 
     [Header("Player Movement Input")]
@@ -16,6 +18,7 @@ public class PlayerInputManager : MonoBehaviour
     public float moveAmount;
 
     [Header("Camera Movement Input")]
+    [SerializeField] float smoothingSpeed = 10f;
     [SerializeField] Vector2 cameraInput;
     public float cameraHorizontalInput;
     public float cameraVerticalInput;
@@ -70,20 +73,23 @@ public class PlayerInputManager : MonoBehaviour
 
         playerControls.Enable();
 
-        playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
-        playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
+        if (inputEnabled)
+        {
+            playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+            playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
 
-        playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
-        playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
+            playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
+            playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
 
-        playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
-        //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
+            playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+            //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
 
-        playerControls.PlayerActions.Run.performed += i => runInput = true;
-        playerControls.PlayerActions.Run.canceled += i => runInput = false;
+            playerControls.PlayerActions.Run.performed += i => runInput = true;
+            playerControls.PlayerActions.Run.canceled += i => runInput = false;
 
-        playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
-        playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+            playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+            playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+        }
     }
 
     private void OnDisable()
@@ -98,11 +104,11 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
-        HandlePlayerMovementInput();
-        HandleCameraMovementInput();
-        HandleRunInput();
-        HandleSprintInput();
-        HandleJumpInput();
+            HandlePlayerMovementInput();
+            HandleCameraMovementInput();
+            HandleRunInput();
+            HandleSprintInput();
+            HandleJumpInput(); 
     }
 
     private void HandlePlayerMovementInput()
@@ -129,10 +135,25 @@ public class PlayerInputManager : MonoBehaviour
         player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerLocomotionManager.isSprinting, player.playerLocomotionManager.isRunning);
     }
 
+    private float smoothCameraHorizontalInput;
+    private float smoothCameraVerticalInput;
+
+    private float deadZone = 0.1f;  // Small dead zone to ignore minor inputs
+
     private void HandleCameraMovementInput()
     {
-        cameraVerticalInput = cameraInput.y;
-        cameraHorizontalInput = cameraInput.x;
+        // Apply dead zone to filter out tiny movements
+        cameraHorizontalInput = Mathf.Abs(cameraInput.x) < deadZone ? 0f : cameraInput.x;
+        cameraVerticalInput = Mathf.Abs(cameraInput.y) < deadZone ? 0f : cameraInput.y;
+
+        // Smooth the input values to prevent sudden jumps or jittering
+        smoothCameraHorizontalInput = Mathf.Lerp(smoothCameraHorizontalInput, cameraHorizontalInput, Time.deltaTime * smoothingSpeed);  // 10f is smoothing speed, adjust as needed
+        smoothCameraVerticalInput = Mathf.Lerp(smoothCameraVerticalInput, cameraVerticalInput, Time.deltaTime * smoothingSpeed);
+
+        // Use the smoothed inputs in the rest of your logic
+        cameraHorizontalInput = smoothCameraHorizontalInput;
+        cameraVerticalInput = smoothCameraVerticalInput;
+
     }
 
     private void HandleRunInput()
