@@ -32,14 +32,6 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
-    private void Update()
-    {
-        if(Input.GetButtonDown("Save"))
-        {
-            SaveGame();
-        }
-    }
-
     public void NewGame()
     {
         this.gameData = new GameData();
@@ -86,5 +78,14 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
 
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Save"))
+        {
+            SaveGame();
+        }
     }
 }
