@@ -65,7 +65,6 @@ public class DataPersistenceManager : MonoBehaviour
 
         //save data to file using data handler
         dataHandler.Save(gameData);
-        Debug.Log("Saved time " + gameData.currentTime);
     }
 
     private void OnApplicationQuit()

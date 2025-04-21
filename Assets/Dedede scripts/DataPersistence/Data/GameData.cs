@@ -8,18 +8,13 @@ public class GameData
 {
     public int month;
     public int day;
-    public float timeOfDay;
     public Vector3 playerPosition;
-    public int timeCounter;
-    public int currentTime;
+    
 
     public GameData()
     {
         day = 0;
         month = 0;
-        timeOfDay = 0;
         playerPosition = Vector3.zero;
-        timeCounter = 0;
-        currentTime = 0;
     }
 }
