@@ -33,13 +33,14 @@ public class PlayerManager : MonoBehaviour
     private void Update()
     {
         //Time.timeScale = 0.1f;
-        playerLocomotionManager.HandleAllMovement();
+        
     }
 
     private void FixedUpdate()
     {
 
         PlayerCamera.instance.HandleAllCameraActions();
+        playerLocomotionManager.HandleAllMovement();
     }
 
     
