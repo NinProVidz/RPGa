@@ -2,9 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 {
     PlayerManager player;
+    Rigidbody rb;
 
     public float verticalMovement;
     public float horizontalMovement;
@@ -14,23 +16,26 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     private Vector3 moveDirection;
     private Vector3 targetRotationDirection;
     [SerializeField] float jumpHeight = 4f;
-    [SerializeField] float walkingSpeed = 2;
-    [SerializeField] float runningSpeed = 5;
-    [SerializeField] float sprintingSpeed = 6.5f;
+    [SerializeField] float walkingSpeed = 10f;
+    [SerializeField] float runningSpeed = 18f;
+    [SerializeField] float sprintingSpeed = 24f;
     [SerializeField] float rotationSpeed = 15f;
 
     public bool isSprinting;
     public bool isRunning;
 
     [Header("Ground Check & Jumping")]
-    [SerializeField] float gravityForce = -5.55f;
+    [SerializeField] private List<GroundDetector> groundDetectors = new List<GroundDetector>();
+    [SerializeField] float gravityForce = -9.81f;
     [SerializeField] LayerMask groundLayer;
-    [SerializeField] float groundCheckSphereRadius = 1;
-    [SerializeField] protected Vector3 yVelocity;
-    [SerializeField] protected float groundedVelocity = -20;
-    [SerializeField] protected float fallStartVelocity = -5;
-    bool fallingVelocityHasBeenSet = false;
+    [SerializeField] Transform groundCheckPoint;
+    [SerializeField] float groundCheckRadius = 0.3f;
+    [SerializeField] float groundCheckDistance = 0.6f;
+
     public float inAirTimer = 0;
+    private float jumpBufferTime = 0.15f;
+    private float jumpBufferCounter = 0f;
+    private bool isJumpQueued = false;
 
     public void LoadData(GameData data)
     {
@@ -45,6 +50,9 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     private void Awake()
     {
         player = GetComponent<PlayerManager>();
+        rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
+        rb.drag = 3f;
     }
 
     private void Update()
@@ -52,50 +60,68 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         HandleGroundCheck();
         player.animator.SetBool("isGrounded", player.isGrounded);
 
-        if (player.isGrounded)
+        if (!player.isGrounded)
         {
-            if (yVelocity.y < 0)
-            {
-                inAirTimer = 0;
-                player.animator.SetFloat("inAirTimer", inAirTimer);
-                player.isJumping = false;
-                fallingVelocityHasBeenSet = false;
-                yVelocity.y = 0;
-            }
+            inAirTimer += Time.deltaTime;
+            player.animator.SetFloat("inAirTimer", inAirTimer);
         }
         else
         {
-            if (!player.isJumping && !fallingVelocityHasBeenSet)
-            {
-                fallingVelocityHasBeenSet = true;
-                yVelocity.y = fallStartVelocity;
-            }
-
-            inAirTimer = inAirTimer + Time.deltaTime;
-            player.animator.SetFloat("inAirTimer", inAirTimer);
-            yVelocity.y += gravityForce * Time.deltaTime;
-
-            
+            inAirTimer = 0;
+            player.animator.SetFloat("inAirTimer", 0);
         }
 
-        player.characterController.Move(yVelocity * Time.deltaTime);
+        // Jump buffering
+        if (isJumpQueued)
+        {
+            jumpBufferCounter += Time.deltaTime;
+            if (jumpBufferCounter > jumpBufferTime)
+            {
+                isJumpQueued = false;
+            }
+        }
+    }
 
+    private void FixedUpdate()
+    {
+        HandleAllMovement();
 
+        if (isJumpQueued && player.isGrounded)
+        {
+            ExecuteJump();
+        }
+
+        if (!player.isGrounded)
+        {
+            rb.AddForce(Vector3.down * 30f, ForceMode.Force); // Extra gravity
+        }
     }
 
     private void HandleGroundCheck()
     {
-        player.isGrounded = Physics.CheckSphere(player.transform.position, groundCheckSphereRadius, groundLayer);
+        player.isGrounded = false;
+
+        foreach (var detector in groundDetectors)
+        {
+            if (detector.isTouchingGround)
+            {
+                player.isGrounded = true;
+                break; // One contact is enough
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawSphere(player.transform.position, groundCheckSphereRadius);
+        if (groundCheckPoint == null) return;
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(groundCheckPoint.position + Vector3.down * groundCheckDistance, groundCheckRadius);
     }
+
     public void HandleAllMovement()
     {
-        HandleGroundedMovemnt();
-        //HandleRotation();
+        HandleMovementForces();
+        HandleRotation();
     }
 
     private void GetVerticalAndHorizontalInputs()
@@ -105,107 +131,67 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         moveAmount = PlayerInputManager.instance.moveAmount;
     }
 
-    private void HandleGroundedMovemnt()
+    private void HandleMovementForces()
     {
         GetVerticalAndHorizontalInputs();
 
         moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
-        moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
+        moveDirection += PlayerCamera.instance.transform.right * horizontalMovement;
         moveDirection.Normalize();
         moveDirection.y = 0;
 
-        if (isSprinting)
+        float currentSpeed = walkingSpeed;
+        if (isSprinting) currentSpeed = sprintingSpeed;
+        else if (isRunning) currentSpeed = runningSpeed;
+
+        if (moveDirection.magnitude > 0.1f)
         {
-            player.characterController.Move(moveDirection * sprintingSpeed * Time.smoothDeltaTime);
+            Vector3 force = moveDirection * currentSpeed;
+            rb.AddForce(force, ForceMode.Force);
         }
-        else
-        {
-            if (isRunning)
-            {
-                player.characterController.Move(moveDirection * runningSpeed * Time.smoothDeltaTime);
-            }
-            else
-            {
-                player.characterController.Move(moveDirection * walkingSpeed * Time.smoothDeltaTime);
-            }
-        }   
     }
 
     private void HandleRotation()
     {
-        targetRotationDirection = Vector3.zero;
         targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
-        targetRotationDirection = targetRotationDirection + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+        targetRotationDirection += PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
         targetRotationDirection.Normalize();
         targetRotationDirection.y = 0;
 
-        if (targetRotationDirection == Vector3.zero)
-        {
-            targetRotationDirection = transform.forward;
-        }
+        if (targetRotationDirection == Vector3.zero) return;
 
-        Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-        transform.rotation = targetRotation;
+        Quaternion targetRot = Quaternion.LookRotation(targetRotationDirection);
+        Quaternion smoothedRot = Quaternion.Slerp(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+        transform.rotation = smoothedRot;
     }
 
     public void HandleRunning()
     {
-        if (moveAmount > 0)
-        {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
-        }
+        isRunning = moveAmount > 0;
     }
 
     public void HandleSprinting()
     {
-        if (player.isPerformingAction)
-        {
-            isSprinting = false;
-        }
-
-        if (verticalMovement > 0)
-        {
-            isSprinting = true;
-        }
-        else
-        {
-            isSprinting = false;
-        }
+        isSprinting = !player.isPerformingAction && verticalMovement > 0;
     }
 
     public void AttemptToPerformJump()
     {
-        if (player.isPerformingAction)
-        {
+        if (player.isPerformingAction || player.isJumping)
             return;
-        }
-        
-        if (player.isJumping)
-        {
-            return;
-        }
 
-        if (!player.isGrounded)
-        {
-            return;
-        }
-
-        player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
-
-        player.isJumping = true;
-
-
+        // Queue the jump to be executed in FixedUpdate when grounded
+        isJumpQueued = true;
+        jumpBufferCounter = 0;
     }
 
-    public void ApplyJumpingVelocity()
+    private void ExecuteJump()
     {
-        Debug.Log("jump");
-        yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
-        Debug.Log(yVelocity.y);
+        player.isJumping = true;
+        isJumpQueued = false;
+        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z); // Reset Y
+        float jumpForce = Mathf.Sqrt(jumpHeight * -2f * gravityForce);
+        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
     }
 }
