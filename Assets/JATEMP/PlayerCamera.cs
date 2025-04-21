@@ -26,8 +26,6 @@ public class PlayerCamera : MonoBehaviour
     private Vector3 cameraObjectPosition;
     [SerializeField] float leftAndRightLookAngle;
     [SerializeField] float upAndDownLookAngle;
-    private float cameraZPositon;
-    private float targetCameraZPosition;
 
     private void Awake()
     {
@@ -45,16 +43,14 @@ public class PlayerCamera : MonoBehaviour
     private void Start()
     {
         DontDestroyOnLoad(gameObject);
-        cameraZPositon = cameraObject.transform.localPosition.z;
     }
 
     public void HandleAllCameraActions()
     {
         if (player != null)
         {
-            HandleFollowTarget();
+            //HandleFollowTarget();
             HandleRotations();
-            HandleCollisions();
         }
     }
 
@@ -66,7 +62,8 @@ public class PlayerCamera : MonoBehaviour
 
     private void HandleRotations()
     {
-        leftAndRightLookAngle += (PlayerInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed) * Time.deltaTime;
+        leftAndRightLookAngle += PlayerInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed * Time.deltaTime;
+        leftAndRightLookAngle = NormalizeAngle360(leftAndRightLookAngle);
 
         //leftAndRightLookAngle = NormalizeAngle(leftAndRightLookAngle);
         upAndDownLookAngle -= (PlayerInputManager.instance.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
@@ -77,7 +74,7 @@ public class PlayerCamera : MonoBehaviour
 
         cameraRotation.y = leftAndRightLookAngle;
         targetRotation = Quaternion.Euler(cameraRotation);
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
+        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
         player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
 
         cameraRotation = Vector3.zero;
@@ -86,29 +83,13 @@ public class PlayerCamera : MonoBehaviour
         cameraPivotTransform.localRotation = Quaternion.Slerp(cameraPivotTransform.localRotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
     }
 
-    private void HandleCollisions()
+
+    private float NormalizeAngle360(float angle)
     {
-        Debug.Log("a");
-        targetCameraZPosition = cameraZPositon;
-        RaycastHit hit;
-        Vector3 direction = cameraObject.transform.position - cameraPivotTransform.position;
-        direction.Normalize();
-
-        if (Physics.SphereCast(cameraPivotTransform.position, cameraCollisionRadius, direction, out hit, Mathf.Abs(targetCameraZPosition), collideWithLayers))
-        {
-            Debug.Log("s");
-            float distanceFromHitObject = Vector3.Distance(cameraPivotTransform.position, hit.point);
-            targetCameraZPosition = -(distanceFromHitObject - cameraCollisionRadius);
-        }
-
-        if (Mathf.Abs(targetCameraZPosition) < cameraCollisionRadius)
-        {
-            //targetCameraZPosition = -cameraCollisionRadius;
-        }
-
-        cameraObjectPosition.z = Mathf.Lerp(cameraObject.transform.localPosition.z, targetCameraZPosition, 0.1f);
-        //cameraObject.transform.localPosition = cameraObjectPosition;
-        cameraObject.transform.localPosition = new Vector3(cameraObject.transform.localPosition.x, cameraObject.transform.localPosition.y, cameraObjectPosition.z);
+        angle %= 360f;
+        if (angle < 0f)
+            angle += 360f;
+        return angle;
     }
 
     private float NormalizeAngle(float angle)

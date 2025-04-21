@@ -32,7 +32,7 @@ public class PlayerAnimatorManager : MonoBehaviour
 
     private void OnAnimatorIK(int layerIndex)
     {
-        player.animator.SetLookAtWeight(1f, 0.2f, 1f, 0f, 0.5f);
+        player.animator.SetLookAtWeight(1f, 0.2f, 1f, 1f, 0f);
         Ray lookAtRay = new Ray(PlayerCamera.instance.cameraObject.transform.position, PlayerCamera.instance.cameraObject.transform.forward);
         player.animator.SetLookAtPosition(lookAtRay.GetPoint(100));
 
