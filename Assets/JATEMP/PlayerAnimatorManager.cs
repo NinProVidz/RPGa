@@ -61,21 +61,31 @@ public class PlayerAnimatorManager : MonoBehaviour
         if (rightKnee != null)
             rightKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
     }
-    public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting, bool isRunning)
+    public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting, bool isRunning, bool isCrouching)
     {
         float horizontalAmount = horizontalMovement;
         float verticalAmount = verticalMovement;
 
-        if (isRunning)
+        if (isCrouching)
         {
-            verticalAmount *= 2;
-            horizontalAmount *= 2;
+            verticalAmount *= 0.5f;
+            horizontalAmount *= 0.5f;
+        }
+        else
+        {
+            if (isRunning)
+            {
+                verticalAmount *= 2;
+                horizontalAmount *= 2;
+            }
+
+            if (isSprinting)
+            {
+                verticalAmount = 3;
+            }
         }
 
-        if (isSprinting)
-        {
-            verticalAmount = 3;
-        }
+        
         player.animator.SetFloat(horizontal, horizontalAmount, 0.3f, Time.deltaTime);
         player.animator.SetFloat(vertical, verticalAmount, 0.3f, Time.deltaTime);
 

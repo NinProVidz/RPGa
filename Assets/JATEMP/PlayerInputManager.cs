@@ -132,7 +132,7 @@ public class PlayerInputManager : MonoBehaviour
             return;
         }
 
-        player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerLocomotionManager.isSprinting, player.playerLocomotionManager.isRunning);
+        player.playerAnimatorManager.UpdateAnimatorMovementParameters(horizontalInput, verticalInput, player.playerLocomotionManager.isSprinting, player.playerLocomotionManager.isRunning, player.playerLocomotionManager.isCrouching);
     }
 
     private float smoothCameraHorizontalInput;

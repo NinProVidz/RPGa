@@ -17,10 +17,13 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     [SerializeField] float walkingSpeed = 2;
     [SerializeField] float runningSpeed = 5;
     [SerializeField] float sprintingSpeed = 6.5f;
+    [SerializeField] float crouchSpeed = 1f;
+    [SerializeField] float crouchStrafeSpeed = 1f;
     [SerializeField] float rotationSpeed = 15f;
 
     public bool isSprinting;
     public bool isRunning;
+    public bool isCrouching;
 
     [Header("Ground Check & Jumping")]
     [SerializeField] private Transform groundCheckTransform; // Assign an empty GameObject at the feet
@@ -135,19 +138,26 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         moveDirection.Normalize();
         moveDirection.y = 0;
 
-        if (isSprinting)
+        if (isCrouching)
         {
-            player.characterController.Move(moveDirection * sprintingSpeed * Time.smoothDeltaTime);
+            player.characterController.Move(moveDirection * crouchSpeed * Time.smoothDeltaTime);
         }
         else
         {
-            if (isRunning)
+            if (isSprinting)
             {
-                player.characterController.Move(moveDirection * runningSpeed * Time.smoothDeltaTime);
+                player.characterController.Move(moveDirection * sprintingSpeed * Time.smoothDeltaTime);
             }
             else
             {
-                player.characterController.Move(moveDirection * walkingSpeed * Time.smoothDeltaTime);
+                if (isRunning)
+                {
+                    player.characterController.Move(moveDirection * runningSpeed * Time.smoothDeltaTime);
+                }
+                else
+                {
+                    player.characterController.Move(moveDirection * walkingSpeed * Time.smoothDeltaTime);
+                }
             }
         }
     }
