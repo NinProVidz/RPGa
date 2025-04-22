@@ -36,7 +36,30 @@ public class PlayerAnimatorManager : MonoBehaviour
         Ray lookAtRay = new Ray(PlayerCamera.instance.cameraObject.transform.position, PlayerCamera.instance.cameraObject.transform.forward);
         player.animator.SetLookAtPosition(lookAtRay.GetPoint(100));
 
+        var spine = player.animator.GetBoneTransform(HumanBodyBones.Spine);
+        if (spine != null)
+            spine.localRotation *= Quaternion.Euler(15f * 1, 0f, 0f);
 
+        // Head slight tilt down
+        var head = player.animator.GetBoneTransform(HumanBodyBones.Head);
+        if (head != null)
+            head.localRotation *= Quaternion.Euler(5f * 1, 0f, 0f);
+
+        // Thighs rotate backward
+        var leftThigh = player.animator.GetBoneTransform(HumanBodyBones.LeftUpperLeg);
+        var rightThigh = player.animator.GetBoneTransform(HumanBodyBones.RightUpperLeg);
+        if (leftThigh != null)
+            leftThigh.localRotation *= Quaternion.Euler(-20f * 1, 0f, 0f);
+        if (rightThigh != null)
+            rightThigh.localRotation *= Quaternion.Euler(-20f * 1, 0f, 0f);
+
+        // Knees bend forward
+        var leftKnee = player.animator.GetBoneTransform(HumanBodyBones.LeftLowerLeg);
+        var rightKnee = player.animator.GetBoneTransform(HumanBodyBones.RightLowerLeg);
+        if (leftKnee != null)
+            leftKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
+        if (rightKnee != null)
+            rightKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
     }
     public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting, bool isRunning)
     {
