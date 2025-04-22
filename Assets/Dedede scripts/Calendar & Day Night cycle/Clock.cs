@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock : MonoBehaviour, IDataPersistence
+public class Clock : MonoBehaviour
 {
     public event EventHandler<TimeSpan> ClockChange;
 
@@ -18,18 +18,6 @@ public class Clock : MonoBehaviour, IDataPersistence
     [SerializeField] public TimeSpan currentTime;
     [SerializeField] public int seconds;
     [SerializeField] public float minuteLength => dayLength / ClockConstant.MinutesInDay;
-
-    public void LoadData(GameData data)
-    {
-        this.counterTillDayChange = data.timeCounter;
-        this.seconds = data.currentTime;
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        data.timeCounter = this.counterTillDayChange;
-        data.currentTime = this.seconds;
-    }
 
     private IEnumerator AddMinute()
     {

@@ -65,7 +65,6 @@ public class DataPersistenceManager : MonoBehaviour
 
         //save data to file using data handler
         dataHandler.Save(gameData);
-        Debug.Log("Saved time " + gameData.currentTime);
     }
 
     private void OnApplicationQuit()
@@ -79,5 +78,14 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
 
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetButtonDown("Save"))
+        {
+            SaveGame();
+        }
     }
 }
