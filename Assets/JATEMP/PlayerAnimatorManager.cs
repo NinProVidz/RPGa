@@ -85,7 +85,7 @@ public class PlayerAnimatorManager : MonoBehaviour
             }
         }
 
-        
+        player.animator.SetBool("isCrouching", isCrouching);
         player.animator.SetFloat(horizontal, horizontalAmount, 0.3f, Time.deltaTime);
         player.animator.SetFloat(vertical, verticalAmount, 0.3f, Time.deltaTime);
 

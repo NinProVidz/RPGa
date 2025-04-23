@@ -140,7 +140,14 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         if (isCrouching)
         {
-            player.characterController.Move(moveDirection * crouchSpeed * Time.smoothDeltaTime);
+            if (horizontalMovement != 0)
+            {
+                player.characterController.Move(moveDirection * crouchStrafeSpeed * Time.smoothDeltaTime);
+            }
+            else
+            {
+                player.characterController.Move(moveDirection * crouchSpeed * Time.smoothDeltaTime);
+            }   
         }
         else
         {

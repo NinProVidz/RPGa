@@ -27,6 +27,7 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] bool runInput = false;
     [SerializeField] bool sprintInput = false;
     [SerializeField] bool jumpInput = false;
+    [SerializeField] bool crouchInput = false;
 
     private void Awake()
     {
@@ -89,6 +90,9 @@ public class PlayerInputManager : MonoBehaviour
 
             playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
             playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+
+            playerControls.PlayerActions.Crouch.performed += i => crouchInput = true;
+            playerControls.PlayerActions.Crouch.canceled += i => crouchInput = false;
         }
     }
 
@@ -104,11 +108,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
-            HandlePlayerMovementInput();
-            HandleCameraMovementInput();
-            HandleRunInput();
-            HandleSprintInput();
-            HandleJumpInput(); 
+        HandlePlayerMovementInput();
+        HandleCameraMovementInput();
+        HandleRunInput();
+        HandleSprintInput();
+        HandleJumpInput();
+        HandleCrouchInput();
     }
 
     private void HandlePlayerMovementInput()
@@ -154,6 +159,11 @@ public class PlayerInputManager : MonoBehaviour
         cameraHorizontalInput = smoothCameraHorizontalInput;
         cameraVerticalInput = smoothCameraVerticalInput;
 
+    }
+
+    private void HandleCrouchInput()
+    {
+        player.playerLocomotionManager.isCrouching = crouchInput;
     }
 
     private void HandleRunInput()
