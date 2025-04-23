@@ -45,16 +45,6 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         player = GetComponent<PlayerManager>();
     }
 
-    public void LoadData(GameData data)
-    {
-        this.transform.position = data.playerPosition;
-    }
-
-    public void SaveData(ref GameData data)
-    {
-        data.playerPosition = this.transform.position;
-    }
-
     private void LateUpdate()
     {
         HandleGroundCheck();
@@ -95,6 +85,17 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         wasGrounded = player.isGrounded;
         hasLanded = false; // Reset after use
+    }
+
+
+    public void LoadData(GameData data)
+    {
+        this.transform.position = data.playerPosition;
+    }
+
+    public void SaveData(ref GameData data)
+    {
+        data.playerPosition = this.transform.position; 
     }
 
     private void HandleGroundCheck()
