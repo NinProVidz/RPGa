@@ -41,7 +41,7 @@ public class DataPersistenceManager : MonoBehaviour
     {
         //load any data from a file using data handler
         this.gameData = dataHandler.Load();
-
+        Debug.Log("Unity says screw you");
         //if there is no data, initialize a new game
         if(this.gameData == null)
         {
