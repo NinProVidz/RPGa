@@ -6,7 +6,7 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int eHealth = 100;
     [SerializeField] int takeDamage = 40;
-    PushingEnvironment pEnvironment;
+    [SerializeField] PushingEnvironment pEnvironment;
     public bool isGrounded;
 
     private void Start()
@@ -25,6 +25,10 @@ public class EnemyHealth : MonoBehaviour
         if(isGrounded != true && other.gameObject.CompareTag("Pushable"))
         {
             eHealth -= takeDamage;
+        }
+        else
+        {
+            return;
         }
     }
 }

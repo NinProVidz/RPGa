@@ -34,6 +34,7 @@ public class PushingEnvironment : MonoBehaviour
             forceDirection.y = 0f;
             forceDirection.Normalize();
 
+
             rb.AddForceAtPosition(forceDirection * forceMagnitude, transform.position, ForceMode.Impulse);
         }
     }

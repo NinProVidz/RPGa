@@ -40,6 +40,11 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     private bool wasGrounded = true;
     private bool hasLanded = false;
 
+    private void Awake()
+    {
+        player = GetComponent<PlayerManager>();
+    }
+
     public void LoadData(GameData data)
     {
         this.transform.position = data.playerPosition;
@@ -48,11 +53,6 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     public void SaveData(ref GameData data)
     {
         data.playerPosition = this.transform.position;
-    }
-
-    private void Awake()
-    {
-        player = GetComponent<PlayerManager>();
     }
 
     private void LateUpdate()

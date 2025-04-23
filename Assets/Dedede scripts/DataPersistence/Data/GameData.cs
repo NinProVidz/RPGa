@@ -9,7 +9,6 @@ public class GameData
     public int month;
     public int day;
     public Vector3 playerPosition;
-    
 
     public GameData()
     {

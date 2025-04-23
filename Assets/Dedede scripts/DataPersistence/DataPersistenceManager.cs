@@ -41,7 +41,6 @@ public class DataPersistenceManager : MonoBehaviour
     {
         //load any data from a file using data handler
         this.gameData = dataHandler.Load();
-        Debug.Log("Unity says screw you");
         //if there is no data, initialize a new game
         if(this.gameData == null)
         {
@@ -53,6 +52,7 @@ public class DataPersistenceManager : MonoBehaviour
         {
             dataPersistenceObj.LoadData(gameData);
         }
+        Debug.Log("Data successfully loaded!");
     }
 
     public void SaveGame()
@@ -65,6 +65,7 @@ public class DataPersistenceManager : MonoBehaviour
 
         //save data to file using data handler
         dataHandler.Save(gameData);
+        Debug.Log("Data successfully saved!");
     }
 
     private void OnApplicationQuit()
@@ -78,14 +79,5 @@ public class DataPersistenceManager : MonoBehaviour
             .OfType<IDataPersistence>();
         return new List<IDataPersistence>(dataPersistenceObjects);
 
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetButtonDown("Save"))
-        {
-            SaveGame();
-        }
     }
 }
