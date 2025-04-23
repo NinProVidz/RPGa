@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - DamageUpgrade
   - Health
+  - Pushable
   layers:
   - Default
   - TransparentFX

@@ -49,7 +49,7 @@ public class DataPersistenceManager : MonoBehaviour
         }
         //push all loaded data to all scripts that need it
         foreach(IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
+        {            
             dataPersistenceObj.LoadData(gameData);
         }
         Debug.Log("Data successfully loaded!");
@@ -59,8 +59,8 @@ public class DataPersistenceManager : MonoBehaviour
     {
         //push data to all scripts so they can be updated
         foreach (IDataPersistence dataPersistenceObj in dataPersistenceObjects)
-        {
-            dataPersistenceObj.SaveData(ref gameData);
+        {            
+            dataPersistenceObj.SaveData(ref gameData);            
         }
 
         //save data to file using data handler
