@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 5874694127028069463}
   - component: {fileID: 2213012873716493548}
   - component: {fileID: 3526082672912183551}
-  - component: {fileID: 3164164547284759584}
+  - component: {fileID: 5907331490226657476}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -344,7 +344,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968680616681366440}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6, y: 0.56, z: 7.43198}
+  m_LocalPosition: {x: -45.26833, y: -0.67, z: 7.43198}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -365,8 +365,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18fe02be2ba896a44826ff30dea227d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterController: {fileID: 0}
-  animator: {fileID: 0}
+  characterController: {fileID: 3526082672912183551}
+  animator: {fileID: 2213012873716493548}
   isPerformingAction: 0
   isJumping: 0
   isGrounded: 0
@@ -394,8 +394,8 @@ MonoBehaviour:
   walkingSpeed: 2
   runningSpeed: 4
   sprintingSpeed: 6
-  crouchSpeed: 0.75
-  crouchStrafeSpeed: 0.25
+  crouchSpeed: 1
+  crouchStrafeSpeed: 1
   rotationSpeed: 15
   isSprinting: 0
   isRunning: 0
@@ -473,7 +473,7 @@ CharacterController:
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &3164164547284759584
+--- !u!114 &5907331490226657476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -485,7 +485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1446939fe962a2d418ac09dd7b79cf42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forceMagnitude: 1
+  forceMagnitude: 0.4
   isGrounded: 0
 --- !u!1 &2245525561187721598
 GameObject:
@@ -1876,7 +1876,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:

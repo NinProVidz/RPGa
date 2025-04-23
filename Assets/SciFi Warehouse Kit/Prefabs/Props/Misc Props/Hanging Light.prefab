@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1690864663837076593}
   - component: {fileID: 6786346290622981635}
-  - component: {fileID: 5315872726224112697}
   m_Layer: 0
   m_Name: Overhead Light Source
   m_TagString: Untagged
@@ -95,22 +94,6 @@ Light:
   m_UseViewFrustumForShadowCasterCull: 1
   m_ShadowRadius: 0
   m_ShadowAngle: 0
---- !u!114 &5315872726224112697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3134181322289070079}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1560e0c42f6e77d429c1440b33c57ccc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maximumDim: 0.2
-  maximumBoost: 0.5
-  speed: 0.1
-  strength: 250
 --- !u!1 &5310423022416273761
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,7 +209,7 @@ Transform:
   - {fileID: 6334703646002381663}
   - {fileID: 1690864663837076593}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 245
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8747961930683674639
 GameObject:
