@@ -11,6 +11,7 @@ public class PushingEnvironment : MonoBehaviour
     private void Start()
     {
         isGrounded = true;
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Update()
@@ -27,6 +28,7 @@ public class PushingEnvironment : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        Debug.Log("sus");
         Rigidbody rb = hit.collider.attachedRigidbody;
         if(rb != null)
         {
