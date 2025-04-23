@@ -12,7 +12,6 @@ public class EnemyHealth : MonoBehaviour
     private void Start()
     {
         isGrounded = false;
-        pEnvironment = FindObjectOfType<PushingEnvironment>();
     }
 
     private void Update()
@@ -22,7 +21,7 @@ public class EnemyHealth : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if(isGrounded != true && other.gameObject.CompareTag("Pushable"))
+        if(isGrounded == false && other.gameObject.CompareTag("Pushable"))
         {
             eHealth -= takeDamage;
         }

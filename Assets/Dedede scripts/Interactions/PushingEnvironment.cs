@@ -16,13 +16,13 @@ public class PushingEnvironment : MonoBehaviour
 
     private void Update()
     {
-        if(rb.velocity.y != 0)
+        if(rb.velocity.y == 0)
         {
-            isGrounded = false;
+            isGrounded = true;
         }
         else
         {
-            isGrounded = true;
+            isGrounded = false;
         }
     }
 
