@@ -17,6 +17,8 @@ public class PlayerManager : MonoBehaviour
     public bool canRotate = true;
     public bool canMove = true;
 
+    public GameObject[] limbs;
+
     [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
     [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
 

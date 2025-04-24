@@ -5,17 +5,23 @@ using UnityEngine;
 public class FreakyLarryBehaviour : MonoBehaviour
 {
     [SerializeField] PlayerManager player = PlayerManager.instance;
-    [SerializeField] LayerMask playerLayer;
 
     [SerializeField] public float senseRange = 4;
     [SerializeField] public float fieldOfView = 60f;
-    
+
+    [Header("AwarenessChecks")]
+    [SerializeField] bool inRange = false;
+    [SerializeField] bool unblocked = false;
+    [SerializeField] bool inFOV = false;
+    [SerializeField] bool isMoving = false;
+
     [Header("Awareness")]
     [SerializeField] float awarenessLevel = 0;
     [Space(10)]
     [Header("Awareness Settings")]
     [SerializeField] float distanceToAwarenessFactor = 1;
-    [SerializeField] float unblockedAwarenessFactor = 1.5f;
+    [SerializeField] float unblockedBaseAwarenessFactor = 1.2f;
+    [SerializeField] float unblockedRangeAwarenessFactor = 0.3f;
     [SerializeField] float FovAwarenessFactor = 2;
     [SerializeField] float playerCrouchedAwarenessFactor = 0.5f;
     [SerializeField] float playerSprintAwarenessFactor = 2f;
@@ -80,9 +86,12 @@ public class FreakyLarryBehaviour : MonoBehaviour
         // Line to target (optional)
         if (player != null)
         {
-            Vector3 toTarget = player.transform.position - origin;
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(origin, player.transform.position);
+            foreach( GameObject limb in player.limbs)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(origin, limb.transform.position);
+            }
+            
         }
 
         Gizmos.color = new Color(1, 0, 0, 1);
@@ -92,7 +101,12 @@ public class FreakyLarryBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        inRange = false;
+        unblocked = false;
+        inFOV = false;
+        isMoving = false;
         HandleEnemyAwareness();
+        
     }
 
     private void HandleEnemyAwareness()
@@ -115,7 +129,8 @@ public class FreakyLarryBehaviour : MonoBehaviour
         float distance = (transform.position - player.transform.position).magnitude;
         if (distance <= senseRange)
         {
-            awarenessLevel = 1 + GetAwarenessFactorDueToDistance();
+            awarenessLevel = GetAwarenessFactorDueToDistance();
+            inRange = true;
         }
         else
         {
@@ -125,16 +140,28 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
     private void AwarenessIfPlayerIsUnblocked()
     {
-        Vector3 direction = (transform.position - player.transform.position).normalized;
-        Ray ray = new Ray(transform.position, direction);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, senseRange))
+        int limbsUnblocked = 0;
+        foreach (GameObject limb in player.limbs)
         {
-            if (hit.transform.gameObject.layer == playerLayer)
+            Vector3 direction = (limb.transform.position - transform.position).normalized;
+            Ray ray = new Ray(transform.position, direction);
+            RaycastHit[] hits = Physics.RaycastAll(ray, senseRange);
+            
+            if (hits.Length > 0)
             {
-                awarenessLevel *= unblockedAwarenessFactor;
+                Debug.Log(hits[0].collider.gameObject.layer);
+                int playerLayer = LayerMask.NameToLayer("Player");
+                if (hits[0].collider.gameObject.layer == playerLayer)
+                {
+                    Debug.Log(hits[0].collider.gameObject);
+                    limbsUnblocked++;
+                    unblocked = true;
+                }
             }
         }
+
+        awarenessLevel *= unblockedBaseAwarenessFactor + unblockedRangeAwarenessFactor * (limbsUnblocked / player.limbs.Length);
+        
     }
 
     private void AwarenessIfPlayerIsInFOV()
@@ -145,11 +172,12 @@ public class FreakyLarryBehaviour : MonoBehaviour
         // Calculate angle between forward and direction to target
         float angleToTarget = Vector3.Angle(enemyForward, directionToTarget);
 
-        Debug.Log(angleToTarget);
+        //Debug.Log(angleToTarget);
 
         if (angleToTarget < fieldOfView * 0.5f)
         {
             awarenessLevel *= FovAwarenessFactor;
+            inFOV = true;
         }
     }
 
@@ -177,6 +205,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
         if (player.playerLocomotionManager.moveAmount != 0)
         {
+            isMoving = true;
             awarenessLevel *= playerMoveAwarenessFactor;
         }
     }
