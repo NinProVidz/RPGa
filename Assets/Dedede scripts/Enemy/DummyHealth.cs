@@ -21,6 +21,7 @@ public class DummyHealth : MonoBehaviour
         if(eHealth <= dmgThreshHold)
         {
             eHealth = 0;
+            GameEventManager.instance.miscEvents.EnemyDefeated();
             Destroy(gameObject);
         }
     }

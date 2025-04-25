@@ -11,20 +11,20 @@ public class PushingEnvironment : MonoBehaviour
     private void Start()
     {
         isGrounded = true;
-        //rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
-    //private void Update()
-    //{
-    //    if(rb.velocity.y == 0)
-    //    {
-    //        isGrounded = true;
-    //    }
-    //    else
-    //    {
-    //        isGrounded = false;
-    //    }
-    //}
+    private void Update()
+    {
+        if(rb.velocity.y == 0)
+        {
+            isGrounded = true;
+        }
+        else
+        {
+           isGrounded = false;
+        } 
+    }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
