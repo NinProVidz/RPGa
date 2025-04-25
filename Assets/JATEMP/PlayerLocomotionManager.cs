@@ -125,9 +125,20 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     public void HandleAllMovement()
     {
         HandleGroundedMovemnt();
+        HandleTilt();
         //HandleRotation();
     }
 
+    private void HandleTilt()
+    {
+        if (PlayerInputManager.instance.tiltInput != 0)
+        {
+            if (PlayerInputManager.instance.tiltInput < 0)
+            {
+                tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, tiltAngle));
+            }
+        }
+    }
     private void GetVerticalAndHorizontalInputs()
     {
         verticalMovement = PlayerInputManager.instance.verticalInput;
