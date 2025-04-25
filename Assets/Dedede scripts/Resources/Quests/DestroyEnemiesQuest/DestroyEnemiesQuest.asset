@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90fa82825e54e7b49b1dd6277c227916, type: 3}
+  m_Name: DestroyEnemiesQuest
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: DestroyEnemiesQuest
+  displayName: Defeat the enemies!
+  monthRequirement: 7
+  dayRequirement: 22
+  questPrerequisites: []
+  questStepPrefabs:
+  - {fileID: 4653620845230590584, guid: 47bbde8e471390841940eb62e80a06ae, type: 3}
+  xpReward: 0
+  cashReward: 0
