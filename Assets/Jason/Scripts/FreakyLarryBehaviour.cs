@@ -14,11 +14,16 @@ public class FreakyLarryBehaviour : MonoBehaviour
     [SerializeField] bool unblocked = false;
     [SerializeField] bool inFOV = false;
     [SerializeField] bool isMoving = false;
+    [SerializeField] int limbsUnblocked;
 
     [Header("Awareness")]
     [SerializeField] float awarenessLevel = 0;
     [Space(10)]
-    [Header("Awareness Settings")]
+    [Header("Awareness Behaviour")]
+    [SerializeField] float minSusLevel = 1.5f;
+    [SerializeField] float minGrrLevel = 5.0f;
+    [Space(10)]
+    [Header("Awareness Factors")]
     [SerializeField] float distanceToAwarenessFactor = 1;
     [SerializeField] float unblockedBaseAwarenessFactor = 1.2f;
     [SerializeField] float unblockedRangeAwarenessFactor = 0.3f;
@@ -140,33 +145,35 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
     private void AwarenessIfPlayerIsUnblocked()
     {
-        int limbsUnblocked = 0;
+        limbsUnblocked = 0;
+        int playerLayer = LayerMask.NameToLayer("Player");
+
         foreach (GameObject limb in player.limbs)
         {
             Vector3 direction = (limb.transform.position - transform.position).normalized;
-            Ray ray = new Ray(transform.position, direction);
-            RaycastHit[] hits = Physics.RaycastAll(ray, senseRange);
-            
-            if (hits.Length > 0)
+            float distance = Vector3.Distance(transform.position, limb.transform.position);
+
+            if (Physics.Raycast(transform.position, direction, out RaycastHit hit, distance))
             {
-                Debug.Log(hits[0].collider.gameObject.layer);
-                int playerLayer = LayerMask.NameToLayer("Player");
-                if (hits[0].collider.gameObject.layer == playerLayer)
+                if (hit.collider.gameObject.layer == playerLayer)
                 {
-                    Debug.Log(hits[0].collider.gameObject);
+                    Debug.Log("Unblocked limb: " + hit.collider.gameObject.name);
                     limbsUnblocked++;
                     unblocked = true;
                 }
             }
         }
 
-        awarenessLevel *= unblockedBaseAwarenessFactor + unblockedRangeAwarenessFactor * (limbsUnblocked / player.limbs.Length);
+        if (unblocked)
+        {
+            awarenessLevel *= unblockedBaseAwarenessFactor + unblockedRangeAwarenessFactor * (limbsUnblocked / player.limbs.Length);
+        }
         
     }
 
     private void AwarenessIfPlayerIsInFOV()
     {
-        Vector3 directionToTarget = (transform.position - player.transform.position).normalized;
+        Vector3 directionToTarget = (transform.position - player.limbs[2].transform.position).normalized;
         Vector3 enemyForward = -transform.forward;
 
         // Calculate angle between forward and direction to target
@@ -191,7 +198,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
         {
             if(player.playerLocomotionManager.isSprinting)
             {
-                awarenessLevel *= playerCrouchedAwarenessFactor;
+                awarenessLevel *= playerSprintAwarenessFactor;
             }
             else
             {

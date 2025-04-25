@@ -21,6 +21,11 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     [SerializeField] float crouchStrafeSpeed = 1f;
     [SerializeField] float rotationSpeed = 15f;
 
+    [Header("Tilt settings")]
+    [SerializeField] Transform tiltBone;
+    [SerializeField] float tiltAngle = 20;
+
+    [Header("Movement Checks")]
     public bool isSprinting;
     public bool isRunning;
     public bool isCrouching;

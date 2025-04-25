@@ -17,6 +17,8 @@ public class PlayerInputManager : MonoBehaviour
     public float verticalInput;
     public float moveAmount;
 
+    public float tiltInput;
+
     [Header("Camera Movement Input")]
     [SerializeField] float smoothingSpeed = 10f;
     [SerializeField] Vector2 cameraInput;
@@ -93,6 +95,9 @@ public class PlayerInputManager : MonoBehaviour
 
             playerControls.PlayerActions.Crouch.performed += i => crouchInput = true;
             playerControls.PlayerActions.Crouch.canceled += i => crouchInput = false;
+
+            playerControls.PlayerMovement.Tilt.performed += ctx => tiltInput = ctx.ReadValue<Vector2>().x;
+            playerControls.PlayerMovement.Tilt.canceled += ctx => tiltInput = 0;
         }
     }
 
