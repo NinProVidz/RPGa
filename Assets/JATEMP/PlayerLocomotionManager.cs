@@ -90,6 +90,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         wasGrounded = player.isGrounded;
         hasLanded = false; // Reset after use
+        HandleTilt();
     }
 
 
@@ -125,7 +126,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     public void HandleAllMovement()
     {
         HandleGroundedMovemnt();
-        HandleTilt();
+        
         //HandleRotation();
     }
 
@@ -136,6 +137,10 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
             if (PlayerInputManager.instance.tiltInput < 0)
             {
                 tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, tiltAngle));
+            }
+            else
+            {
+                tiltBone.localRotation = Quaternion.Euler(new Vector3(tiltBone.localRotation.x, tiltBone.localRotation.y, -tiltAngle));
             }
         }
     }
@@ -150,8 +155,10 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     {
         GetVerticalAndHorizontalInputs();
 
-        moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
-        moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
+        //moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
+        //moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
+        moveDirection = player.transform.forward * verticalMovement;
+        moveDirection = moveDirection + player.transform.right * horizontalMovement;
         moveDirection.Normalize();
         moveDirection.y = 0;
 

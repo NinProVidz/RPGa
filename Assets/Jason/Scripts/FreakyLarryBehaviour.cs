@@ -114,6 +114,8 @@ public class FreakyLarryBehaviour : MonoBehaviour
         
     }
 
+    
+
     private void HandleEnemyAwareness()
     {
         AwarenessIfPlayerIsInRange();
