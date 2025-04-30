@@ -14,6 +14,24 @@ public class QuestManager : MonoBehaviour
     private void OnEnable()
     {
         GameEventsManager.instance.questEvents.onStartQuest += StartQuest;
+        GameEventsManager.instance.questEvents.onAdvanceQuest += AdvanceQuest;
+        GameEventsManager.instance.questEvents.onFinishQuest += FinishQuest;
+    }
+
+    private void OnDisable()
+    {
+        GameEventsManager.instance.questEvents.onStartQuest -= StartQuest;
+        GameEventsManager.instance.questEvents.onAdvanceQuest -= AdvanceQuest;
+        GameEventsManager.instance.questEvents.onFinishQuest -= FinishQuest;
+    }
+
+    private void Start()
+    {
+        //broadcast the intital state of all quests on startup
+        foreach(Quest quest in questMap.Values)
+        {
+            GameEventsManager.instance.questEvents.QuestStateChange(quest);
+        }
     }
 
     private void StartQuest(string id)
