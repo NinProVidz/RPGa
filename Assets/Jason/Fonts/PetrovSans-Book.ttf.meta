@@ -1,0 +1,28 @@
+fileFormatVersion: 2
+guid: c8b445814d9589e42840d292d091a522
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Petrov Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 31900ccd0146589488ebbaa7faf77aa4, type: 3}
+  - {fileID: 12800000, guid: f48e0af053003a943b7dffe3b7ff3241, type: 3}
+  - {fileID: 12800000, guid: 57b7fc6154e6932439616f64e1a7312e, type: 3}
+  - {fileID: 12800000, guid: 6465dcee4ae6b1a449ddab2053080f18, type: 3}
+  - {fileID: 12800000, guid: e7c8931aa20765647b8a28d39ebde431, type: 3}
+  - {fileID: 12800000, guid: 830c9d132e89d834e8927c3c79e77e7a, type: 3}
+  - {fileID: 12800000, guid: c58ef0437807fb54991fe5bfbcf8165d, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
