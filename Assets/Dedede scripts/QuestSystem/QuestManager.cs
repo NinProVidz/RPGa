@@ -8,7 +8,14 @@ public class QuestManager : MonoBehaviour
 
     private void Awake()
     {
-        questMap = CreateQuestMap();   
+        questMap = CreateQuestMap();
+
+        Quest quest = GetQuestById("DestroyEnemiesQuest");
+        Debug.Log(quest.info.displayName);
+        Debug.Log(quest.info.monthRequirement);
+        Debug.Log(quest.info.dayRequirement);
+        Debug.Log(quest.state);
+        Debug.Log(quest.CurrentStepExists());
     }
 
     private Dictionary<string, Quest> CreateQuestMap()
