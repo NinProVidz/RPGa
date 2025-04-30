@@ -9,16 +9,25 @@ public class DummyHealth : MonoBehaviour
     [SerializeField] int dmgThreshHold = 0;
     [SerializeField] PushingEnvironment pEnvironment;
     public bool isGrounded;
+    public bool questActive;
     DestroyEnemiesQuestStep destroyEnemiesQuestStep;
 
     private void Start()
     {
         isGrounded = false;
-        destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
+        questActive = false;
     }
 
     private void Update()
     {
+        if(questActive == false)
+        {
+            return;
+        }
+        if(questActive == true)
+        {
+            destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
+        }
         isGrounded = pEnvironment.isGrounded;
         if(eHealth <= dmgThreshHold)
         {
