@@ -7,17 +7,7 @@ public class DestroyEnemiesQuestStep : QuestStep
     private int enemiesDefeated = 0;
     private int enemiesToComplete = 1;
 
-    private void OnEnable()
-    {
-        GameEventManager.instance.miscEvents.onEnemyDefeated += EnemyDefeated;
-    }
-
-    private void OnDisable()
-    {
-        GameEventManager.instance.miscEvents.onEnemyDefeated -= EnemyDefeated;
-    }
-
-    private void EnemyDefeated()
+    public void EnemyDefeated()
     {
         if(enemiesDefeated < enemiesToComplete)
         {

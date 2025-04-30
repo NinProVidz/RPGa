@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameEventManager : MonoBehaviour
+public class GameEventsManager : MonoBehaviour
 {
-    public static GameEventManager instance { get; private set; }
+    public static GameEventsManager instance { get; private set; }
 
-    public MiscEvents miscEvents;
+    public QuestEvents questEvents;
 
     private void Awake()
     {
@@ -14,8 +14,6 @@ public class GameEventManager : MonoBehaviour
         {
             Debug.LogError("Found more than one Game Events Manager in the scene.");
         }
-        instance = this;
-
-        miscEvents = new MiscEvents();
+        questEvents = new QuestEvents();
     }
 }
