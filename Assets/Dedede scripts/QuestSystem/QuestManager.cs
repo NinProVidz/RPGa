@@ -9,13 +9,26 @@ public class QuestManager : MonoBehaviour
     private void Awake()
     {
         questMap = CreateQuestMap();
+    }
 
-        Quest quest = GetQuestById("DestroyEnemiesQuest");
-        Debug.Log(quest.info.displayName);
-        Debug.Log(quest.info.monthRequirement);
-        Debug.Log(quest.info.dayRequirement);
-        Debug.Log(quest.state);
-        Debug.Log(quest.CurrentStepExists());
+    private void OnEnable()
+    {
+        GameEventsManager.instance.questEvents.onStartQuest += StartQuest;
+    }
+
+    private void StartQuest(string id)
+    {
+        Debug.Log("Start Quest:" + id);
+    }
+
+    private void AdvanceQuest(string id)
+    {
+        Debug.Log("Advance Quest:" + id);
+    }
+
+    private void FinishQuest(string id)
+    {
+        Debug.Log("Finish Quest:" + id);
     }
 
     private Dictionary<string, Quest> CreateQuestMap()
