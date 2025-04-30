@@ -9,10 +9,12 @@ public class DummyHealth : MonoBehaviour
     [SerializeField] int dmgThreshHold = 0;
     [SerializeField] PushingEnvironment pEnvironment;
     public bool isGrounded;
+    DestroyEnemiesQuestStep destroyEnemiesQuestStep;
 
     private void Start()
     {
         isGrounded = false;
+        destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
     }
 
     private void Update()
@@ -21,7 +23,7 @@ public class DummyHealth : MonoBehaviour
         if(eHealth <= dmgThreshHold)
         {
             eHealth = 0;
-            GameEventManager.instance.miscEvents.EnemyDefeated();
+            destroyEnemiesQuestStep.EnemyDefeated();
             Destroy(gameObject);
         }
     }
