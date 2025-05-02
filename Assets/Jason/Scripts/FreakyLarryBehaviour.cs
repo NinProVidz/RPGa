@@ -25,6 +25,8 @@ public class FreakyLarryBehaviour : MonoBehaviour
     public bool isSuspicious = false;
     public bool isChasing = false;
 
+    Transform playerHead;
+
     
 
     private Rigidbody rb;
@@ -85,6 +87,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
     void Update()
     {
+        playerHead = player.limbs[0].transform;
         HandleStateTransitions();
         
     }
@@ -116,51 +119,78 @@ public class FreakyLarryBehaviour : MonoBehaviour
     }
 
     void HandleMovement()
-{
-    if (path == null || path.Count == 0)
     {
-        if (isSuspicious || isChasing)
+        if (isChasing && HasClearLineOfSightToHead())
         {
-            Vector3 target = isChasing ? player.limbs[2].transform.position : lastKnownPlayerPosition;
+            // Stop moving and look at the player's head
+            Vector3 headPos = player.limbs[0].transform.position;
+            Vector3 directionToHead = (headPos - transform.position).normalized;
 
-            // Only recalculate if player moved significantly
-            if (Vector3.Distance(target, transform.position) > 1f)
-            {
-                CalculatePathTo(target);
-            }
+            Quaternion lookRotation = Quaternion.LookRotation(directionToHead);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, Time.fixedDeltaTime * 5f));
+
+            // Optional: gradually slow to a stop
+            rb.velocity = Vector3.zero;
+            return;
         }
-        return;
-    }
 
-    Vector3 nextNode = path[0];
-    Vector3 direction = (nextNode - transform.position);
-    float distance = direction.magnitude;
-
-    // Proactive obstacle avoidance
-    //AvoidObstacles(ref direction);
-
-    if (distance < nodeReachThreshold)
+        // Regular path-following movement
+        if (path == null || path.Count == 0)
     {
-        path.RemoveAt(0);
-        return;
+            if (isSuspicious || isChasing)
+        {
+                Vector3 target = isChasing ? player.limbs[2].transform.position : lastKnownPlayerPosition;
+
+                if (Vector3.Distance(target, transform.position) > 1f)
+                {
+                    CalculatePathTo(target);
+                }
+            }
+            return;
+        }
+
+        Vector3 nextNode = path[0];
+        Vector3 direction = (nextNode - transform.position);
+        float distance = direction.magnitude;
+
+        if (distance < nodeReachThreshold)
+        {
+            path.RemoveAt(0);
+            return;
+        }
+
+        direction.Normalize();
+
+        float moveSpeed = isChasing ? chaseMoveSpeed : suspicionMoveSpeed;
+        Vector3 move = direction * moveSpeed * Time.fixedDeltaTime;
+
+        if (move.magnitude > distance)
+            move = direction * distance;
+
+        rb.MovePosition(rb.position + move);
+
+        if (direction.magnitude > 0.1f)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, Time.fixedDeltaTime * 5f));
+        }
     }
 
-    direction.Normalize();
-
-    float moveSpeed = isChasing ? chaseMoveSpeed : suspicionMoveSpeed;
-    Vector3 move = direction * moveSpeed * Time.fixedDeltaTime;
-
-    if (move.magnitude > distance)
-        move = direction * distance;
-
-    rb.MovePosition(rb.position + move);
-
-    if (direction.magnitude > 0.1f)
+    bool HasClearLineOfSightToHead()
     {
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, Time.fixedDeltaTime * 5f));
+        Vector3 origin = transform.position + Vector3.up * 1f;
+        Vector3 target = player.limbs[5].transform.position;
+
+        Vector3 direction = target - origin;
+        float distance = direction.magnitude;
+
+        if (Physics.Raycast(origin, direction.normalized, out RaycastHit hit, distance, obstacleLayers | LayerMask.GetMask("Player")))
+        {
+            return hit.transform.CompareTag("Player");
+        }
+
+        return false;
     }
-}
 
 void AvoidObstacles(ref Vector3 direction)
 {
