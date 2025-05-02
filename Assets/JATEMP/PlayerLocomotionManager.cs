@@ -23,7 +23,16 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     [Header("Tilt settings")]
     [SerializeField] Transform tiltBone;
-    [SerializeField] float tiltAngle = 20;
+    public float tiltAngle = 30f;
+    public float tiltSpeed = 5f; // Controls how fast it tilts
+    public float maxHoldTime = 1.0f; // Time to reach full tilt
+
+    private float holdTimer = 0f;
+    private float currentTiltZ = 0f;
+
+    public Transform tiltRaycastOrigin;
+    public float wallCheckDistance = 0.5f;
+    public LayerMask wallLayer;
 
     [Header("Movement Checks")]
     public bool isSprinting;
@@ -49,6 +58,30 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     {
         player = GetComponent<PlayerManager>();
     }
+
+    void OnDrawGizmosSelected()
+    {
+        if (groundCheckTransform != null)
+        {
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckSphereRadius);
+            Gizmos.DrawLine(groundCheckTransform.position + Vector3.up * 0.1f, groundCheckTransform.position + Vector3.down * (groundCheckDistance));
+        }
+
+        if (tiltRaycastOrigin == null) return;
+
+        // Set colors for left and right raycasts
+        Gizmos.color = Color.red;
+
+        // Draw right ray
+        Vector3 rightDir = tiltRaycastOrigin.right;
+        Gizmos.DrawRay(tiltRaycastOrigin.position, rightDir * wallCheckDistance);
+
+        // Draw left ray
+        Vector3 leftDir = -tiltRaycastOrigin.right;
+        Gizmos.DrawRay(tiltRaycastOrigin.position, leftDir * wallCheckDistance);
+    }
+
 
     private void LateUpdate()
     {
@@ -114,15 +147,6 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         player.isGrounded = Physics.CheckSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (groundCheckTransform != null)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckSphereRadius);
-            Gizmos.DrawLine(groundCheckTransform.position + Vector3.up * 0.1f, groundCheckTransform.position + Vector3.down * (groundCheckDistance));
-        }
-    }
     public void HandleAllMovement()
     {
         HandleGroundedMovemnt();
@@ -132,17 +156,40 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     private void HandleTilt()
     {
-        if (PlayerInputManager.instance.tiltInput != 0)
+        float input = PlayerInputManager.instance.tiltInput;
+        float desiredTilt = 0f;
+        bool blockedByWall = false;
+
+        if (input != 0)
         {
-            if (PlayerInputManager.instance.tiltInput < 0)
+            // Determine direction: left or right
+            Vector3 checkDirection = input < 0 ? -tiltRaycastOrigin.right : tiltRaycastOrigin.right;
+
+            // Raycast to the side to detect wall
+            if (Physics.Raycast(tiltRaycastOrigin.position, checkDirection, out RaycastHit hit, wallCheckDistance, wallLayer))
             {
-                tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, tiltAngle));
+                blockedByWall = true;
             }
-            else
+
+            if (!blockedByWall)
             {
-                tiltBone.localRotation = Quaternion.Euler(new Vector3(tiltBone.localRotation.x, tiltBone.localRotation.y, -tiltAngle));
+                holdTimer += Time.deltaTime;
+                holdTimer = Mathf.Clamp(holdTimer, 0, maxHoldTime);
+                float normalizedHold = holdTimer / maxHoldTime;
+                desiredTilt = Mathf.Lerp(0, tiltAngle, normalizedHold) * (input < 0 ? 1 : -1);
             }
         }
+        else
+        {
+            holdTimer = 0f;
+        }
+
+        // Smooth tilt transition (either toward target or back to 0)
+        float targetTiltZ = blockedByWall ? 0f : desiredTilt;
+        currentTiltZ = Mathf.Lerp(currentTiltZ, targetTiltZ, Time.deltaTime * tiltSpeed);
+
+        // Apply rotation
+        tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, currentTiltZ));
     }
     private void GetVerticalAndHorizontalInputs()
     {

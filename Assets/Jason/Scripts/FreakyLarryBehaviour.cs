@@ -100,13 +100,14 @@ public class FreakyLarryBehaviour : MonoBehaviour
         {
             isChasing = true;
             isSuspicious = false;
-            lastKnownPlayerPosition = player.transform.position;
+            lastKnownPlayerPosition = player.limbs[2].transform.position;
             CalculatePathTo(lastKnownPlayerPosition);
         }
         else if (!isSuspicious && awareness.awarenessLevel >= awareness.minSuspicionLevel)
         {
+            isSuspicious = false;
             isSuspicious = true;
-            lastKnownPlayerPosition = player.transform.position;
+            lastKnownPlayerPosition = player.limbs[2].transform.position;
             Vector3 randomOffset = Random.insideUnitSphere * 3f;
             randomOffset.y = Mathf.Clamp(randomOffset.y, -1f, 2f);
             CalculatePathTo(lastKnownPlayerPosition + randomOffset);
@@ -115,48 +116,66 @@ public class FreakyLarryBehaviour : MonoBehaviour
     }
 
     void HandleMovement()
+{
+    if (path == null || path.Count == 0)
     {
-        if (path == null || path.Count == 0)
+        if (isSuspicious || isChasing)
         {
-            if (isSuspicious || isChasing)
+            Vector3 target = isChasing ? player.limbs[2].transform.position : lastKnownPlayerPosition;
+
+            // Only recalculate if player moved significantly
+            if (Vector3.Distance(target, transform.position) > 1f)
             {
-                Vector3 target = isChasing ? player.limbs[2].transform.position : lastKnownPlayerPosition;
-
-                // Only recalculate if player moved significantly
-                if (Vector3.Distance(target, transform.position) > 1f)
-                {
-                    CalculatePathTo(target);
-                }
+                CalculatePathTo(target);
             }
-            return;
         }
-
-        Vector3 nextNode = path[0];
-        Vector3 direction = (nextNode - transform.position);
-        float distance = direction.magnitude;
-
-        if (distance < nodeReachThreshold)
-        {
-            path.RemoveAt(0);
-            return;
-        }
-
-        direction.Normalize();
-
-        float moveSpeed = isChasing ? chaseMoveSpeed : suspicionMoveSpeed;
-        Vector3 move = direction * moveSpeed * Time.fixedDeltaTime;
-
-        if (move.magnitude > distance)
-            move = direction * distance;
-
-        rb.MovePosition(rb.position + move);
-
-        if (direction.magnitude > 0.1f)
-        {
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, Time.fixedDeltaTime * 5f));
-        }
+        return;
     }
+
+    Vector3 nextNode = path[0];
+    Vector3 direction = (nextNode - transform.position);
+    float distance = direction.magnitude;
+
+    // Proactive obstacle avoidance
+    //AvoidObstacles(ref direction);
+
+    if (distance < nodeReachThreshold)
+    {
+        path.RemoveAt(0);
+        return;
+    }
+
+    direction.Normalize();
+
+    float moveSpeed = isChasing ? chaseMoveSpeed : suspicionMoveSpeed;
+    Vector3 move = direction * moveSpeed * Time.fixedDeltaTime;
+
+    if (move.magnitude > distance)
+        move = direction * distance;
+
+    rb.MovePosition(rb.position + move);
+
+    if (direction.magnitude > 0.1f)
+    {
+        Quaternion lookRotation = Quaternion.LookRotation(direction);
+        rb.MoveRotation(Quaternion.Slerp(rb.rotation, lookRotation, Time.fixedDeltaTime * 5f));
+    }
+}
+
+void AvoidObstacles(ref Vector3 direction)
+{
+    // Raycast in the direction of movement to detect obstacles ahead
+    RaycastHit hit;
+    if (Physics.Raycast(transform.position, direction, out hit, nodeSpacing, obstacleLayers))
+    {
+        // If an obstacle is detected, we push away from it
+        Vector3 avoidanceDirection = Vector3.Reflect(direction, hit.normal);
+        avoidanceDirection.y = 0f; // Keep horizontal movement for flying
+
+        // Apply a steering force to avoid the obstacle
+        direction = avoidanceDirection;
+    }
+}
 
     
 
@@ -171,7 +190,10 @@ public class FreakyLarryBehaviour : MonoBehaviour
         startNode.gCost = 0;
         startNode.hCost = Vector3.Distance(startNode.position, goalNode.position);
 
-        while (openSet.Count > 0)
+        int loopLimit = 1000;
+        int loopCount = 0; 
+
+        while (openSet.Count > 0 && loopCount++ < loopLimit)
         {
             Node currentNode = openSet[0];
 
@@ -196,9 +218,12 @@ public class FreakyLarryBehaviour : MonoBehaviour
             {
                 Vector3 neighborPos = currentNode.position + dir * nodeSpacing;
 
+                if (Physics.CheckSphere(neighborPos, 0.5f, obstacleLayers))
+                    continue;
+
                 // Height clamping (optional)
                 //if (neighborPos.y < minFlyHeight || neighborPos.y > maxFlyHeight)
-                    //continue;
+                //continue;
 
                 // First check if it's blocked in movement direction
                 if (Physics.Raycast(currentNode.position, dir.normalized, nodeSpacing, obstacleLayers))
@@ -232,6 +257,11 @@ public class FreakyLarryBehaviour : MonoBehaviour
                     }
                 }
             }
+        }
+
+        if (loopCount >= loopLimit)
+        {
+            Debug.LogWarning("Pathfinding loop hit limit — possible unreachable destination.");
         }
 
         // Build final path

@@ -78,8 +78,8 @@ public class PlayerInputManager : MonoBehaviour
 
         if (inputEnabled)
         {
-            playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
-            playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
+            //playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+            //playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
 
             playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
             playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
@@ -96,8 +96,8 @@ public class PlayerInputManager : MonoBehaviour
             playerControls.PlayerActions.Crouch.performed += i => crouchInput = true;
             playerControls.PlayerActions.Crouch.canceled += i => crouchInput = false;
 
-            playerControls.PlayerMovement.Tilt.performed += ctx => tiltInput = ctx.ReadValue<Vector2>().x;
-            playerControls.PlayerMovement.Tilt.canceled += ctx => tiltInput = 0;
+            //playerControls.PlayerMovement.Tilt.performed += ctx => tiltInput = ctx.ReadValue<Vector2>().x;
+            //playerControls.PlayerMovement.Tilt.canceled += ctx => tiltInput = 0;
         }
     }
 
@@ -113,6 +113,13 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
+        if (inputEnabled)
+        {
+            movementInput = playerControls.PlayerMovement.Movement.ReadValue<Vector2>();
+            tiltInput = playerControls.PlayerMovement.Tilt.ReadValue<Vector2>().x;
+        }
+            
+
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
         HandleRunInput();

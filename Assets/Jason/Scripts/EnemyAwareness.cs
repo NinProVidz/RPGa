@@ -14,13 +14,28 @@ public class EnemyAwareness : MonoBehaviour
     [Header("Awareness Settings")]
     [SerializeField] public float minSuspicionLevel = 1.5f;
     [SerializeField] public float minFoundLevel = 5.0f;
+    [Space(1)]
     [SerializeField] float distanceAwarenessFactor = 2.0f;
+    [Space(1)]
     [SerializeField] float fovAwarenessFactor = 5.0f;
+    [SerializeField] float fovAngleAwarenessFactor = 5.0f;
+    [Space(1)]
     [SerializeField] float visibleAwarenessFactor = 3.0f;
-    [SerializeField] int limbsVisible;
+    [SerializeField] float visibleLimbsAwarenessFactor = 3.0f;
+    [Space(1)]
+    [SerializeField] float playerCrouchedAwarenessFactor = 0.5f;
+    [SerializeField] float playerRunningAwarenessFactor = 2f;
+    [SerializeField] float playerSprintingAwarenessFactor = 5f;
+    [SerializeField] float playerMoveAwarenessFactor = 2f;
+    [Space(1)]
     [SerializeField] LayerMask obstacleLayers;
 
+    [Header("Awareness Stats")]
     public float awarenessLevel = 0;
+    public bool unblocked;
+    public float limbsUnblocked;
+    public bool isMoving;
+    public bool inFOV;
 
     private void OnDrawGizmosSelected()
     {
@@ -103,6 +118,8 @@ public class EnemyAwareness : MonoBehaviour
 
     void Update()
     {
+        inFOV = false;
+        limbsUnblocked = 0;
         HandleAwareness();
 
     }
@@ -119,9 +136,11 @@ public class EnemyAwareness : MonoBehaviour
 
         awarenessLevel = (senseRange - distance) * distanceAwarenessFactor / senseRange;
 
-        HandlePlayerInFOV();
-
         
+        HandlePlayerState();
+        HandlePlayerVisible();
+
+
     }
 
     void HandlePlayerInFOV()
@@ -130,31 +149,70 @@ public class EnemyAwareness : MonoBehaviour
         float angle = Vector3.Angle(transform.forward, dirToPlayer);
         if( angle < fieldOfView * 0.5f)
         {
+            inFOV = true;
             awarenessLevel *= fovAwarenessFactor;
-            HandlePlayerVisible();
+            
         }
     }
 
     void HandlePlayerVisible()
     {
-        bool isVisible = false;
-        int count = 0;
+        unblocked = false;
+
+        int playerLayer = LayerMask.NameToLayer("Player");
+
         foreach (GameObject limb in player.limbs)
         {
             Vector3 dir = (limb.transform.position - transform.position);
-            if (Physics.Raycast(transform.position, dir.normalized, out RaycastHit hit, dir.magnitude, obstacleLayers))
-            {
+            float distance = Vector3.Distance(transform.position, limb.transform.position);
 
+            if (Physics.Raycast(transform.position, dir, out RaycastHit hit, distance))
+            {
+                if (hit.collider.gameObject.layer == playerLayer)
+                {
+                    Debug.Log("Unblocked limb: " + hit.collider.gameObject.name);
+                    limbsUnblocked++;
+                    unblocked = true;
+                }
+            }
+        }
+
+        
+
+        if (unblocked)
+        {
+            HandlePlayerInFOV();
+            awarenessLevel *= visibleAwarenessFactor + visibleLimbsAwarenessFactor * (limbsUnblocked / player.limbs.Length);
+        }
+
+    }
+
+    private void HandlePlayerState()
+    {
+        if (player.playerLocomotionManager.isCrouching)
+        {
+            awarenessLevel *= playerCrouchedAwarenessFactor;
+        }
+        else
+        {
+            if (player.playerLocomotionManager.isSprinting)
+            {
+                awarenessLevel *= playerSprintingAwarenessFactor;
             }
             else
             {
-                isVisible = true;
-                count++;
+                if (player.playerLocomotionManager.isRunning)
+                {
+                    awarenessLevel *= playerRunningAwarenessFactor;
+                }
             }
 
         }
-        limbsVisible = count;
-        awarenessLevel *= 1 + visibleAwarenessFactor * limbsVisible / player.limbs.Length;
 
+        if (player.playerLocomotionManager.moveAmount != 0)
+        {
+            isMoving = true;
+            awarenessLevel *= playerMoveAwarenessFactor;
+        }
     }
 }

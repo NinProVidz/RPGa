@@ -11,6 +11,15 @@ public class PlayerAnimatorManager : MonoBehaviour
 
     public LayerMask groundLayer; // Set to "Default" or "Terrain"
 
+    public Transform rightHandRayOrigin;
+    public float rayDistance = 0.5f;
+    public float retreatDistance = 0.1f;
+    public LayerMask wallLayer;
+
+    private Vector3 targetHandPosition;
+
+    private bool shouldOverrideIK = false;
+
     private void OnDrawGizmos()
     {
         Ray lookAtRay = new Ray(PlayerCamera.instance.cameraObject.transform.position, PlayerCamera.instance.cameraObject.transform.forward);
@@ -28,6 +37,20 @@ public class PlayerAnimatorManager : MonoBehaviour
     private void Start()
     {
 
+    }
+
+    private void Update()
+    {
+        shouldOverrideIK = false;
+
+        if (Physics.Raycast(rightHandRayOrigin.position, rightHandRayOrigin.forward, out RaycastHit hit, rayDistance, wallLayer))
+        {
+            // Calculate retreat direction
+            Vector3 retreatDir = -rightHandRayOrigin.forward;
+            targetHandPosition = hit.point + retreatDir * retreatDistance;
+
+            shouldOverrideIK = true;
+        }
     }
 
     private void OnAnimatorIK(int layerIndex)
@@ -60,6 +83,7 @@ public class PlayerAnimatorManager : MonoBehaviour
             leftKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
         if (rightKnee != null)
             rightKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
+
     }
     public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting, bool isRunning, bool isCrouching)
     {
