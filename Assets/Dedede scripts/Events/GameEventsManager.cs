@@ -10,10 +10,16 @@ public class GameEventsManager : MonoBehaviour
 
     private void Awake()
     {
-        if(instance != null)
+        if (instance == null)
         {
-            Debug.LogError("Found more than one Game Events Manager in the scene.");
+            instance = this;
         }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this);
         questEvents = new QuestEvents();
     }
 }
