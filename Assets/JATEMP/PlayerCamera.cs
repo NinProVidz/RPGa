@@ -9,7 +9,7 @@ public class PlayerCamera : MonoBehaviour
     public Camera cameraObject;
     public PlayerManager player;
     public Transform targetTransform;
-    [SerializeField] Transform cameraPivotTransform;
+    [SerializeField] public Transform cameraPivotTransform;
 
     [Header("Camera Settings")]
     [SerializeField] private float cameraSmoothSpeed = 1;
@@ -24,12 +24,22 @@ public class PlayerCamera : MonoBehaviour
     [Header("Camera Values")]
     private Vector3 cameraVelocity;
     private Vector3 cameraObjectPosition;
-    [SerializeField] float leftAndRightLookAngle;
-    [SerializeField] float upAndDownLookAngle;
+    [SerializeField] public float leftAndRightLookAngle;
+    [SerializeField] public float upAndDownLookAngle;
+    public bool isPlayerManuallyControllingCamera { get; private set; }
+
+    public class LookInfluence
+    {
+        public Vector2 current;
+        public Vector2 target;
+    }
+
+    public Dictionary<object, LookInfluence> externalLookInfluences = new Dictionary<object, LookInfluence>();
 
     private void Awake()
     {
         Cursor.lockState = CursorLockMode.Locked;
+
         if (instance == null)
         {
             instance = this;
@@ -49,60 +59,74 @@ public class PlayerCamera : MonoBehaviour
     {
         if (player != null)
         {
-            //HandleFollowTarget();
             HandleRotations();
         }
     }
 
-    private void HandleFollowTarget()
-    {
-        Vector3 targetCameraPosition = Vector3.SmoothDamp(transform.position, targetTransform.position, ref cameraVelocity, cameraSmoothSpeed * Time.deltaTime);
-        transform.position = targetCameraPosition;
-    }
-
     private void HandleRotations()
     {
-        leftAndRightLookAngle += PlayerInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed * Time.deltaTime;
-        leftAndRightLookAngle = NormalizeAngle360(leftAndRightLookAngle);
+        float horizontalInput = PlayerInputManager.instance.cameraHorizontalInput;
+        float verticalInput = PlayerInputManager.instance.cameraVerticalInput;
 
-        //leftAndRightLookAngle = NormalizeAngle(leftAndRightLookAngle);
-        upAndDownLookAngle -= (PlayerInputManager.instance.cameraVerticalInput * upAndDownRotationSpeed) * Time.deltaTime;
+        leftAndRightLookAngle += horizontalInput * leftAndRightRotationSpeed * Time.deltaTime;
+        upAndDownLookAngle -= verticalInput * upAndDownRotationSpeed * Time.deltaTime;
+
+        // Apply external influences (AFTER input & clamping)
+        Vector2 totalInfluence = Vector2.zero;
+        foreach (var influence in externalLookInfluences.Values)
+        {
+            totalInfluence += influence.target;
+        }
+
+        leftAndRightLookAngle += totalInfluence.x;
+        upAndDownLookAngle += totalInfluence.y;
+
+        // Clamp pitch AFTER all changes
         upAndDownLookAngle = Mathf.Clamp(upAndDownLookAngle, minimumPivot, maximumPivot);
 
-        Vector3 cameraRotation = Vector3.zero;
-        Quaternion targetRotation;
+        // Normalize horizontal angle
+        leftAndRightLookAngle = NormalizeAngle360(leftAndRightLookAngle);
 
-        cameraRotation.y = leftAndRightLookAngle;
-        targetRotation = Quaternion.Euler(cameraRotation);
-        //transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
-        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
+        // Apply rotation to player object
+        Quaternion targetYaw = Quaternion.Euler(0f, leftAndRightLookAngle, 0f);
+        player.transform.rotation = Quaternion.Slerp(player.transform.rotation, targetYaw, Time.deltaTime * cameraAngleSmoothSpeed); ;
 
-        cameraRotation = Vector3.zero;
-        cameraRotation.x = upAndDownLookAngle;
-        targetRotation = Quaternion.Euler(cameraRotation);
-        cameraPivotTransform.localRotation = Quaternion.Slerp(cameraPivotTransform.localRotation, targetRotation, Time.deltaTime * cameraAngleSmoothSpeed);
+        // Apply pitch to camera pivot
+        Quaternion targetPitch = Quaternion.Euler(upAndDownLookAngle, 0f, 0f);
+        cameraPivotTransform.localRotation = Quaternion.Slerp(cameraPivotTransform.localRotation, targetPitch, Time.deltaTime * cameraAngleSmoothSpeed); ;
     }
 
+    public void ApplyExternalLookInfluence(object source, float horizontal, float vertical, float strength = 1f)
+    {
+        if (!externalLookInfluences.ContainsKey(source))
+            externalLookInfluences[source] = new LookInfluence();
+
+        externalLookInfluences[source].target = new Vector2(horizontal, vertical) * strength;
+    }
+
+    public void RemoveExternalLookInfluence(object source)
+    {
+        if (externalLookInfluences.ContainsKey(source))
+        {
+            externalLookInfluences[source].target = Vector2.zero;
+        }
+    }
+
+    public void ClearExternalInfluences()
+    {
+        externalLookInfluences.Clear();
+    }
 
     private float NormalizeAngle360(float angle)
     {
         angle %= 360f;
-        if (angle < 0f)
-            angle += 360f;
-        return angle;
+        return (angle < 0f) ? angle + 360f : angle;
     }
 
     private float NormalizeAngle(float angle)
     {
-        // Normalize the angle to the range of -180 to 180
-        if (angle > 180f)
-        {
-            angle -= 360f;
-        }
-        else if (angle < -180f)
-        {
-            angle += 360f;
-        }
+        if (angle > 180f) angle -= 360f;
+        else if (angle < -180f) angle += 360f;
         return angle;
     }
 }
