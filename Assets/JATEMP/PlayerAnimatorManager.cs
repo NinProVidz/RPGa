@@ -22,8 +22,11 @@ public class PlayerAnimatorManager : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Ray lookAtRay = new Ray(PlayerCamera.instance.cameraObject.transform.position, PlayerCamera.instance.cameraObject.transform.forward);
-        Gizmos.DrawRay(lookAtRay);
+        if (Application.isPlaying)
+        {
+            Ray lookAtRay = new Ray(PlayerCamera.instance.cameraObject.transform.position, PlayerCamera.instance.cameraObject.transform.forward);
+            Gizmos.DrawRay(lookAtRay);
+        }
     }
 
     private void Awake()

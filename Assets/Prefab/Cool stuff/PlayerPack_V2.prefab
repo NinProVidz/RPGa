@@ -245,7 +245,6 @@ Transform:
   m_Children:
   - {fileID: 3663777818586888643}
   - {fileID: 4419720590768227230}
-  - {fileID: 4016113792735841484}
   m_Father: {fileID: 6283566600759704970}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1043,6 +1042,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2899910046380567391}
+  - {fileID: 4016113792735841484}
   m_Father: {fileID: 3693156437394763268}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2158,13 +2158,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7411981597859542537}
-  m_LocalRotation: {x: 0, y: 0, z: 0.008726558, w: 0.999962}
-  m_LocalPosition: {x: 0.03, y: 0.41, z: 0.01}
-  m_LocalScale: {x: 11.764706, y: 11.764703, z: 11.764709}
+  m_LocalRotation: {x: -0.00000002980289, y: -1.300358e-10, z: 0.008726553, w: 0.999962}
+  m_LocalPosition: {x: 0.03000764, y: -2.024352, z: -0.77402914}
+  m_LocalScale: {x: 11.764705, y: 11.764699, z: 11.76471}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4678351237415138343}
-  m_Father: {fileID: 3693156437394763268}
+  m_Father: {fileID: 3663777818586888643}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 1}
 --- !u!114 &737248149252954285
@@ -2181,7 +2181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObject: {fileID: 3062069216033646933}
   player: {fileID: 7656418146820796561}
-  targetTransform: {fileID: 6283566600759704970}
+  targetTransform: {fileID: 3663777818586888643}
   cameraPivotTransform: {fileID: 4678351237415138343}
   cameraSmoothSpeed: 1
   cameraAngleSmoothSpeed: 15
@@ -2291,7 +2291,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:
