@@ -116,13 +116,13 @@ public class QuestManager : MonoBehaviour
     private void FinishQuest(string id)
     {
         Quest quest = GetQuestById(id);
-        ClaimRewards(quest);
+        //ClaimRewards(quest);
         ChangeQuestState(quest.info.id, QuestState.FINISHED);
     }
 
     private void ClaimRewards(Quest quest)
     {
-
+        FindObjectOfType<Date>().day++;
     }
 
     private Dictionary<string, Quest> CreateQuestMap()

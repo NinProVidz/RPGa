@@ -9,7 +9,7 @@ public class DummyHealth : MonoBehaviour
     [SerializeField] int dmgThreshHold = 0;
     [SerializeField] PushingEnvironment pEnvironment;
     public bool isGrounded;
-    public bool questActive;
+    public static bool questActive;
     DestroyEnemiesQuestStep destroyEnemiesQuestStep;
 
     private void Start()
@@ -48,5 +48,10 @@ public class DummyHealth : MonoBehaviour
         {
             return;
         }
+    }
+
+    public void QuestActivated()
+    {
+        questActive = true;
     }
 }
