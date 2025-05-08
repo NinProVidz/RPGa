@@ -4,65 +4,72 @@ using UnityEngine;
 
 public class Grid3D : MonoBehaviour
 {
-    private float nodeSize;
-    private LayerMask obstacleMask;
+    private int width, height, depth;
+    private GridNode[,,] grid;
+    public float nodeSize;
+    public LayerMask obstacleMask;
 
-    private Dictionary<Vector3Int, Node3D> nodes = new Dictionary<Vector3Int, Node3D>();
-
-    public Grid3D(float nodeSize, LayerMask obstacleMask)
+    private void Start()
     {
+        
+    }
+
+    public Grid3D(int width, int height, int depth, float nodeSize, LayerMask obstacleMask)
+    {
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
         this.nodeSize = nodeSize;
         this.obstacleMask = obstacleMask;
+        grid = new GridNode[width, height, depth];
+        CreateGrid();
     }
 
-    public Node3D GetOrCreateNode(Vector3 worldPosition)
+    void CreateGrid()
     {
-        Vector3Int gridPos = WorldToGrid(worldPosition);
-
-        if (!nodes.ContainsKey(gridPos))
+        for (int x = 0; x < width; x++)
         {
-            Vector3 nodeWorldPos = GridToWorld(gridPos);
-            bool walkable = !Physics.CheckBox(nodeWorldPos, Vector3.one * nodeSize * 0.5f, Quaternion.identity, obstacleMask);
-            nodes[gridPos] = new Node3D(nodeWorldPos, walkable);
+            for (int y = 0; y < height; y++)
+            {
+                for (int z = 0; z < depth; z++)
+                {
+                    Vector3 worldPos = new Vector3(x, y, z) * nodeSize;
+                    bool walkable = !Physics.CheckBox(worldPos, Vector3.one * nodeSize / 2f, Quaternion.identity, obstacleMask);
+                    grid[x, y, z] = new GridNode(new Vector3Int(x, y, z), walkable);
+                }
+            }
         }
-
-        return nodes[gridPos];
     }
 
-    public List<Node3D> GetNeighbors(Node3D node)
+    public GridNode GetNode(Vector3Int pos)
     {
-        List<Node3D> neighbors = new List<Node3D>();
+        if (IsInsideBounds(pos))
+            return grid[pos.x, pos.y, pos.z];
+        return null;
+    }
 
-        Vector3Int basePos = WorldToGrid(node.worldPosition);
+    public bool IsInsideBounds(Vector3Int pos) =>
+        pos.x >= 0 && pos.x < width &&
+        pos.y >= 0 && pos.y < height &&
+        pos.z >= 0 && pos.z < depth;
 
+    public List<GridNode> GetNeighbors(GridNode node)
+    {
+        var neighbors = new List<GridNode>();
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
             {
                 for (int z = -1; z <= 1; z++)
                 {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-
-                    Vector3Int neighborPos = basePos + new Vector3Int(x, y, z);
-                    Node3D neighborNode = GetOrCreateNode(GridToWorld(neighborPos));
-
-                    if (neighborNode.walkable)
-                        neighbors.Add(neighborNode);
+                    if (x == 0 && y == 0 && z == 0) continue;
+                    var neighborPos = node.position + new Vector3Int(x, y, z);
+                    var neighbor = GetNode(neighborPos);
+                    if (neighbor != null && neighbor.isWalkable)
+                        neighbors.Add(neighbor);
                 }
             }
         }
-
         return neighbors;
-    }
-
-    private Vector3Int WorldToGrid(Vector3 worldPos)
-    {
-        return Vector3Int.RoundToInt(worldPos / nodeSize);
-    }
-
-    private Vector3 GridToWorld(Vector3Int gridPos)
-    {
-        return gridPos;
     }
 }

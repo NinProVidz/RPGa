@@ -31,12 +31,12 @@ public class FreakyLarryBehaviour : MonoBehaviour
     [SerializeField] bool debugDrawNeighbors = true;
 
     private Vector3 targetPosition;
-    private Vector3 lastKnownPlayerPosition;
-    private List<Vector3> path = new List<Vector3>();
+    public Vector3 lastKnownPlayerPosition;
+    public List<Vector3> path = new List<Vector3>();
     public bool isSuspicious = false;
     public bool isChasing = false;
 
-    private bool wasVisibleLastFrame = false;
+    public bool wasVisibleLastFrame = false;
 
     float repathCooldown = 1f;
     float lastPathTime = -Mathf.Infinity;
@@ -45,6 +45,9 @@ public class FreakyLarryBehaviour : MonoBehaviour
     private Vector3 pendingPathTarget;
     private bool hasPendingPathRequest = false;
     private const float destinationChangeThreshold = 1.5f;
+
+    public PathFinder3D pathFinder;
+    public Grid3D grid;
 
     private Rigidbody rb;
 
@@ -80,27 +83,30 @@ public class FreakyLarryBehaviour : MonoBehaviour
         player = PlayerManager.instance;
         awareness = GetComponent<EnemyAwareness>();
         rb = GetComponent<Rigidbody>();
+        grid = new Grid3D(20, 20, 20, 1, obstacleLayers);
+        pathFinder = new PathFinder3D(grid);
+        CalculatePathTo(player.transform.position);
     }
 
     void Update()
     {
-        HandlePathRequest();
-        HandleStateTransitions();
-
-        ForcePlayerLook(); // Always run this
-
-        if (PlayerCanSeeLarry())
-        {
-            if (LarryIsVisibleToPlayer())
-            {
-                TryDamagePlayer();
-            }
-        }
+        //HandlePathRequest();
+        //HandleStateTransitions();
+        //
+        //ForcePlayerLook(); // Always run this
+        //
+        //if (PlayerCanSeeLarry())
+        //{
+        //    if (LarryIsVisibleToPlayer())
+        //    {
+        //        TryDamagePlayer();
+        //    }
+        //}
     }
 
     void FixedUpdate()
     {
-        HandleMovement();
+        //HandleMovement();
     }
 
     void HandleStateTransitions()
@@ -110,14 +116,23 @@ public class FreakyLarryBehaviour : MonoBehaviour
             isChasing = true;
             isSuspicious = false;
             lastKnownPlayerPosition = player.transform.position;
-            RequestPath(lastKnownPlayerPosition);
+            Debug.Log("calc 1");
+            CalculatePathTo(lastKnownPlayerPosition);
         }
         else if (!isSuspicious && awareness.awarenessLevel >= awareness.minSuspicionLevel)
         {
+            isChasing = false;
             isSuspicious = true;
             lastKnownPlayerPosition = player.transform.position;
             Vector3 safeOffset = GetSafeRandomOffset(lastKnownPlayerPosition, 3f, 5);
-            RequestPath(lastKnownPlayerPosition + safeOffset);
+            Debug.Log("calc 2");
+            CalculatePathTo(lastKnownPlayerPosition + safeOffset);
+        }
+
+        if (awareness.awarenessLevel < awareness.minSuspicionLevel)
+        {
+            isChasing = false;
+            isSuspicious = false;
         }
 
         if (!isChasing && !isSuspicious)
@@ -130,14 +145,15 @@ public class FreakyLarryBehaviour : MonoBehaviour
     {
         bool isVisibleNow = PlayerCanSeeLarry();
 
-        if (isVisibleNow)
+        if (isVisibleNow && isChasing)
         {
+            Debug.Log("visible");
             rb.velocity = Vector3.zero;
-            
 
             if (!wasVisibleLastFrame)
             {
-                path.Clear();
+                Debug.Log("calc delte");
+                //path.Clear(); // Stop moving while visible
             }
 
             wasVisibleLastFrame = true;
@@ -145,27 +161,36 @@ public class FreakyLarryBehaviour : MonoBehaviour
         }
         else if (wasVisibleLastFrame)
         {
+            Debug.Log("wasVisible");
             lastKnownPlayerPosition = player.transform.position;
             Vector3 safeTarget = GetSafePositionNear(lastKnownPlayerPosition);
-
-            // Force immediate path calculation
-            lastPathTime = -Mathf.Infinity;
-            RequestPath(safeTarget);
+            Debug.Log("calc 3");
+            CalculatePathTo(safeTarget);
         }
-
 
         wasVisibleLastFrame = false;
 
         if (path == null || path.Count == 0)
         {
-            if (isSuspicious || isChasing)
+            Debug.Log("0");
+            if (isChasing || isSuspicious)
             {
-                Vector3 target = isChasing ? player.limbs[2].transform.position : lastKnownPlayerPosition;
+                Debug.Log("chase/sus");
+                Vector3 target = lastKnownPlayerPosition;
 
-                if (Vector3.Distance(target, transform.position) > 1f)
+                // If Larry is chasing and can see the player, update the known position
+                if (isChasing && PlayerCanSeeLarry())
+                {
+                    target = player.limbs[2].transform.position;
+                    lastKnownPlayerPosition = target;
+                }
+
+                // Request path to last known position if we're not there yet
+                if (Vector3.Distance(transform.position, target) > nodeReachThreshold)
                 {
                     Vector3 safeTarget = GetSafePositionNear(target);
-                    TryCalculatePath(safeTarget);
+                    Debug.Log("calc 4");
+                    CalculatePathTo(safeTarget);
                 }
             }
             return;
@@ -178,7 +203,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
         if (distance < nodeReachThreshold)
         {
             path.RemoveAt(0);
-            return;
+            //return;
         }
 
         direction.Normalize();
@@ -266,14 +291,14 @@ public class FreakyLarryBehaviour : MonoBehaviour
             float targetPitch = lookRotation.eulerAngles.x + pitchOffset ;
 
             // Debugging: Log the target yaw and pitch
-            Debug.Log($"Target Yaw: {targetYaw}, Target Pitch: {targetPitch}");
+            //Debug.Log($"Target Yaw: {targetYaw}, Target Pitch: {targetPitch}");
 
             // Calculate delta rotation (the difference from the current camera angles)
             float yawDelta = Mathf.DeltaAngle(PlayerCamera.instance.leftAndRightLookAngle, targetYaw);
             float pitchDelta = Mathf.DeltaAngle(PlayerCamera.instance.upAndDownLookAngle, targetPitch);
 
             // Debugging: Log the delta yaw and pitch
-            Debug.Log($"Yaw Delta: {yawDelta}, Pitch Delta: {pitchDelta}");
+           // Debug.Log($"Yaw Delta: {yawDelta}, Pitch Delta: {pitchDelta}");
 
             // Apply external look influence to smooth the camera's rotation
             PlayerCamera.instance.ApplyExternalLookInfluence(
@@ -287,7 +312,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
             Debug.DrawLine(pivotWorldPos, larryLookTarget.position, Color.green);
 
             // Debugging: Show the final rotation of the camera pivot
-            Debug.Log($"Final Camera Pivot Rotation: {cameraPivot.rotation.eulerAngles}");
+            //Debug.Log($"Final Camera Pivot Rotation: {cameraPivot.rotation.eulerAngles}");
 
         }
         else
@@ -342,11 +367,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
         lastPathTime = Time.time;
         hasPendingPathRequest = false;
 
-        List<Vector3> newPath = CalculatePath(pendingPathTarget);
-        if (newPath != null && newPath.Count > 0)
-        {
-            path = newPath;
-        }
+        CalculatePathTo(pendingPathTarget);
     }
 
     void TryDamagePlayer()
@@ -374,102 +395,16 @@ public class FreakyLarryBehaviour : MonoBehaviour
         {
             lastPathTime = Time.time;
 
-            List<Vector3> newPath = CalculatePath(destination);
+            CalculatePathTo(destination);
 
-            if (newPath != null && newPath.Count > 0)
-            {
-                path = newPath;
-            }
         }
     }
 
 
 
-    List<Vector3> CalculatePath(Vector3 destination)
+    private void CalculatePathTo(Vector3 target)
     {
-        List<Vector3> resultPath = new List<Vector3>();
-        Node startNode = new Node(transform.position);
-        Node goalNode = new Node(destination);
-
-        List<Node> openSet = new List<Node> { startNode };
-        HashSet<Node> closedSet = new HashSet<Node>();
-
-        startNode.gCost = 0;
-        startNode.hCost = Vector3.Distance(startNode.position, goalNode.position);
-
-        int loopLimit = 300; // Maximum iterations
-        int loopCount = 0;
-
-        bool pathFound = false;
-
-        while (openSet.Count > 0 && loopCount++ < loopLimit)
-        {
-            Node currentNode = openSet[0];
-            foreach (Node node in openSet)
-            {
-                if (node.fCost < currentNode.fCost || (node.fCost == currentNode.fCost && node.hCost < currentNode.hCost))
-                    currentNode = node;
-            }
-
-            openSet.Remove(currentNode);
-            closedSet.Add(currentNode);
-
-            // Reached destination
-            if (Vector3.Distance(currentNode.position, goalNode.position) < nodeSpacing)
-            {
-                goalNode.parent = currentNode;
-                pathFound = true;
-                break;
-            }
-
-            // Check all neighbors
-            foreach (Vector3 offset in GetNeighborOffsets())
-            {
-                Vector3 candidatePos = currentNode.position + offset * nodeSpacing;
-
-                if (!IsPositionValid(candidatePos, out Vector3 adjustedPos))
-                    continue;
-
-                if (!HasClearPath(currentNode.position, adjustedPos))
-                    continue;
-
-                Node neighbor = new Node(adjustedPos);
-
-                if (closedSet.Contains(neighbor))
-                    continue;
-
-                float tentativeGCost = currentNode.gCost + Vector3.Distance(currentNode.position, adjustedPos);
-                bool isInOpenSet = openSet.Contains(neighbor);
-
-                if (!isInOpenSet || tentativeGCost < neighbor.gCost)
-                {
-                    neighbor.gCost = tentativeGCost;
-                    neighbor.hCost = Vector3.Distance(adjustedPos, goalNode.position);
-                    neighbor.parent = currentNode;
-
-                    if (!isInOpenSet)
-                        openSet.Add(neighbor);
-                }
-            }
-        }
-
-        path.Clear();
-
-        if (pathFound)
-        {
-            Node current = goalNode;
-            while (current != null)
-            {
-                resultPath.Insert(0, current.position);
-                current = current.parent;
-            }
-        }
-        else
-        {
-            Debug.LogWarning("No valid path found to destination.");
-        }
-
-        return resultPath;
+        path = pathFinder.FindPath( Vector3Int.RoundToInt(transform.position), Vector3Int.RoundToInt(target));
     }
 
     bool IsPositionValid(Vector3 position, out Vector3 adjustedPosition)

@@ -6,16 +6,20 @@ using TMPro;
 
 public class PlayerHealth : MonoBehaviour
 {
-    bool Isdead = false;
+    
 
-    [SerializeField] TextMeshProUGUI text;
+    
 
     [Header("Health UI")]
     [SerializeField] Image healthBar;
+    [SerializeField] TextMeshProUGUI text;
 
-    [Header("Health Settings")]
+    [Header("Health Stats")]
     public float health;
     public float maxhealth;
+
+    [Header("Health Info")]
+    bool Isdead = false;
 
     private void Start()
     {
@@ -38,11 +42,9 @@ public class PlayerHealth : MonoBehaviour
         }
         if (health <= 2)
         {
-            EnableChromaticAberration(true);
         }
         if (health > 2)
         {
-            EnableChromaticAberration(false);
         }
     }
 
@@ -59,20 +61,12 @@ public class PlayerHealth : MonoBehaviour
         }
         GetComponent<Animator>().SetTrigger("die");
         Isdead = true;
-        GetComponent<ActionScheduler>().CancelCurrentAction();
     }
 
     public bool GetIsDead()
     {
         //this is to make the bool public (just cal the function)
         return Isdead;
-    }
-    void EnableChromaticAberration(bool enable)
-    {
-        if (chromaticAberration != null)
-        {
-            chromaticAberration.enabled.value = enable; // Enable or disable the Chromatic Aberration effect
-        }
     }
 
     private void EnemyHealthDisplay()
