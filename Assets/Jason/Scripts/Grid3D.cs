@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Grid3D : MonoBehaviour
 {
-    private int width, height, depth;
-    private GridNode[,,] grid;
+    public int width, height, depth;
+    public GridNode[,,] grid;
     public float nodeSize;
     public LayerMask obstacleMask;
 
     private void Start()
     {
-        
+        grid = new GridNode[width, height, depth];
+        CreateGrid();
     }
 
     public Grid3D(int width, int height, int depth, float nodeSize, LayerMask obstacleMask)

@@ -12572,13 +12572,15 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   nodeSpacing: 1
-  gridSize: 10
+  gridSize: 200
   debugDrawNeighbors: 1
   lastKnownPlayerPosition: {x: 0, y: 0, z: 0}
   path: []
   isSuspicious: 0
   isChasing: 0
   wasVisibleLastFrame: 0
+  pathFinder: {fileID: 1912650928}
+  grid: {fileID: 1912650930}
 --- !u!136 &1884827134
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -12726,6 +12728,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df132115d0d19c24c8e3484bc7a5bf2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  width: 100
+  height: 100
+  depth: 100
   nodeSize: 1
   obstacleMask:
     serializedVersion: 2

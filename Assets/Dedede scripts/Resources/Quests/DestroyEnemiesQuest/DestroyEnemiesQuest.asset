@@ -19,5 +19,4 @@ MonoBehaviour:
   questPrerequisites: []
   questStepPrefabs:
   - {fileID: 4653620845230590584, guid: 47bbde8e471390841940eb62e80a06ae, type: 3}
-  xpReward: 50
-  cashReward: 10
+  currencyReward: 100

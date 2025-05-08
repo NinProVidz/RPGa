@@ -65,8 +65,9 @@ public class PathFinder3D : MonoBehaviour
 
     List<Vector3> RetracePath(GridNode start, GridNode end)
     {
-        var path = new List<Vector3>();
-        var current = end;
+        Debug.Log("saos");
+        List<Vector3> path = new List<Vector3>();
+        GridNode current = end;
         while (current != start)
         {
             path.Add(current.position);
