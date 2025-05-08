@@ -59,7 +59,7 @@ public class PlayerHealth : MonoBehaviour
         }
         GetComponent<Animator>().SetTrigger("die");
         Isdead = true;
-        GetComponent<ActionScheduler>().CancelCurrentAction();
+        //GetComponent<ActionScheduler>().CancelCurrentAction();
     }
 
     public bool GetIsDead()
@@ -69,10 +69,10 @@ public class PlayerHealth : MonoBehaviour
     }
     void EnableChromaticAberration(bool enable)
     {
-        if (chromaticAberration != null)
+        /*if (chromaticAberration != null)
         {
             chromaticAberration.enabled.value = enable; // Enable or disable the Chromatic Aberration effect
-        }
+        }*/
     }
 
     private void EnemyHealthDisplay()
