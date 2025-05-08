@@ -46,9 +46,6 @@ public class FreakyLarryBehaviour : MonoBehaviour
     private bool hasPendingPathRequest = false;
     private const float destinationChangeThreshold = 1.5f;
 
-    public PathFinder3D pathFinder;
-    public Grid3D grid;
-
     private Rigidbody rb;
 
     private static readonly List<Vector3> neighborOffsets = GenerateOffsets();
@@ -83,8 +80,6 @@ public class FreakyLarryBehaviour : MonoBehaviour
         player = PlayerManager.instance;
         awareness = GetComponent<EnemyAwareness>();
         rb = GetComponent<Rigidbody>();
-        grid = new Grid3D(20, 20, 20, 1, obstacleLayers);
-        pathFinder = new PathFinder3D(grid);
         CalculatePathTo(player.transform.position);
     }
 
@@ -133,6 +128,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
         {
             isChasing = false;
             isSuspicious = false;
+            path.Clear();
         }
 
         if (!isChasing && !isSuspicious)
@@ -153,7 +149,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
             if (!wasVisibleLastFrame)
             {
                 Debug.Log("calc delte");
-                //path.Clear(); // Stop moving while visible
+                path.Clear(); // Stop moving while visible
             }
 
             wasVisibleLastFrame = true;
@@ -402,9 +398,99 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
 
 
-    private void CalculatePathTo(Vector3 target)
+    void CalculatePathTo(Vector3 destination)
     {
-        path = pathFinder.FindPath( Vector3Int.RoundToInt(transform.position), Vector3Int.RoundToInt(target));
+        path.Clear();
+
+        Node startNode = new Node(transform.position);
+        Node goalNode = new Node(destination);
+
+        var openSet = new List<Node> { startNode };
+        var openSetLookup = new Dictionary<Vector3, Node> { [startNode.position] = startNode };
+        var closedSet = new HashSet<Vector3>();
+
+        startNode.gCost = 0;
+        startNode.hCost = Vector3.Distance(startNode.position, goalNode.position);
+
+        var neighborOffsets = GetNeighborOffsets();
+
+        int loopLimit = 1000;
+        int loopCount = 0;
+
+        Node finalNode = null;
+
+        while (openSet.Count > 0 && loopCount++ < loopLimit)
+        {
+            Debug.Log("susys");
+            // Find node with lowest fCost
+            Node currentNode = openSet[0];
+            foreach (var node in openSet)
+            {
+                if (node.fCost < currentNode.fCost ||
+                    (Mathf.Approximately(node.fCost, currentNode.fCost) && node.hCost < currentNode.hCost))
+                {
+                    currentNode = node;
+                }
+            }
+
+            openSet.Remove(currentNode);
+            openSetLookup.Remove(currentNode.position);
+            closedSet.Add(currentNode.position);
+
+            // Destination reached
+            if (Vector3.Distance(currentNode.position, goalNode.position) < nodeSpacing)
+            {
+                finalNode = currentNode;
+                break;
+            }
+
+            foreach (var offset in neighborOffsets)
+            {
+                Vector3 neighborPos = currentNode.position + offset * nodeSpacing;
+
+                if (closedSet.Contains(neighborPos))
+                    continue;
+
+                if (!IsPositionValid(neighborPos, out Vector3 adjustedPos))
+                    continue;
+
+                if (!HasClearPath(currentNode.position, adjustedPos))
+                    continue;
+
+                float tentativeG = currentNode.gCost + Vector3.Distance(currentNode.position, adjustedPos);
+
+                if (!openSetLookup.TryGetValue(adjustedPos, out Node neighborNode))
+                {
+                    neighborNode = new Node(adjustedPos);
+                    neighborNode.gCost = tentativeG;
+                    neighborNode.hCost = Vector3.Distance(adjustedPos, goalNode.position);
+                    neighborNode.parent = currentNode;
+
+                    openSet.Add(neighborNode);
+                    openSetLookup[adjustedPos] = neighborNode;
+                }
+                else if (tentativeG < neighborNode.gCost)
+                {
+                    neighborNode.gCost = tentativeG;
+                    neighborNode.parent = currentNode;
+                }
+            }
+        }
+
+        if (finalNode != null)
+        {
+            Node current = finalNode;
+            while (current != null)
+            {
+                Debug.Log("sussy");
+                path.Insert(0, current.position);
+                current = current.parent;
+            }
+        }
+        else
+        {
+            Debug.LogWarning("No valid path found to destination.");
+        }
     }
 
     bool IsPositionValid(Vector3 position, out Vector3 adjustedPosition)
@@ -434,32 +520,18 @@ public class FreakyLarryBehaviour : MonoBehaviour
     static List<Vector3> GenerateOffsets()
     {
         List<Vector3> offsets = new List<Vector3>();
-
         for (int x = -1; x <= 1; x++)
             for (int y = -1; y <= 1; y++)
                 for (int z = -1; z <= 1; z++)
-                {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-
-                    offsets.Add(new Vector3(x, y, z));
-                }
-
+                    if (x != 0 || y != 0 || z != 0)
+                        offsets.Add(new Vector3(x, y, z));
         return offsets;
     }
 
     List<Vector3> GetNeighborOffsets()
     {
-        List<Vector3> dirs = new List<Vector3>();
-        for (int x = -1; x <= 1; x++)
-            for (int y = -1; y <= 1; y++)
-                for (int z = -1; z <= 1; z++)
-                {
-                    if (x == 0 && y == 0 && z == 0)
-                        continue;
-                    dirs.Add(new Vector3(x, y, z));
-                }
-        return dirs;
+        // Cache this if you call it frequently
+        return GenerateOffsets();
     }
 
     List<Vector3> GetNeighborPositions(Vector3 center)
@@ -471,5 +543,29 @@ public class FreakyLarryBehaviour : MonoBehaviour
             positions.Add(pos);
         }
         return positions;
+    }
+
+    public class Node
+    {
+        public Vector3 position;
+        public float gCost;
+        public float hCost;
+        public float fCost => gCost + hCost;
+        public Node parent;
+
+        public Node(Vector3 pos)
+        {
+            position = pos;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Node node && Vector3.Distance(position, node.position) < 0.1f;
+        }
+
+        public override int GetHashCode()
+        {
+            return position.GetHashCode();
+        }
     }
 }
