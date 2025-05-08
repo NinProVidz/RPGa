@@ -170,7 +170,7 @@ public class EnemyAwareness : MonoBehaviour
             {
                 if (hit.collider.gameObject.layer == playerLayer)
                 {
-                    Debug.Log("Unblocked limb: " + hit.collider.gameObject.name);
+                   // Debug.Log("Unblocked limb: " + hit.collider.gameObject.name);
                     limbsUnblocked++;
                     unblocked = true;
                 }
