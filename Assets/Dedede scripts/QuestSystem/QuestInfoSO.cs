@@ -19,8 +19,7 @@ public class QuestInfoSO : ScriptableObject
     public GameObject[] questStepPrefabs;
 
     [Header("Reward")]
-    public int xpReward;
-    public int cashReward;
+    public int hpReward;
 
     //ensures ID is always the name of the Scriptable Object Asset
     private void OnValidate()

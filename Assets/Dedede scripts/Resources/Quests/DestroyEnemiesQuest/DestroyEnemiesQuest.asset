@@ -15,7 +15,7 @@ MonoBehaviour:
   <id>k__BackingField: DestroyEnemiesQuest
   displayName: Defeat the enemies!
   monthRequirement: 7
-  dayRequirement: 22
+  dayRequirement: 2
   questPrerequisites: []
   questStepPrefabs:
   - {fileID: 4653620845230590584, guid: 47bbde8e471390841940eb62e80a06ae, type: 3}
