@@ -106,7 +106,7 @@ public class QuestManager : MonoBehaviour
         {
             quest.InstantiateCurrentQuestStep(this.transform);
         }
-        //if there are no more steps, then we've finished all of the for this quest
+        //if there are no more steps, then we've finished all of the steps for this quest
         else
         {
             ChangeQuestState(quest.info.id, QuestState.CAN_FINISH);
@@ -115,7 +115,14 @@ public class QuestManager : MonoBehaviour
 
     private void FinishQuest(string id)
     {
-        Debug.Log("Finish Quest:" + id);
+        Quest quest = GetQuestById(id);
+        ClaimRewards(quest);
+        ChangeQuestState(quest.info.id, QuestState.FINISHED);
+    }
+
+    private void ClaimRewards(Quest quest)
+    {
+
     }
 
     private Dictionary<string, Quest> CreateQuestMap()
