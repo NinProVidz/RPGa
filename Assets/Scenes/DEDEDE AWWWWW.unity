@@ -362,6 +362,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00569ba40435cd5479818865aacc5e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  loadQuestState: 1
   month: 0
   day: 0
 --- !u!4 &550962558

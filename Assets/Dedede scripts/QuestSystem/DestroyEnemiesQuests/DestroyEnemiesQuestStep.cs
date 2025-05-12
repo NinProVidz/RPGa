@@ -21,11 +21,24 @@ public class DestroyEnemiesQuestStep : QuestStep
         if(enemiesDefeated < enemiesToComplete)
         {
             enemiesDefeated++;
+            UpdateState();
         }
 
         if(enemiesDefeated >= enemiesToComplete)
         {
             FinishQuestStep();
         }
+    }
+
+    private void UpdateState()
+    {
+        string state = enemiesDefeated.ToString();
+        ChangeState(state);
+    }
+
+    protected override void SetQuestStepState(string state)
+    {
+        this.enemiesDefeated = System.Int32.Parse(state);
+        UpdateState();
     }
 }
