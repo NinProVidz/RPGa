@@ -46,7 +46,7 @@ namespace RPG.Control
         void Update()
         {
             healthCanvas.transform.LookAt(Camera.main.transform);
-            if (health.GetIsDead() == true) return;
+            if (health.isDead) return;
 
             if (InAttackRangeOfPlayer() && fighter.CanAttack(player))
             {

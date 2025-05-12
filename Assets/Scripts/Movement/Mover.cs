@@ -26,7 +26,7 @@ namespace RPG.Movement
         // Update is called once per frame
         void Update()
         {
-            navMeshAgent.enabled = !health.GetIsDead();
+            navMeshAgent.enabled = !health.isDead;
             UpdateAnimator();
         }
 

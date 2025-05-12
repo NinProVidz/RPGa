@@ -33,7 +33,7 @@ namespace RPG.Combat
                 return;
             }
 
-            if(target.GetIsDead() == true)
+            if(target.isDead)
             {
                 return;
             }
@@ -96,13 +96,13 @@ namespace RPG.Combat
         void Hitterman()
         {
             if(target == null) return;
-            target.TakeDamage(damage);
+            target.TakeDamage(damage, DamageType.Mental);
         }
         public bool CanAttack(GameObject combattarget)
         {
             if(combattarget == null) { return false; }
             Health targetToTest = combattarget.GetComponent<Health>();
-            return targetToTest != null && targetToTest.GetIsDead() == false;
+            return targetToTest != null && targetToTest.isDead == false;
         }
 
     }

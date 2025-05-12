@@ -29,7 +29,7 @@ namespace RPG.Control
         // Update is called once per frame
         void Update()
         {
-            if(health.GetIsDead() == true) return;
+            if(health.isDead == true) return;
 
             if (InteractWithCombat() == true)
             {
