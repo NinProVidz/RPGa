@@ -97,9 +97,13 @@ public class PlayerAnimatorManager : MonoBehaviour
         {
             verticalAmount *= 0.5f;
             horizontalAmount *= 0.5f;
+            player.characterController.height = 1.3f;
+            player.characterController.center = new Vector3(0, 0.65f, 0);
         }
         else
         {
+            player.characterController.height = 2f;
+            player.characterController.center = new Vector3(0, 1, 0);
             if (isRunning)
             {
                 verticalAmount *= 2;
