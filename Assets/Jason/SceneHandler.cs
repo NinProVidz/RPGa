@@ -31,4 +31,9 @@ public class SceneHandler : MonoBehaviour
     {
         SceneManager.LoadScene("Tutorial 2 Short");
     }
+
+    public void GoToHubWorld()
+    {
+        SceneManager.LoadScene("HubWorld");
+    }
 }

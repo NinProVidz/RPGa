@@ -45444,7 +45444,7 @@ GameObject:
   - component: {fileID: 1646395465}
   - component: {fileID: 1646395464}
   - component: {fileID: 1646395463}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59204,7 +59204,7 @@ GameObject:
   - component: {fileID: 2047408934}
   - component: {fileID: 2047408933}
   - component: {fileID: 2047408935}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64283,7 +64283,7 @@ GameObject:
   - component: {fileID: 7743488304941940241}
   - component: {fileID: 7032249820043517653}
   - component: {fileID: 9104439450307989391}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Health Easing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64443,7 +64443,7 @@ GameObject:
   - component: {fileID: 7022759444962426717}
   - component: {fileID: 6906137499763054109}
   - component: {fileID: 4407785067522193175}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64601,7 +64601,7 @@ GameObject:
   - component: {fileID: 19895076247937823}
   - component: {fileID: 1745097675835982608}
   - component: {fileID: 7364537867386428347}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64651,7 +64651,7 @@ GameObject:
   - component: {fileID: 5940440800538471313}
   - component: {fileID: 670480178188727278}
   - component: {fileID: 8041628358715369649}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Time
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -64759,7 +64759,7 @@ GameObject:
   - component: {fileID: 5959068742362490558}
   - component: {fileID: 1355551675727886346}
   - component: {fileID: 2831447448563254944}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Health Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65180,7 +65180,7 @@ GameObject:
   - component: {fileID: 6040947756226430156}
   - component: {fileID: 1332993724865455655}
   - component: {fileID: 5074862480194487870}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65278,7 +65278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5906614999746922348}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Crosshair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65424,7 +65424,7 @@ GameObject:
   - component: {fileID: 8748538985085730512}
   - component: {fileID: 8021101421599546319}
   - component: {fileID: 3837316997735450734}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65660,7 +65660,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 223
+    m_Bits: 255
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -67155,7 +67155,7 @@ GameObject:
   - component: {fileID: 746020096302781426}
   - component: {fileID: 9223073589827921520}
   - component: {fileID: 8248092619742029220}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67309,7 +67309,7 @@ GameObject:
   - component: {fileID: 5377764246564328829}
   - component: {fileID: 6510069048160739843}
   - component: {fileID: 4098406339365826839}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Day
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67405,7 +67405,7 @@ GameObject:
   - component: {fileID: 7143036065663455012}
   - component: {fileID: 6584929468974736379}
   - component: {fileID: 1015894494444032243}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -67639,7 +67639,7 @@ GameObject:
   - component: {fileID: 5085146765596641771}
   - component: {fileID: 6842203913843331245}
   - component: {fileID: 6492892414613323499}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -68713,7 +68713,7 @@ Camera:
   m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 32
+    m_Bits: 256
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -69483,7 +69483,7 @@ GameObject:
   - component: {fileID: 7978496846880570514}
   - component: {fileID: 5647474157547323554}
   - component: {fileID: 8319121991603836381}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -69757,7 +69757,7 @@ GameObject:
   - component: {fileID: 5620488157137647942}
   - component: {fileID: 5829111677599422186}
   - component: {fileID: 2949028559210275865}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Image (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -70047,7 +70047,7 @@ GameObject:
   - component: {fileID: 5331685753998796045}
   - component: {fileID: 88160302657492978}
   - component: {fileID: 7840966060787024670}
-  m_Layer: 5
+  m_Layer: 8
   m_Name: Date
   m_TagString: Untagged
   m_Icon: {fileID: 0}
