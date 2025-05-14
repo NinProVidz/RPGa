@@ -12,6 +12,7 @@ TagManager:
   - Hub
   - Bunker
   - Egg
+  - Reload
   layers:
   - Default
   - TransparentFX
