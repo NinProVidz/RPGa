@@ -497,7 +497,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00569ba40435cd5479818865aacc5e54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadQuestState: 1
+  loadQuestState: 0
   month: 0
   day: 0
 --- !u!4 &550962558
@@ -2380,6 +2380,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.132
       objectReference: {fileID: 0}
+    - target: {fileID: 7589534549956991352, guid: 02e326b2ce242db4eae078f9e05fac79, type: 3}
+      propertyPath: dialogueBox
+      value: 
+      objectReference: {fileID: 645442795}
     - target: {fileID: 8496091104060987766, guid: 02e326b2ce242db4eae078f9e05fac79, type: 3}
       propertyPath: m_RootOrder
       value: 7
