@@ -11,6 +11,7 @@ TagManager:
   - Pushable
   - Hub
   - Bunker
+  - Egg
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - UI
   - Ignore Navmesh
   - Enemy
-  - 
+  - PlayerUI
   - 
   - 
   - 
