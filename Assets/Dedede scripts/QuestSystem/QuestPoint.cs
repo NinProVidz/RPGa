@@ -18,17 +18,45 @@ public class QuestPoint : MonoBehaviour
     [SerializeField] private bool startPoint = true;
     [SerializeField] private bool finishPoint = true;
 
+    [Header("Dialogue")]
+    [SerializeField] public bool hasDialogue;
+    [SerializeField] public bool dialogueChecked;
+    [SerializeField] public GameObject dialogueBox;
+
     private void Awake()
     {
+        dialogueBox.SetActive(false);
+        hasDialogue = false;
         questId = questInfoForPoint.id;
         questIcon = GetComponentInChildren<QuestIcon>();
+
+        if (dialogueBox == null)
+        {
+            hasDialogue = false;
+        }
+        else
+        {
+            hasDialogue = true;
+        }
     }
 
     private void Update()
-    {
-        if(playerIsNear == true && Input.GetKeyDown(KeyCode.F))
+    {               
+        if(playerIsNear == true && Input.GetKeyDown(KeyCode.F) && hasDialogue == true)
+        {
+            dialogueBox.SetActive(true);
+            dialogueChecked = true;
+        }
+        if (dialogueChecked == true)
         {
             ActivatedQuest();
+            dialogueChecked = false;
+            hasDialogue = false;
+        }
+        if (playerIsNear == true && Input.GetKeyDown(KeyCode.F) && hasDialogue == false)
+        {
+            ActivatedQuest();
+            dialogueChecked = false;
         }
     }
 
