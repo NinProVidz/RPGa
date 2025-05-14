@@ -129,7 +129,9 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     public void LoadData(GameData data)
     {
+        player.characterController.enabled = false;
         this.transform.position = data.playerPosition;
+        player.characterController.enabled = true;
     }
 
     public void SaveData(ref GameData data)
