@@ -29,6 +29,10 @@ namespace RPG.SceneManagment
             {
                 SceneManager.LoadScene("NotEgg");
             }
+            if (CompareTag("Egg") && other.tag == "Player")
+            {
+                SceneManager.LoadScene("Bunker");
+            }
         }
     }
 }
