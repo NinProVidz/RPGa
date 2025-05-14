@@ -26,4 +26,9 @@ public class SceneHandler : MonoBehaviour
     {
         SceneManager.LoadScene("Bunker");
     }
+
+    public void GoToTutorial2ShortScene()
+    {
+        SceneManager.LoadScene("Tutorial 2 Short");
+    }
 }
