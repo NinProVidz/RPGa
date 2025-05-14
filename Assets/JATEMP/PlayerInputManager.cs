@@ -81,8 +81,8 @@ public class PlayerInputManager : MonoBehaviour
             //playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
             //playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
 
-            playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
-            playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
+           //playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
+           //playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
 
             playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
             //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
@@ -115,6 +115,7 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (inputEnabled)
         {
+            cameraInput = playerControls.PlayerCamera.CameraControls.ReadValue<Vector2>();
             movementInput = playerControls.PlayerMovement.Movement.ReadValue<Vector2>();
             tiltInput = playerControls.PlayerMovement.Tilt.ReadValue<Vector2>().x;
         }
