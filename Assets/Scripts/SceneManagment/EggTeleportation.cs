@@ -33,6 +33,10 @@ namespace RPG.SceneManagment
             {
                 SceneManager.LoadScene("Bunker");
             }
+            if (CompareTag("Reload") && other.tag == "Player")
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 }

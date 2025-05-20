@@ -12,6 +12,7 @@ TagManager:
   - Hub
   - Bunker
   - Egg
+  - Reload
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - Ignore Navmesh
   - Enemy
   - PlayerUI
-  - Ignore
+  - 
   - 
   - 
   - 

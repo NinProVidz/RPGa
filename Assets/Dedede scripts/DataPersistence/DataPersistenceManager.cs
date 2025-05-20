@@ -32,6 +32,14 @@ public class DataPersistenceManager : MonoBehaviour
         LoadGame();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            SaveGame();
+        }
+    }
+
     public void NewGame()
     {
         this.gameData = new GameData();
@@ -68,10 +76,10 @@ public class DataPersistenceManager : MonoBehaviour
         Debug.Log("Data successfully saved!");
     }
 
-    private void OnApplicationQuit()
+    /*private void OnApplicationQuit()
     {
         SaveGame();
-    }
+    } */
 
     private List<IDataPersistence> FindAllDataPersistenceObjects()
     {
