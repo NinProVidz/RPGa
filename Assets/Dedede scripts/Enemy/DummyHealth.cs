@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DummyHealth : MonoBehaviour
 {
@@ -20,7 +21,12 @@ public class DummyHealth : MonoBehaviour
     private void Update()
     {
         isGrounded = FindObjectOfType<PushingEnvironment>().isGrounded;
-        if(questActive == false)
+        if (eHealth <= dmgThreshHold)
+        {
+            eHealth = 0;
+            Destroy(gameObject);
+        }
+        if (questActive == false)
         {
             return;
         }
@@ -28,7 +34,7 @@ public class DummyHealth : MonoBehaviour
         {
             destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
         }
-        if(eHealth <= dmgThreshHold)
+        if(eHealth <= dmgThreshHold && questActive == true)
         {
             eHealth = 0;
             destroyEnemiesQuestStep.EnemyDefeated();
@@ -36,9 +42,11 @@ public class DummyHealth : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision other)
     {
-        if(isGrounded == false && other.gameObject.CompareTag("Pushable"))
+        PushingEnvironment pEnvironment = other.collider.GetComponent<PushingEnvironment>();
+
+        if(pEnvironment.isGrounded == false && pEnvironment.CompareTag("Pushable"))
         {
             eHealth -= takeDamage;
             Destroy(other.gameObject);
