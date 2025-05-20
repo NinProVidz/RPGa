@@ -11,7 +11,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     public float moveAmount;
 
     [Header("Movement Settings")]
-    private Vector3 moveDirection;
+    public Vector3 moveDirection;
     private Vector3 targetRotationDirection;
     [SerializeField] float jumpHeight = 4f;
     [SerializeField] float walkingSpeed = 2;
@@ -23,6 +23,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     [Header("Tilt settings")]
     [SerializeField] Transform tiltBone;
+    [SerializeField] Transform tiltBone2;
     public float tiltAngle = 30f;
     public float tiltSpeed = 5f; // Controls how fast it tilts
     public float maxHoldTime = 1.0f; // Time to reach full tilt
@@ -124,6 +125,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         wasGrounded = player.isGrounded;
         hasLanded = false; // Reset after use
         HandleTilt();
+        Debug.DrawRay(transform.position, moveDirection);
     }
 
 
@@ -192,6 +194,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         // Apply rotation
         tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, currentTiltZ));
+        tiltBone2.localRotation = Quaternion.Euler(new Vector3(0, 0, currentTiltZ));
     }
     private void GetVerticalAndHorizontalInputs()
     {
@@ -240,6 +243,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
                 }
             }
         }
+
     }
 
     private void HandleRotation()

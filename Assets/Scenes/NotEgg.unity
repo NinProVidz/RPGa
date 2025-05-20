@@ -1159,10 +1159,6 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 7885018105656008816, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
-      propertyPath: sharedProfile
-      value: 
-      objectReference: {fileID: 11400000, guid: 084df57a8d422864ea5b03e4e003acbd, type: 2}
     - target: {fileID: 8041628357521808029, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: clock
       value: 

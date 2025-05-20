@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class DummyHealth : MonoBehaviour
 {
     [SerializeField] int eHealth = 100;
     [SerializeField] int takeDamage = 40;
     [SerializeField] int dmgThreshHold = 0;
-    [SerializeField] PushingEnvironment pEnvironment;
     public bool isGrounded;
     public static bool questActive;
     DestroyEnemiesQuestStep destroyEnemiesQuestStep;
@@ -20,7 +20,13 @@ public class DummyHealth : MonoBehaviour
 
     private void Update()
     {
-        if(questActive == false)
+        isGrounded = FindObjectOfType<PushingEnvironment>().isGrounded;
+        if (eHealth <= dmgThreshHold)
+        {
+            eHealth = 0;
+            Destroy(gameObject);
+        }
+        if (questActive == false)
         {
             return;
         }
@@ -28,8 +34,7 @@ public class DummyHealth : MonoBehaviour
         {
             destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
         }
-        isGrounded = pEnvironment.isGrounded;
-        if(eHealth <= dmgThreshHold)
+        if(eHealth <= dmgThreshHold && questActive == true)
         {
             eHealth = 0;
             destroyEnemiesQuestStep.EnemyDefeated();
@@ -37,9 +42,11 @@ public class DummyHealth : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision other)
+    public void OnCollisionEnter(Collision other)
     {
-        if(isGrounded == false && other.gameObject.CompareTag("Pushable"))
+        PushingEnvironment pEnvironment = other.collider.GetComponent<PushingEnvironment>();
+
+        if(pEnvironment.isGrounded == false && pEnvironment.CompareTag("Pushable"))
         {
             eHealth -= takeDamage;
             Destroy(other.gameObject);
