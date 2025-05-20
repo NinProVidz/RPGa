@@ -1848,6 +1848,7 @@ MonoBehaviour:
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
+  moveDirection: {x: 0, y: 0, z: 0}
   jumpHeight: 1
   walkingSpeed: 2
   runningSpeed: 4
@@ -1899,6 +1900,13 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 1
+  w1: 0
+  w2: 0
+  w3: 0
+  w4: 0
+  w5: 0
+  animRotWeight: 0
+  animRotWeight2: 0
 --- !u!95 &2213012873716493548
 Animator:
   serializedVersion: 5
@@ -5200,9 +5208,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7411981597859542537}
-  m_LocalRotation: {x: -0.00000002980289, y: -1.300358e-10, z: 0.008726553, w: 0.999962}
-  m_LocalPosition: {x: 0.03000764, y: -2.024352, z: -0.77402914}
-  m_LocalScale: {x: 11.764705, y: 11.764699, z: 11.76471}
+  m_LocalRotation: {x: -0.000000044704052, y: -1.8824342e-10, z: 0.00872655, w: 0.9999619}
+  m_LocalPosition: {x: 0.03000764, y: -2.0243518, z: -0.7740011}
+  m_LocalScale: {x: 11.764706, y: 11.764706, z: 11.764707}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4678351237415138343}
@@ -5237,6 +5245,8 @@ MonoBehaviour:
     m_Bits: 0
   leftAndRightLookAngle: 0
   upAndDownLookAngle: 0
+  yawDampTime: 0.05
+  pitchDampTime: 0.05
 --- !u!114 &5803417525883896623
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5346,7 +5356,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:
