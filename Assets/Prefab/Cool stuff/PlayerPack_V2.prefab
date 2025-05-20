@@ -1353,7 +1353,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 930
+  m_VersionIndex: 933
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1586,7 +1586,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1656134896228237116}
-  m_LocalRotation: {x: -0.000000014901161, y: 1.1773758e-19, z: -2.2159733e-16, w: 1}
+  m_LocalRotation: {x: -0.000000014901163, y: -0.3060312, z: 0.0000000074505815, w: 0.95202154}
   m_LocalPosition: {x: 2.0931182e-15, y: 1.1656207, z: 0.37541822}
   m_LocalScale: {x: 1, y: 0.99999976, z: 0.9999999}
   m_ConstrainProportionsScale: 0
@@ -1595,7 +1595,7 @@ Transform:
   - {fileID: 4419720590768227230}
   m_Father: {fileID: 6283566600759704970}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -35.64, z: 0}
 --- !u!136 &8145589183843460363
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1851,13 +1851,14 @@ MonoBehaviour:
   moveDirection: {x: 0, y: 0, z: 0}
   jumpHeight: 1
   walkingSpeed: 2
-  runningSpeed: 4
-  sprintingSpeed: 6
+  runningSpeed: 5
+  sprintingSpeed: 8
   crouchSpeed: 1
   crouchStrafeSpeed: 1
   rotationSpeed: 15
   tiltBone: {fileID: 2811678465716073734}
-  tiltAngle: 30
+  tiltBone2: {fileID: 6283566600759704970}
+  tiltAngle: 25
   tiltSpeed: 10
   maxHoldTime: 0.2
   tiltRaycastOrigin: {fileID: 274817095766868016}
@@ -1900,13 +1901,16 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 1
-  w1: 0
-  w2: 0
-  w3: 0
+  w1: 1
+  w2: 0.1
+  w3: 1
   w4: 0
   w5: 0
   animRotWeight: 0
-  animRotWeight2: 0
+  animRotWeight2: 1
+  lookAtDist: 1000
+  head: {fileID: 0}
+  angleMultiplier: 3
 --- !u!95 &2213012873716493548
 Animator:
   serializedVersion: 5
@@ -4097,7 +4101,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 933
+  m_VersionIndex: 936
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5231,14 +5235,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObject: {fileID: 3062069216033646933}
   player: {fileID: 7656418146820796561}
-  targetTransform: {fileID: 3663777818586888643}
+  targetTransform: {fileID: 3693156437394763268}
   cameraPivotTransform: {fileID: 4678351237415138343}
-  cameraSmoothSpeed: 1
-  cameraAngleSmoothSpeed: 15
+  cameraSmoothSpeed: 3
+  cameraAngleSmoothSpeed: 10
   leftAndRightRotationSpeed: 15
   upAndDownRotationSpeed: 15
-  minimumPivot: -30
-  maximumPivot: 60
+  minimumPivot: -20
+  maximumPivot: 20
   cameraCollisionRadius: 0
   collideWithLayers:
     serializedVersion: 2
@@ -5356,7 +5360,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:
@@ -5698,15 +5702,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8334957637014070450}
-  m_LocalRotation: {x: -0.258819, y: 0, z: 0, w: 0.9659259}
-  m_LocalPosition: {x: 0, y: 0.050000235, z: 0.029998798}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.03, z: 0.029998798}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7027990020200008449}
   m_Father: {fileID: 4678351237415138343}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: -30, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &3062069216033646933
 Camera:
   m_ObjectHideFlags: 0
