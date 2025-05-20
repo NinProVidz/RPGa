@@ -20,7 +20,6 @@ public class DummyHealth : MonoBehaviour
 
     private void Update()
     {
-        isGrounded = FindObjectOfType<PushingEnvironment>().isGrounded;
         if (eHealth <= dmgThreshHold)
         {
             eHealth = 0;
