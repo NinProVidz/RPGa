@@ -193,6 +193,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
     void Update()
     {
         bool canSeePlayer = PlayerCanSeeLarry();
+        SetForcingLook(currentState != LarryState.Watching && !isChasing);
         float awarenessLevel = awareness.awarenessLevel;
 
         // 1. Always remember where you last saw the player
@@ -444,6 +445,7 @@ public class FreakyLarryBehaviour : MonoBehaviour
                             && Vector3.Distance(transform.position, player.limbs[2].transform.position) < 25f;
 
         SetForcingLook(canInfluence);
+        
 
         // Only the primary Larry actually applies its influence
         if (activeForcingLarrys.Count == 0 || activeForcingLarrys[0] != this)
@@ -451,17 +453,10 @@ public class FreakyLarryBehaviour : MonoBehaviour
 
         // ... now apply influence as before ...
         LookAtPlayer();
-        Transform pivot = PlayerCamera.instance.cameraPivotTransform;
-        Vector3 toLarry = (larryLookTarget.position - pivot.position).normalized;
-        Quaternion rot = Quaternion.LookRotation(toLarry, Vector3.up);
-        float yawDelta = Mathf.DeltaAngle(PlayerCamera.instance.leftAndRightLookAngle, rot.eulerAngles.y + yawOffset);
-        float pitchDelta = Mathf.DeltaAngle(PlayerCamera.instance.upAndDownLookAngle, rot.eulerAngles.x + pitchOffset);
-
-        PlayerCamera.instance.ApplyExternalLookInfluence(
-            this,
-            yawDelta * cameraTurnSpeed * Time.deltaTime,
-            pitchDelta * cameraTurnSpeed * Time.deltaTime,
-            cameraLookStrength
+        PlayerCamera.instance.ForceLookAtTarget(
+            larryLookTarget,
+            cameraTurnSpeed,
+            cameraLookStrength, this
         );
 
         if (LarryIsVisibleToPlayer())
