@@ -1,8 +1,14 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Jason/Materials/Paving/PavingStone 1.mat.meta
+guid: 283966692aa95cc49bc49cd9fec83a79
+NativeFormatImporter:
+========
 guid: 5355ca6dbcf714849934c7e310a16d38
 folderAsset: yes
 DefaultImporter:
+>>>>>>>> cda62042ec1b164ae0ba0925cfd61d3f01cee31c:Assets/Dedede scripts/Collecting&Inventory.meta
   externalObjects: {}
+  mainObjectFileID: 2100000
   userData: 
   assetBundleName: 
   assetBundleVariant: 
