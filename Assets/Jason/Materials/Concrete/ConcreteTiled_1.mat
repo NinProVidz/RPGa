@@ -128,7 +128,7 @@ Material:
     - _DepthFactor: 5.34
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 0.23
+    - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 1
     - _Gradient: 1
@@ -148,7 +148,7 @@ Material:
     - _Metallic3: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.069
+    - _Parallax: 0.0528
     - _RedAdd: 0
     - _SNOWONOFF: 0
     - _Smoothness: 0.7748996
@@ -174,7 +174,7 @@ Material:
     - _ZWrite: 1
     - __dirty: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 0.7924528, g: 0.7924528, b: 0.7924528, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _GroundColor: {r: 0.08490568, g: 0.05234205, b: 0.04846032, a: 1}
     - _IntersectionColor: {r: 1, g: 1, b: 1, a: 1}
