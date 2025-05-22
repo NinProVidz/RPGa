@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Collector : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider collision)
+    public bool playerCheck;
+    public ICollectable possibleCollectable;
+
+    private void Update()
     {
-        var notes = collision.GetComponent<Notes>();
-        if(notes != null)
+        if (Input.GetKeyDown(KeyCode.F) && playerCheck == true && possibleCollectable != null)
         {
-            notes.Collect();
+            possibleCollectable.Collect();
         }
-    }
+    } 
 }
