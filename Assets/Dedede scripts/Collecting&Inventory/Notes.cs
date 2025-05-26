@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 [RequireComponent(typeof(SphereCollider))]
 public class Notes : MonoBehaviour, ICollectable
 {
+
+    public static event Action OnNoteCollected;
+
     public bool isPlayerNear = false;
 
     private void Update()
@@ -14,7 +18,8 @@ public class Notes : MonoBehaviour, ICollectable
 
     public void Collect()
     {
-        Debug.Log("Wow");
+        OnNoteCollected?.Invoke();
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter(Collider otherCollider)
