@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class NotePlaceHolder : MonoBehaviour
 {
@@ -9,12 +10,12 @@ public class NotePlaceHolder : MonoBehaviour
 
     private void OnEnable()
     {
-        Notes.OnNoteCollected += NoteCollected;
+        //Notes.OnNoteCollected += NoteCollected;
     }
 
     private void OnDisable()
     {
-        Notes.OnNoteCollected -= NoteCollected;
+        //Notes.OnNoteCollected -= NoteCollected;
     }
 
     public void NoteCollected()
