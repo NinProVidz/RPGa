@@ -6,8 +6,9 @@ using System;
 [RequireComponent(typeof(SphereCollider))]
 public class Notes : MonoBehaviour, ICollectable
 {
-
-    public static event Action OnNoteCollected;
+    public static event HandleNoteCollected OnNoteCollected;
+    public delegate void HandleNoteCollected(ItemData itemData);
+    public ItemData noteData;
 
     public bool isPlayerNear = false;
 
@@ -18,7 +19,7 @@ public class Notes : MonoBehaviour, ICollectable
 
     public void Collect()
     {
-        OnNoteCollected?.Invoke();
+        OnNoteCollected?.Invoke(noteData);
         Destroy(gameObject);
     }
 
