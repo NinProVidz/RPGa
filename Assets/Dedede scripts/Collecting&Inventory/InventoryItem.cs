@@ -8,7 +8,6 @@ public class InventoryItem
 {
     public ItemData itemData;
     public int stackSize;
-    public int maxStackSize;
 
     public InventoryItem(ItemData item)
     {

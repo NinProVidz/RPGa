@@ -5,6 +5,8 @@ using System;
 
 public class Inventory : MonoBehaviour
 {
+    public static event Action<List<InventoryItem>> OnInventoryChange;
+
     public List<InventoryItem> inventory = new List<InventoryItem>();
     private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 
@@ -24,13 +26,15 @@ public class Inventory : MonoBehaviour
         {
             item.AddToStack();
             Debug.Log($"{item.itemData.displayName} total stack is now {item.stackSize}");
+            OnInventoryChange?.Invoke(inventory);
         }
         else
         {
             InventoryItem newItem = new InventoryItem(itemData);
             inventory.Add(newItem);
             itemDictionary.Add(itemData, newItem);
-            Debug.Log($"Added {item.itemData.displayName} to the inventory for the first time.");
+            Debug.Log($"Added {newItem.itemData.displayName} to the inventory for the first time.");
+            OnInventoryChange?.Invoke(inventory);
         }
 
     }
@@ -45,6 +49,7 @@ public class Inventory : MonoBehaviour
                 inventory.Remove(item);
                 itemDictionary.Remove(itemData);
             }
+            OnInventoryChange?.Invoke(inventory);
         }
     }
 }
