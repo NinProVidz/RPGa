@@ -19,7 +19,10 @@ public class Notes : MonoBehaviour, ICollectable
 
     public void Collect()
     {
+        Debug.Log(OnNoteCollected);
+        Debug.Log(noteData);
         OnNoteCollected?.Invoke(noteData);
+        isPlayerNear = false;
         Destroy(gameObject);
     }
 
