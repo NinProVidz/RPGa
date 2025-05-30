@@ -30,9 +30,9 @@ public class InventoryManager : MonoBehaviour
 
     void DrawInventory(List<InventoryItem> inventory)
     {
-        ResetInventory();
 
-        for(int i = 0; i < inventory.Capacity; i++)
+        ResetInventory();
+        for (int i = 0; i < inventory.Count; i++)
         {
             CreateInventorySlot();
         }
