@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Notes : MonoBehaviour, ICollectable
+public class Collectabled : MonoBehaviour, ICollectable
 {
     public static event HandleNoteCollected OnNoteCollected;
     public delegate void HandleNoteCollected(ItemData itemData);
