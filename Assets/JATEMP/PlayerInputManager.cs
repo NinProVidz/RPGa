@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -9,7 +9,9 @@ public class PlayerInputManager : MonoBehaviour
 
     public bool inputEnabled = true;
 
-    private PlayerControls playerControls; 
+    private PlayerControls playerControls;
+
+    public LayerMask obstacleLayers;
 
     [Header("Player Movement Input")]
     [SerializeField] Vector2 movementInput;
@@ -36,35 +38,26 @@ public class PlayerInputManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);
+            SceneManager.activeSceneChanged += OnSceneChange;  // Move here
         }
-        else
+        else if (instance != this)
         {
             Destroy(gameObject);
+            return;
         }
-
-        
     }
 
     private void Start()
     {
-        DontDestroyOnLoad(gameObject);
-
-        SceneManager.activeSceneChanged += OnSceneChange;
-
-        instance.enabled = true;
     }
+
+
 
     private void OnSceneChange(Scene oldScene, Scene newScene)
     {
-        
-        if (newScene.buildIndex == WorldSaveGameManager.instance.GetWorldSceneIndex())
-        {
-            instance.enabled = true;
-        }
-        else
-        {
-            instance.enabled = false;
-        }
+        // Optional: Refresh player reference if needed
+        player = FindObjectOfType<PlayerManager>();
     }
 
     private void OnEnable()
@@ -108,7 +101,10 @@ public class PlayerInputManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.activeSceneChanged -= OnSceneChange;
+        if (instance == this)
+        {
+            SceneManager.activeSceneChanged -= OnSceneChange;
+        }
     }
 
     private void Update()
@@ -127,6 +123,31 @@ public class PlayerInputManager : MonoBehaviour
         HandleSprintInput();
         HandleJumpInput();
         HandleCrouchInput();
+    }
+
+    public bool CanUncrouch()
+    {
+        float standHeight = 2f;
+        float radius = player.characterController.radius;
+
+        // Bottom and top points of the capsule
+        Vector3 bottom = player.transform   .position + Vector3.up * radius;
+        Vector3 top = bottom + Vector3.up * (standHeight - radius * 2);
+
+        // Visualize capsule
+
+            Debug.DrawLine(bottom, top, Color.yellow, 1f);
+            Debug.DrawRay(bottom, Vector3.forward * radius, Color.cyan, 1f);
+            Debug.DrawRay(bottom, Vector3.back * radius, Color.cyan, 1f);
+            Debug.DrawRay(bottom, Vector3.left * radius, Color.cyan, 1f);
+            Debug.DrawRay(bottom, Vector3.right * radius, Color.cyan, 1f);
+            Debug.DrawRay(top, Vector3.forward * radius, Color.cyan, 1f);
+            Debug.DrawRay(top, Vector3.back * radius, Color.cyan, 1f);
+            Debug.DrawRay(top, Vector3.left * radius, Color.cyan, 1f);
+            Debug.DrawRay(top, Vector3.right * radius, Color.cyan, 1f);
+
+        // Collision check
+        return !Physics.CheckCapsule(bottom, top, radius, obstacleLayers);
     }
 
     private void HandlePlayerMovementInput()
@@ -176,7 +197,7 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleCrouchInput()
     {
-        player.playerLocomotionManager.isCrouching = crouchInput;
+        player.playerLocomotionManager.isCrouching = crouchInput || !CanUncrouch();
     }
 
     private void HandleRunInput()
