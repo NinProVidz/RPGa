@@ -30,6 +30,8 @@ public class PlayerAnimatorManager : MonoBehaviour
 
     [SerializeField] Transform head;
 
+    public float crouchHeight = 0.65f;
+
     public float angleMultiplier = 1.5f;  // tweak this as needed
 
     private bool shouldOverrideIK = false;
