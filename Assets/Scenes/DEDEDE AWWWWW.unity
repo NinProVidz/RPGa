@@ -1859,6 +1859,7 @@ MonoBehaviour:
     day: 0
     playerPosition: {x: 0, y: 0, z: 0}
     timerCount: 0
+    dayNightTime: 0
 --- !u!4 &1488800354
 Transform:
   m_ObjectHideFlags: 0
@@ -2167,11 +2168,11 @@ PrefabInstance:
     - target: {fileID: 228866429995979395, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 333472510}
+      objectReference: {fileID: 1132565641}
     - target: {fileID: 426000161498178848, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 333472510}
+      objectReference: {fileID: 1132565641}
     - target: {fileID: 1033730628784319849, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2236,6 +2237,34 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1961421583}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: ledgeOffset
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: standHeight
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: climbUpDuration
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: ledgeDetectRange
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: ledgeAirMinHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: ledgeLayer.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: climbUpStandDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 7652243603860698120, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: m_Name
       value: PlayerPack_V2
