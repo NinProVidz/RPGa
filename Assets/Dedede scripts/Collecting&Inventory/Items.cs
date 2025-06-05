@@ -12,11 +12,6 @@ public class Items : MonoBehaviour, ICollectable
 
     public bool isPlayerNear = false;
 
-    private void Update()
-    {
-        FindObjectOfType<Collector>().playerCheck = isPlayerNear;
-    }
-
     public void Collect()
     {
         Debug.Log(OnItemCollected);
