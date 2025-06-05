@@ -11132,7 +11132,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: ledgeOffset
-      value: -1.4
+      value: -0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: standHeight
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: ledgeMinHeight
@@ -11147,8 +11151,16 @@ PrefabInstance:
       value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: ledgeAirMinHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: ledgeLayer.m_Bits
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
+      propertyPath: climbUpStandDuration
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 7560513466626425779, guid: 92c6a76eb288788488227e28fdb7f108, type: 3}
       propertyPath: climbableLayers.m_Bits
