@@ -9,7 +9,6 @@ public class GameData
     public int month;
     public int day;
     public Vector3 playerPosition;
-    public TimeSpan currentTime;
     public int timerCount;
 
     public GameData()
@@ -17,7 +16,6 @@ public class GameData
         day = 0;
         month = 0;
         playerPosition = Vector3.zero;
-        currentTime = TimeSpan.Zero;
         timerCount = 0;
     }
 }
