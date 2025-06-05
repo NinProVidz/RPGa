@@ -4,11 +4,11 @@ using UnityEngine;
 using System;
 
 [RequireComponent(typeof(SphereCollider))]
-public class Notes : MonoBehaviour, ICollectable
+public class Items : MonoBehaviour, ICollectable
 {
-    public static event HandleNoteCollected OnNoteCollected;
-    public delegate void HandleNoteCollected(ItemData itemData);
-    public ItemData noteData;
+    public static event HandleItemCollected OnItemCollected;
+    public delegate void HandleItemCollected(ItemData itemData);
+    public ItemData itemData;
 
     public bool isPlayerNear = false;
 
@@ -19,9 +19,9 @@ public class Notes : MonoBehaviour, ICollectable
 
     public void Collect()
     {
-        Debug.Log(OnNoteCollected);
-        Debug.Log(noteData);
-        OnNoteCollected?.Invoke(noteData);
+        Debug.Log(OnItemCollected);
+        Debug.Log(itemData);
+        OnItemCollected?.Invoke(itemData);
         isPlayerNear = false;
         Destroy(gameObject);
     }

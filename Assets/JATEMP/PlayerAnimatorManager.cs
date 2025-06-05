@@ -143,6 +143,26 @@ public class PlayerAnimatorManager : MonoBehaviour
         //if (rightKnee != null)
         //    rightKnee.localRotation *= Quaternion.Euler(40f * 1, 0f, 0f);
 
+        //if (player.playerLocomotionManager.isClimbingLedge)
+        //{
+        //    player.animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1f);
+        //    player.animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1f);
+        //
+        //    Vector3 leftHandLedgeTarget = player.playerLocomotionManager.ledgePoint + -transform.right * player.playerLocomotionManager.handOffset + Vector3.up * player.playerLocomotionManager.upOffset;
+        //    Vector3 rightHandLedgeTarget = player.playerLocomotionManager.ledgePoint + transform.right * player.playerLocomotionManager.handOffset + Vector3.up * player.playerLocomotionManager.upOffset;
+        //
+        //    player.animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandLedgeTarget);
+        //    player.animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandLedgeTarget);
+        //}
+        //else
+        //{
+        //    // Reset IK weights
+        //    player.animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0f);
+        //    player.animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 0f);
+        //    player.animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0f);
+        //    player.animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 0f);
+        //}
+
     }
     public void UpdateAnimatorMovementParameters(float horizontalMovement, float verticalMovement, bool isSprinting, bool isRunning, bool isCrouching)
     {

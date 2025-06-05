@@ -33,6 +33,9 @@ public class PlayerInputManager : MonoBehaviour
     [SerializeField] bool jumpInput = false;
     [SerializeField] bool crouchInput = false;
 
+
+    public bool canClimb = false;
+
     private void Awake()
     {
         if (instance == null)
@@ -115,7 +118,8 @@ public class PlayerInputManager : MonoBehaviour
             movementInput = playerControls.PlayerMovement.Movement.ReadValue<Vector2>();
             tiltInput = playerControls.PlayerMovement.Tilt.ReadValue<Vector2>().x;
         }
-            
+
+        canClimb = player.playerLocomotionManager.DetectLedge(out Vector3 ledgePoint);
 
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
@@ -230,7 +234,14 @@ public class PlayerInputManager : MonoBehaviour
         {
             jumpInput = false;
 
-            player.playerLocomotionManager.AttemptToPerformJump();
+            if (player.playerLocomotionManager.DetectLedge(out Vector3 ledgePosition))
+            {
+                player.playerLocomotionManager.TryClimbLedge(ledgePosition);
+            }
+            else
+            {
+                player.playerLocomotionManager.AttemptToPerformJump();
+            }
         }
     }
 }

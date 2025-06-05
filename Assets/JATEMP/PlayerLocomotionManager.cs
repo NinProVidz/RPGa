@@ -21,6 +21,22 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     [SerializeField] float crouchStrafeSpeed = 1f;
     [SerializeField] float rotationSpeed = 15f;
 
+    [Header("Ledge Climb Settings")]
+    public float ledgeDetectRange = 1.5f;
+    public float ledgeMinHeight = 1f;
+    public float ledgeMaxHeight = 2.5f;
+    public float ledgeCheckRadius = 0.3f;
+    public LayerMask ledgeLayer;
+    public float climbUpDuration = 1.0f; // Match animation length
+    public float climbUpStandDuration = 1.0f; // Match animation length
+
+    public float climbTime = 0.5f;
+
+    public float ledgeOffset;
+
+    public bool isClimbingLedge = false;
+    private Vector3 ledgeClimbTarget;
+
     [Header("Tilt settings")]
     [SerializeField] Transform tiltBone;
     [SerializeField] Transform tiltBone2;
@@ -52,6 +68,8 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     bool fallingVelocityHasBeenSet = false;
     public float inAirTimer = 0;
 
+    public Vector3 ledgePoint;
+
     private bool wasGrounded = true;
     private bool hasLanded = false;
 
@@ -66,36 +84,87 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(groundCheckTransform.position, groundCheckSphereRadius);
-            Gizmos.DrawLine(groundCheckTransform.position + Vector3.up * 0.1f, groundCheckTransform.position + Vector3.down * (groundCheckDistance));
+            Gizmos.DrawLine(groundCheckTransform.position + Vector3.up * 0.1f, groundCheckTransform.position + Vector3.down * groundCheckDistance);
         }
 
-        if (tiltRaycastOrigin == null) return;
+        if (tiltRaycastOrigin != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawRay(tiltRaycastOrigin.position, tiltRaycastOrigin.right * wallCheckDistance);
+            Gizmos.DrawRay(tiltRaycastOrigin.position, -tiltRaycastOrigin.right * wallCheckDistance);
+        }
 
-        // Set colors for left and right raycasts
-        Gizmos.color = Color.red;
+        // SphereCast origin
+        Vector3 sphereOrigin = transform.position + Vector3.up * ledgeMaxHeight;
+        Vector3 direction = transform.forward;
 
-        // Draw right ray
-        Vector3 rightDir = tiltRaycastOrigin.right;
-        Gizmos.DrawRay(tiltRaycastOrigin.position, rightDir * wallCheckDistance);
+        // Show SphereCast
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(sphereOrigin, ledgeCheckRadius);
+        Gizmos.DrawLine(sphereOrigin, sphereOrigin + direction * ledgeDetectRange);
 
-        // Draw left ray
-        Vector3 leftDir = -tiltRaycastOrigin.right;
-        Gizmos.DrawRay(tiltRaycastOrigin.position, leftDir * wallCheckDistance);
+        Vector3 lowOrigin = transform.position + Vector3.up * ledgeMinHeight;
+        Gizmos.DrawLine(lowOrigin, lowOrigin + direction * ledgeDetectRange);
+
+        // Check if wall is hit
+        if (Physics.SphereCast(sphereOrigin, ledgeCheckRadius, direction, out RaycastHit wallHit, ledgeDetectRange, ledgeLayer))
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(wallHit.point, 0.05f);
+
+            // Step forward off the wall + small upward offset
+            Vector3 ledgeCheckOrigin = wallHit.point + wallHit.normal * 0.2f + Vector3.up * 0.1f;
+
+            // Show raycast origin
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(ledgeCheckOrigin, 0.03f);
+
+            // Downward raycast range
+            float raycastLength = (ledgeMaxHeight - ledgeMinHeight) + 0.1f;
+            Vector3 down = Vector3.down * raycastLength;
+
+            Gizmos.DrawLine(ledgeCheckOrigin, ledgeCheckOrigin + down);
+
+            if (Physics.Raycast(ledgeCheckOrigin, Vector3.down, out RaycastHit ledgeHit, raycastLength, ledgeLayer))
+            {
+                float heightDifference = ledgeHit.point.y - transform.position.y;
+
+                // Show min/max height range for debug
+                Vector3 basePosition = transform.position;
+                Vector3 minHeightPos = basePosition + Vector3.up * ledgeMinHeight;
+                Vector3 maxHeightPos = basePosition + Vector3.up * ledgeMaxHeight;
+
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(minHeightPos, maxHeightPos);
+                Gizmos.DrawWireSphere(minHeightPos, 0.05f);
+                Gizmos.DrawWireSphere(maxHeightPos, 0.05f);
+
+                // If climbable
+                if (heightDifference > ledgeMinHeight && heightDifference < ledgeMaxHeight)
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawSphere(ledgeHit.point, 0.05f);
+
+                    // Target position the player will go to
+                    Vector3 climbTarget = ledgeHit.point + Vector3.up * 1.1f + transform.forward * 0.3f;
+                    Gizmos.color = Color.magenta;
+                    Gizmos.DrawWireSphere(climbTarget, 0.1f);
+                }
+            }
+        }
     }
-
 
     private void LateUpdate()
     {
         HandleGroundCheck();
         player.animator.SetBool("isGrounded", player.isGrounded);
 
-        // Detect transition from falling to grounded
         if (player.isGrounded)
         {
             if (!wasGrounded && !player.isJumping)
             {
                 hasLanded = true;
-                player.playerAnimatorManager.PlayTargetActionAnimation("Land", false, false); // Play landing animation
+                player.playerAnimatorManager.PlayTargetActionAnimation("Land", false, false);
             }
 
             if (yVelocity.y < 0)
@@ -123,11 +192,10 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         player.characterController.Move(yVelocity * Time.deltaTime);
 
         wasGrounded = player.isGrounded;
-        hasLanded = false; // Reset after use
+        hasLanded = false;
         HandleTilt();
         Debug.DrawRay(transform.position, moveDirection);
     }
-
 
     public void LoadData(GameData data)
     {
@@ -138,24 +206,18 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     public void SaveData(ref GameData data)
     {
-        data.playerPosition = this.transform.position; 
+        data.playerPosition = this.transform.position;
     }
 
     private void HandleGroundCheck()
     {
-        Vector3 origin = groundCheckTransform.position;
-
-        // Slight upward offset to avoid overlapping inside floor
-        origin += Vector3.up * 0.05f;
-
+        Vector3 origin = groundCheckTransform.position + Vector3.up * 0.05f;
         player.isGrounded = Physics.CheckSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
     }
 
     public void HandleAllMovement()
     {
         HandleGroundedMovemnt();
-        
-        //HandleRotation();
     }
 
     private void HandleTilt()
@@ -166,10 +228,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         if (input != 0)
         {
-            // Determine direction: left or right
             Vector3 checkDirection = input < 0 ? -tiltRaycastOrigin.right : tiltRaycastOrigin.right;
-
-            // Raycast to the side to detect wall
             if (Physics.Raycast(tiltRaycastOrigin.position, checkDirection, out RaycastHit hit, wallCheckDistance, wallLayer))
             {
                 blockedByWall = true;
@@ -188,14 +247,12 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
             holdTimer = 0f;
         }
 
-        // Smooth tilt transition (either toward target or back to 0)
         float targetTiltZ = blockedByWall ? 0f : desiredTilt;
         currentTiltZ = Mathf.Lerp(currentTiltZ, targetTiltZ, Time.deltaTime * tiltSpeed);
-
-        // Apply rotation
         tiltBone.localRotation = Quaternion.Euler(new Vector3(0, 0, currentTiltZ));
         tiltBone2.localRotation = Quaternion.Euler(new Vector3(0, 0, currentTiltZ));
     }
+
     private void GetVerticalAndHorizontalInputs()
     {
         verticalMovement = PlayerInputManager.instance.verticalInput;
@@ -207,120 +264,143 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
     {
         GetVerticalAndHorizontalInputs();
 
-        //moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;
-        //moveDirection = moveDirection + PlayerCamera.instance.transform.right * horizontalMovement;
-        moveDirection = player.transform.forward * verticalMovement;
-        moveDirection = moveDirection + player.transform.right * horizontalMovement;
+        moveDirection = player.transform.forward * verticalMovement + player.transform.right * horizontalMovement;
         moveDirection.Normalize();
         moveDirection.y = 0;
 
+        float speed = walkingSpeed;
         if (isCrouching)
         {
-            if (horizontalMovement != 0)
-            {
-                player.characterController.Move(moveDirection * crouchStrafeSpeed * Time.smoothDeltaTime);
-            }
-            else
-            {
-                player.characterController.Move(moveDirection * crouchSpeed * Time.smoothDeltaTime);
-            }   
+            speed = horizontalMovement != 0 ? crouchStrafeSpeed : crouchSpeed;
         }
-        else
+        else if (isSprinting)
         {
-            if (isSprinting)
-            {
-                player.characterController.Move(moveDirection * sprintingSpeed * Time.smoothDeltaTime);
-            }
-            else
-            {
-                if (isRunning)
-                {
-                    player.characterController.Move(moveDirection * runningSpeed * Time.smoothDeltaTime);
-                }
-                else
-                {
-                    player.characterController.Move(moveDirection * walkingSpeed * Time.smoothDeltaTime);
-                }
-            }
+            speed = sprintingSpeed;
         }
-
-    }
-
-    private void HandleRotation()
-    {
-        targetRotationDirection = Vector3.zero;
-        targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
-        targetRotationDirection = targetRotationDirection + PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
-        targetRotationDirection.Normalize();
-        targetRotationDirection.y = 0;
-
-        if (targetRotationDirection == Vector3.zero)
+        else if (isRunning)
         {
-            targetRotationDirection = transform.forward;
+            speed = runningSpeed;
         }
 
-        Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
-        Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-        transform.rotation = targetRotation;
+        player.characterController.Move(moveDirection * speed * Time.smoothDeltaTime);
     }
 
     public void HandleRunning()
     {
-        if (moveAmount > 0)
-        {
-            isRunning = true;
-        }
-        else
-        {
-            isRunning = false;
-        }
+        isRunning = moveAmount > 0;
     }
 
     public void HandleSprinting()
     {
-        if (player.isPerformingAction)
-        {
-            isSprinting = false;
-        }
-
-        if (verticalMovement > 0)
-        {
-            isSprinting = true;
-        }
-        else
-        {
-            isSprinting = false;
-        }
+        isSprinting = !player.isPerformingAction && verticalMovement > 0;
     }
 
     public void AttemptToPerformJump()
     {
-        if (player.isPerformingAction)
+        if (!player.isPerformingAction && !player.isJumping && player.isGrounded)
         {
-            return;
+            player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
+            player.isJumping = true;
         }
-
-        if (player.isJumping)
-        {
-            return;
-        }
-
-        if (!player.isGrounded)
-        {
-            return;
-        }
-
-        player.playerAnimatorManager.PlayTargetActionAnimation("Jump", false, false);
-
-        player.isJumping = true;
-
-
     }
 
     public void ApplyJumpingVelocity()
     {
-        Debug.Log("jump");
         yVelocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityForce);
-        Debug.Log(yVelocity.y);
+    }
+
+    public void TryClimbLedge(Vector3 ledgePoint)
+    {
+        this.ledgePoint = ledgePoint;
+        StartCoroutine(ClimbLedgeCoroutine(ledgePoint));
+    }
+
+    public bool DetectLedge(out Vector3 ledgePoint)
+    {
+        ledgePoint = Vector3.zero;
+        float startHeight = ledgeMaxHeight;
+        float castHeight = ledgeMaxHeight - ledgeMinHeight;
+
+        Vector3 forward = transform.forward;
+        Vector3 baseOrigin = transform.position + Vector3.up * startHeight;
+
+        int forwardSteps = 6; // More steps = more coverage
+        float totalDistance = ledgeDetectRange;
+
+        float bestY = float.MinValue;
+        Vector3 bestHit = Vector3.zero;
+        bool foundLedge = false;
+
+        for (int i = 0; i <= forwardSteps; i++)
+        {
+            float t = i / (float)forwardSteps;
+            Vector3 stepOrigin = baseOrigin + forward * (t * totalDistance);
+
+            if (Physics.Raycast(stepOrigin, Vector3.down, out RaycastHit hit, castHeight, ledgeLayer))
+            {
+                float heightDifference = transform.position.y - hit.point.y;
+
+                if (heightDifference < -ledgeMinHeight && heightDifference > -ledgeMaxHeight)
+                {
+                    Vector3 clearanceCheck = hit.point + Vector3.up * 1f;
+                    if (!Physics.CheckSphere(clearanceCheck, 0.25f, ledgeLayer))
+                    {
+                        if (hit.point.y > bestY)
+                        {
+                            bestY = hit.point.y;
+                            bestHit = hit.point;
+                            foundLedge = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (foundLedge)
+        {
+            ledgePoint = bestHit;
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private IEnumerator ClimbLedgeCoroutine(Vector3 targetPoint)
+    {
+        isClimbingLedge = true;
+        player.isPerformingAction = true;
+        player.characterController.enabled = false;
+
+        player.playerAnimatorManager.PlayTargetActionAnimation("ClimbUp", true, false);
+
+        Vector3 startPosition = transform.position;
+        Vector3 climbPosition = targetPoint + Vector3.up * ledgeOffset;
+        Vector3 endPosition = targetPoint + Vector3.up * 1.1f + transform.forward * 0.3f;
+        float elapsed = 0f;
+        
+        while (elapsed < climbUpDuration)
+        {
+            transform.position = Vector3.Lerp(startPosition, climbPosition, elapsed / climbUpDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(climbTime);
+
+        elapsed = 0f;
+
+        while (elapsed < climbUpStandDuration)
+        {
+            transform.position = Vector3.Lerp(climbPosition, endPosition, elapsed / climbUpStandDuration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = endPosition;
+
+        player.characterController.enabled = true;
+        player.isPerformingAction = false;
+        isClimbingLedge = false;
     }
 }

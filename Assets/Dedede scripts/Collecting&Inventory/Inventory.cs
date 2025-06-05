@@ -12,12 +12,12 @@ public class Inventory : MonoBehaviour
 
     private void OnEnable()
     {
-        Notes.OnNoteCollected += Add;
+        Items.OnItemCollected += Add;
     }
 
     private void OnDisable()
     {
-        Notes.OnNoteCollected -= Add;
+        Items.OnItemCollected -= Add;
     }
 
     public void Add(ItemData itemData)

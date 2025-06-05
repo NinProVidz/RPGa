@@ -10,12 +10,12 @@ public class NotePlaceHolder : MonoBehaviour
 
     private void OnEnable()
     {
-        //Notes.OnNoteCollected += NoteCollected;
+        //Items.OnItemCollected += NoteCollected;
     }
 
     private void OnDisable()
     {
-        //Notes.OnNoteCollected -= NoteCollected;
+        //Items.OnItemCollected -= NoteCollected;
     }
 
     public void NoteCollected()
