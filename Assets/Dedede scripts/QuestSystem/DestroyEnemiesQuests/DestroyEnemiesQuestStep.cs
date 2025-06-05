@@ -5,7 +5,7 @@ using UnityEngine;
 public class DestroyEnemiesQuestStep : QuestStep
 {
     private int enemiesDefeated = 0;
-    private int enemiesToComplete = 1;
+    private int enemiesToComplete = 2;
 
     DummyHealth dummyHealth;
 
