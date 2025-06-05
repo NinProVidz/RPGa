@@ -11,6 +11,7 @@ public class Collector : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.F) && possibleCollectable != null)
         {
             possibleCollectable.Collect();
+            possibleCollectable = null;
         }
     } 
 }

@@ -10,6 +10,7 @@ public class GameData
     public int day;
     public Vector3 playerPosition;
     public int timerCount;
+    public float dayNightTime;
 
     public GameData()
     {
@@ -17,5 +18,6 @@ public class GameData
         month = 0;
         playerPosition = Vector3.zero;
         timerCount = 0;
+        dayNightTime = 0;
     }
 }
