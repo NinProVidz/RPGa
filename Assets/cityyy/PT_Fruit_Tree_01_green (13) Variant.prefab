@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3287993477848413742
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1985475955761378556, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956197349277, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_RootOrder
+      value: 335
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 17.28
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -33.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.12895077
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.991651
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -165.182
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357892, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956387357894, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_Name
+      value: PT_Fruit_Tree_01_green (13) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1985475956480635447, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b1b11a5ed75a9e94491b0b9ddfe6146c, type: 3}

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &724772276189545915
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1945080914539671012, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_RootOrder
+      value: 283
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -233.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.3266
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 22.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4312651163146196136, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4422583463920990301, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_Name
+      value: Cylinder Seat (10) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 8681399507801043436, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: e24460ca7ea80e24fb832e69d6cd28ed, type: 3}
