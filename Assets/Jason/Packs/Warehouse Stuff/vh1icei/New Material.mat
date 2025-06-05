@@ -27,7 +27,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 2800000, guid: b8cf108fceb54b44abf184610f395348, type: 3}
+        m_Texture: {fileID: 2800000, guid: b85e43a315cc9e74b9c377686499094b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -47,19 +47,19 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: de79cdd23a2355741be0b5ebafeab2ba, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4801866fcde642f41973fc59e5718ffd, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: 026a06bfb6274b34a8907eddf7e56a49, type: 3}
+        m_Texture: {fileID: 2800000, guid: ff6c8e83bcf5b3f48a408b0e6d04c830, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
-        m_Texture: {fileID: 2800000, guid: 0ca1888adfe4c9448b56574d853698b8, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3e24d1ea71059a04ca3b43bc5a5b038c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
-        m_Texture: {fileID: 2800000, guid: 0896b37e44e9e094e913ce7a0466a56a, type: 3}
+        m_Texture: {fileID: 2800000, guid: c0efad3629d3d344e8b49bb5c15bca94, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -68,13 +68,13 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _GlossMapScale: 0.297
+    - _GlossMapScale: 0.305
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
-    - _Parallax: 0.0314
+    - _Parallax: 0.029
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
