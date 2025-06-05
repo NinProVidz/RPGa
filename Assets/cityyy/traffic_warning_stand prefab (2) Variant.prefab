@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6933919622680531790
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_RootOrder
+      value: 98
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -111.95
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.5400281
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 50.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: -0.09878773
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.99510854
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -191.339
+      objectReference: {fileID: 0}
+    - target: {fileID: 7566210587463407813, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7571536621583267891, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7571671502434190685, guid: 8326517f1098c624f98042b5105bbd61, type: 3}
+      propertyPath: m_Name
+      value: traffic_warning_stand prefab (2) Variant
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8326517f1098c624f98042b5105bbd61, type: 3}

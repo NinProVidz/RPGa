@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &6205352777160461358
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1937061412918761692, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3269575434814372605, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3317335423651893297, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3498845300600666232, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3758462021992266880, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3901605226422685118, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_RootOrder
+      value: 107
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -66.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -55.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.82149523
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 5.4567535e-11
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.57021546
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 1.9177811e-10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -69.531
+      objectReference: {fileID: 0}
+    - target: {fileID: 4094001134223385873, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5471102318239294279, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 6182500783201599949, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7051760224687972514, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_Name
+      value: train (2) Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 9034951298533758394, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 18
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 993195acaa735ab4d9e68847bec41bca, type: 3}
