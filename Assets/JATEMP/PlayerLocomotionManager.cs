@@ -23,12 +23,14 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     [Header("Ledge Climb Settings")]
     public float ledgeDetectRange = 1.5f;
+    public float ledgeAirMinHeight = 1f;
     public float ledgeMinHeight = 1f;
     public float ledgeMaxHeight = 2.5f;
     public float ledgeCheckRadius = 0.3f;
     public LayerMask ledgeLayer;
     public float climbUpDuration = 1.0f; // Match animation length
     public float climbUpStandDuration = 1.0f; // Match animation length
+    public float standHeight;
 
     public float climbTime = 0.5f;
 
@@ -146,7 +148,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
                     Gizmos.DrawSphere(ledgeHit.point, 0.05f);
 
                     // Target position the player will go to
-                    Vector3 climbTarget = ledgeHit.point + Vector3.up * 1.1f + transform.forward * 0.3f;
+                    Vector3 climbTarget = ledgeHit.point + Vector3.up * standHeight + transform.forward * 0.3f;
                     Gizmos.color = Color.magenta;
                     Gizmos.DrawWireSphere(climbTarget, 0.1f);
                 }
@@ -320,6 +322,10 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         ledgePoint = Vector3.zero;
         float startHeight = ledgeMaxHeight;
         float castHeight = ledgeMaxHeight - ledgeMinHeight;
+        if (!Physics.Raycast(transform.position, Vector3.down, 1f, groundLayer))
+        {
+            castHeight = ledgeMaxHeight - ledgeAirMinHeight;
+        }
 
         Vector3 forward = transform.forward;
         Vector3 baseOrigin = transform.position + Vector3.up * startHeight;
@@ -340,16 +346,35 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
             {
                 float heightDifference = transform.position.y - hit.point.y;
 
-                if (heightDifference < -ledgeMinHeight && heightDifference > -ledgeMaxHeight)
+                if (Physics.Raycast(transform.position, Vector3.down, 1f, groundLayer))
                 {
-                    Vector3 clearanceCheck = hit.point + Vector3.up * 1f;
-                    if (!Physics.CheckSphere(clearanceCheck, 0.25f, ledgeLayer))
+                    if (heightDifference < -ledgeMinHeight && heightDifference > -ledgeMaxHeight)
                     {
-                        if (hit.point.y > bestY)
+                        Vector3 clearanceCheck = hit.point + Vector3.up * 1f;
+                        if (!Physics.CheckSphere(clearanceCheck, 0.25f, ledgeLayer))
                         {
-                            bestY = hit.point.y;
-                            bestHit = hit.point;
-                            foundLedge = true;
+                            if (hit.point.y > bestY)
+                            {
+                                bestY = hit.point.y;
+                                bestHit = hit.point;
+                                foundLedge = true;
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (heightDifference < -ledgeAirMinHeight && heightDifference > -ledgeMaxHeight)
+                    {
+                        Vector3 clearanceCheck = hit.point + Vector3.up * 1f;
+                        if (!Physics.CheckSphere(clearanceCheck, 0.25f, ledgeLayer))
+                        {
+                            if (hit.point.y > bestY)
+                            {
+                                bestY = hit.point.y;
+                                bestHit = hit.point;
+                                foundLedge = true;
+                            }
                         }
                     }
                 }
@@ -376,7 +401,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
         Vector3 startPosition = transform.position;
         Vector3 climbPosition = targetPoint + Vector3.up * ledgeOffset;
-        Vector3 endPosition = targetPoint + Vector3.up * 1.1f + transform.forward * 0.3f;
+        Vector3 endPosition = targetPoint + Vector3.up * standHeight + transform.forward * 0.3f;
         float elapsed = 0f;
         
         while (elapsed < climbUpDuration)
