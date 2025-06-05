@@ -10,12 +10,13 @@ public class Clock : MonoBehaviour, IDataPersistence
     [SerializeField] public float dayLength;
    
     [SerializeField] public int counterTillDayChange;
-    [SerializeField] public int maxCounter = 2880;
+    [SerializeField] public int maxCounter = 1440;
     [SerializeField] public int counterReset = 0;
 
     Date date;
 
     [SerializeField] public float floatTimeSpan;
+    [SerializeField] public int minuteTimeSpan;
     [SerializeField] public TimeSpan currentTime;
     [SerializeField] public int seconds;
     [SerializeField] public float minuteLength => dayLength / ClockConstant.MinutesInDay;
@@ -24,13 +25,12 @@ public class Clock : MonoBehaviour, IDataPersistence
     public void LoadData(GameData data)
     {
         this.counterTillDayChange = data.timerCount;
-        this.currentTime = data.currentTime;
+        currentTime = TimeSpan.FromMinutes(counterTillDayChange);
     }
 
     public void SaveData(ref GameData data)
     {
         data.timerCount = this.counterTillDayChange;
-        data.currentTime = this.currentTime;
     }
 
     private IEnumerator AddMinute()
@@ -55,10 +55,15 @@ public class Clock : MonoBehaviour, IDataPersistence
             date.namesIndex++;
             counterTillDayChange = counterReset;
         }
-        
+        Convert();
     }
     private void OnApplicationQuit()
     {
         int seconds = (int)Math.Round(currentTime.TotalSeconds);
+    }
+
+    public void Convert()
+    {
+        floatTimeSpan = (float) currentTime.TotalMinutes;
     }
 }
