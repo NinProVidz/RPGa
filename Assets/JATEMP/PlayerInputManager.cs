@@ -132,11 +132,11 @@ public class PlayerInputManager : MonoBehaviour
     public bool CanUncrouch()
     {
         float standHeight = 2f;
-        float radius = player.characterController.radius;
+        float radius = player.characterController.radius-0.1f;
 
         // Bottom and top points of the capsule
-        Vector3 bottom = player.transform   .position + Vector3.up * radius;
-        Vector3 top = bottom + Vector3.up * (standHeight - radius * 2);
+        Vector3 bottom = player.transform.position + Vector3.up * player.playerAnimatorManager.crouchHeight;
+        Vector3 top = player.transform.position + Vector3.up * standHeight;
 
         // Visualize capsule
 

@@ -169,12 +169,12 @@ public class PlayerAnimatorManager : MonoBehaviour
         float horizontalAmount = horizontalMovement;
         float verticalAmount = verticalMovement;
 
-        if (isCrouching)
+        if (isCrouching && !player.isJumping)
         {
             verticalAmount *= 0.5f;
             horizontalAmount *= 0.5f;
-            player.characterController.height = 1.3f;
-            player.characterController.center = new Vector3(0, 0.65f, 0);
+            player.characterController.height = 2f*crouchHeight;
+            player.characterController.center = new Vector3(0, crouchHeight, 0);
         }
         else
         {

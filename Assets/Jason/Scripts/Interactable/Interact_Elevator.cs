@@ -76,7 +76,7 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
     {
         prompt.enabled = isInteractable && !isInteracted;
 
-
+        prompt.transform.position = promptLocation.position;
 
     }
 }
