@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Metal Scrap Data
   m_EditorClassIdentifier: 
   displayName: Metal Scrap
-  Icon: {fileID: 21300000, guid: 76c83aae135a8194698fcdb3863a1bc5, type: 3}
+  Icon: {fileID: 21300000, guid: 6dde779f48bcf894faf721a0086d6d81, type: 3}
