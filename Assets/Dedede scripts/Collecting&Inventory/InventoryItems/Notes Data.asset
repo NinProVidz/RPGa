@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Notes Data
   m_EditorClassIdentifier: 
   displayName: Notes
-  Icon: {fileID: 21300000, guid: cc9855f7753f75d49b3152b73bff3749, type: 3}
+  Icon: {fileID: 21300000, guid: c1a49eda912488f4b9fa6d92be1764bc, type: 3}
