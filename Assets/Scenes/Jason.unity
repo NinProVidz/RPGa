@@ -1558,6 +1558,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 816099688}
     - target: {fileID: 7770628489512903890, guid: 069ff93dbc8816d4d98b02f18cf627a2, type: 3}
+      propertyPath: cameraTurnSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7770628489512903890, guid: 069ff93dbc8816d4d98b02f18cf627a2, type: 3}
       propertyPath: cameraLookStrength
       value: 0.25
       objectReference: {fileID: 0}
@@ -14496,6 +14500,8 @@ MonoBehaviour:
   counterTillDayChange: 0
   maxCounter: 2880
   counterReset: 0
+  floatTimeSpan: 0
+  minuteTimeSpan: 0
   seconds: 0
 --- !u!1 &4782781320263258804
 GameObject:
