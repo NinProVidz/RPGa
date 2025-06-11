@@ -24,10 +24,10 @@ TagManager:
   - PlayerUI
   - Ignore
   - Trigger
-  - 
-  - 
-  - 
-  - 
+  - PlayerUIEmissive
+  - Processing
+  - MenuUI
+  - MenuCam
   - 
   - 
   - 

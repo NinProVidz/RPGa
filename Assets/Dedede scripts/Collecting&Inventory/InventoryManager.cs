@@ -3,11 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
+public struct ItemTypeColorPair
+{
+    public ItemTier itemTier;
+    public Color color;
+}
+
 public class InventoryManager : MonoBehaviour
 {
-
     public GameObject slotPrefab;
     public List<InventorySlot> inventorySlot = new List<InventorySlot>(20);
+
+    public InventorySlot selectedSlot;
+
+    [Header("Item Type Colors")]
+    public List<ItemTypeColorPair> itemTypeColors;
+
+    private Dictionary<ItemTier, Color> itemTypeColorDict;
+
+    private void Awake()
+    {
+        itemTypeColorDict = new Dictionary<ItemTier, Color>();
+        foreach (var pair in itemTypeColors)
+        {
+            itemTypeColorDict[pair.itemTier] = pair.color;
+        }
+    }
+
 
     private void OnEnable()
     {
@@ -39,6 +62,12 @@ public class InventoryManager : MonoBehaviour
         for(int i = 0; i < inventory.Count; i++)
         {
             inventorySlot[i].DrawSlot(inventory[i]);
+            inventorySlot[i].item = inventory[i];
+
+            ItemTier type = inventory[i].itemData.itemTier;
+
+            inventorySlot[i].itemColor = itemTypeColorDict.GetValueOrDefault(type, Color.white);
+            //inventorySlot[i].enabled = true;
         }
     }
 
@@ -51,5 +80,25 @@ public class InventoryManager : MonoBehaviour
         newSlotComponent.ClearSlot();
 
         inventorySlot.Add(newSlotComponent);
+    }
+
+    public void SelectSlot(InventorySlot selectedSlot)
+    {
+
+        if (this.selectedSlot != null)
+        {
+            this.selectedSlot.isSelected = false;
+        }
+
+        if(this.selectedSlot == selectedSlot)
+        {
+            this.selectedSlot = null;
+        }
+        else
+        {
+            selectedSlot.isSelected = true;
+            this.selectedSlot = selectedSlot;
+        }
+        
     }
 }

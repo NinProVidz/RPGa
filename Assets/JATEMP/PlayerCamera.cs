@@ -46,7 +46,7 @@ public class PlayerCamera : MonoBehaviour
 
     private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         if (instance == null)
         {

@@ -494,7 +494,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4258937510758652988
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1353,7 +1353,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 933
+  m_VersionIndex: 936
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1480,7 +1480,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5959068741168927890
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1792,8 +1792,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1968680616681366440}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -24.82, y: 0.39, z: 3.6}
+  m_LocalRotation: {x: -0, y: 0.12998821, z: -0, w: 0.9915156}
+  m_LocalPosition: {x: -34.03253, y: -18.46, z: 150.90643}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1803,7 +1803,7 @@ Transform:
   - {fileID: 6171685994939924418}
   m_Father: {fileID: 1286111900343765814}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 14.938, z: 0}
 --- !u!114 &7656418146820796561
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1856,6 +1856,20 @@ MonoBehaviour:
   crouchSpeed: 1
   crouchStrafeSpeed: 1
   rotationSpeed: 15
+  ledgeDetectRange: 0.6
+  ledgeAirMinHeight: 0.5
+  ledgeMinHeight: 1.5
+  ledgeMaxHeight: 2.5
+  ledgeCheckRadius: 0.3
+  ledgeLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  climbUpDuration: 0.5
+  climbUpStandDuration: 0.2
+  standHeight: 0.6
+  climbTime: 0.5
+  ledgeOffset: -0.5
+  isClimbingLedge: 0
   tiltBone: {fileID: 2811678465716073734}
   tiltBone2: {fileID: 6283566600759704970}
   tiltAngle: 25
@@ -1875,11 +1889,12 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
-  groundCheckSphereRadius: 0.2
+  groundCheckSphereRadius: 0.25
   yVelocity: {x: 0, y: 0, z: 0}
   groundedVelocity: -20
   fallStartVelocity: -5
   inAirTimer: 0
+  ledgePoint: {x: 0, y: 0, z: 0}
 --- !u!114 &5874694127028069463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1910,6 +1925,7 @@ MonoBehaviour:
   animRotWeight2: 1
   lookAtDist: 1000
   head: {fileID: 0}
+  crouchHeight: 0.65
   angleMultiplier: 3
 --- !u!95 &2213012873716493548
 Animator:
@@ -1953,7 +1969,7 @@ CharacterController:
   serializedVersion: 3
   m_Height: 1.3
   m_Radius: 0.29
-  m_SlopeLimit: 45
+  m_SlopeLimit: 50
   m_StepOffset: 0.3
   m_SkinWidth: 0.0001
   m_MinMoveDistance: 0.001
@@ -2222,7 +2238,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6040947755037603552
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2717,6 +2733,7 @@ GameObject:
   - component: {fileID: 7027990020200008449}
   - component: {fileID: 4176284184894791771}
   - component: {fileID: 6547981884271012844}
+  - component: {fileID: 7260483438368151779}
   m_Layer: 9
   m_Name: Eyelids
   m_TagString: Untagged
@@ -2760,6 +2777,7 @@ MonoBehaviour:
   bottomMin: -8.5
   bottomMax: 41
   eyePercent: 1
+  animationDuration: 1
 --- !u!20 &6547981884271012844
 Camera:
   m_ObjectHideFlags: 0
@@ -2811,6 +2829,27 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!95 &7260483438368151779
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4076181564111603545}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 0}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4099637576214316077
 GameObject:
   m_ObjectHideFlags: 0
@@ -4101,7 +4140,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 936
+  m_VersionIndex: 939
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -4292,7 +4331,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5377764245643929425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4457,6 +4496,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7656418146820796561}
   inputEnabled: 1
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 1
   movementInput: {x: 0, y: 0}
   horizontalInput: 0
   verticalInput: 0
@@ -4470,6 +4512,7 @@ MonoBehaviour:
   sprintInput: 0
   jumpInput: 0
   crouchInput: 0
+  canClimb: 0
 --- !u!95 &4604768715371614122
 Animator:
   serializedVersion: 5
@@ -4702,7 +4745,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5085146766823209927
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4957,7 +5000,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6530780019473733686}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 2.557495, z: 0}
+  m_LocalPosition: {x: -0, y: 2.3, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5247,8 +5290,8 @@ MonoBehaviour:
   collideWithLayers:
     serializedVersion: 2
     m_Bits: 0
-  leftAndRightLookAngle: 0
-  upAndDownLookAngle: 0
+  leftAndRightLookAngle: 15
+  upAndDownLookAngle: -5
   yawDampTime: 0.05
   pitchDampTime: 0.05
 --- !u!114 &5803417525883896623
@@ -5360,7 +5403,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:
@@ -5750,8 +5793,8 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 255
-  m_RenderingPath: -1
+    m_Bits: 767
+  m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
@@ -5960,7 +6003,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5331685752776398625
 RectTransform:
   m_ObjectHideFlags: 0
