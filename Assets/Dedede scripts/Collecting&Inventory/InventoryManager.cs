@@ -24,6 +24,8 @@ public class InventoryManager : MonoBehaviour
 
     private Dictionary<ItemTier, Color> itemTypeColorDict;
 
+    
+
     private void Awake()
     {
         itemTypeColorDict = new Dictionary<ItemTier, Color>();
@@ -82,6 +84,7 @@ public class InventoryManager : MonoBehaviour
 
         InventorySlot newSlotComponent = newSlot.GetComponent<InventorySlot>();
         newSlotComponent.ClearSlot();
+        newSlotComponent.inventoryManager = this;
 
         inventorySlot.Add(newSlotComponent);
     }
