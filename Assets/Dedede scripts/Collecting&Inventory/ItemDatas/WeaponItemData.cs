@@ -3,17 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Inventory/Weapon Item")]
-public class WeaponItemData : MonoBehaviour
+public class WeaponItemData : ItemData
 {
-    // Start is called before the first frame update
-    void Start()
+    public int value;
+    public float damage;
+
+    private void OnEnable()
     {
-        
+        itemType = ItemType.Weapon;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override string GetMainDesc()
     {
-        
+        string mainDesc = mainDescription;
+        return mainDescription.Replace("{damage}", damage.ToString());
     }
 }

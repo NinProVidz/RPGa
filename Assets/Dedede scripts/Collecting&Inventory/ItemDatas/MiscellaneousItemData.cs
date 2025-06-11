@@ -9,6 +9,6 @@ public class MiscellaneouscItemData : ItemData
 
     private void OnEnable()
     {
-        itemType = ItemType.Miscellaneous; // or ItemType.Generic
+        itemType = ItemType.Miscellaneous;
     }
 }
