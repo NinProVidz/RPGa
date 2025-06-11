@@ -3877,6 +3877,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb194b39eddfec148b5683a4e9addc0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  inventoryType: 4
   slotPrefab: {fileID: 479335555969594134, guid: be09e58450daf4e4a8cac5a951659aa4, type: 3}
   inventorySlot: []
   selectedSlot: {fileID: 0}
@@ -4534,7 +4535,7 @@ GameObject:
   - component: {fileID: 4762664047006109381}
   - component: {fileID: 1154318494087181419}
   m_Layer: 8
-  m_Name: InventorySlots
+  m_Name: MiscellaneousSlots
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
