@@ -288,6 +288,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7335254536785133031, guid: dd72836202a97d74bb2dc308cf9705d0, type: 3}
+      propertyPath: inventoryType
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 8393296169689701848, guid: dd72836202a97d74bb2dc308cf9705d0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -2805,7 +2809,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sigma: 0
-  itemTypeInventories: []
+  itemTypeInventories:
+  - itemType: 4
+    inventory:
+      subInventory: []
+  - itemType: 4
+    inventory:
+      subInventory: []
 --- !u!4 &1663521984
 Transform:
   m_ObjectHideFlags: 0
