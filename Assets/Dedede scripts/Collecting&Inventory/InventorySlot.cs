@@ -9,6 +9,8 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     public InventoryItem item;
 
+    public InventoryManager inventoryManager;
+
     public GameObject slotObj;
     public Image icon;
     public Image highlight;
@@ -127,7 +129,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (isHovering)
         {
-            FindObjectOfType<InventoryManager>().SelectSlot(this);
+            inventoryManager.SelectSlot(this);
             StopAllCoroutines();
             StartCoroutine(Select());
         }
