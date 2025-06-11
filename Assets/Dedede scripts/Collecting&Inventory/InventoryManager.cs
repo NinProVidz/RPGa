@@ -12,9 +12,10 @@ public struct ItemTypeColorPair
 
 public class InventoryManager : MonoBehaviour
 {
+    public ItemType inventoryType;
+
     public GameObject slotPrefab;
     public List<InventorySlot> inventorySlot = new List<InventorySlot>(20);
-
 
     public InventorySlot selectedSlot;
 
@@ -52,23 +53,25 @@ public class InventoryManager : MonoBehaviour
         inventorySlot = new List<InventorySlot>(20);
     }
 
-    void DrawInventory(List<InventoryItem> inventory)
+    void DrawInventory(ItemType itemType, SubInventory inventory)
     {
-
-        ResetInventory();
-        for (int i = 0; i < inventory.Count; i++)
+        if (inventoryType == itemType)
         {
-            CreateInventorySlot();
-        }
-        for(int i = 0; i < inventory.Count; i++)
-        {
-            inventorySlot[i].DrawSlot(inventory[i]);
-            inventorySlot[i].item = inventory[i];
+            ResetInventory();
+            for (int i = 0; i < inventory.subInventory.Count; i++)
+            {
+                CreateInventorySlot();
+            }
+            for (int i = 0; i < inventory.subInventory.Count; i++)
+            {
+                inventorySlot[i].DrawSlot(inventory.subInventory[i]);
+                inventorySlot[i].item = inventory.subInventory[i];
 
-            ItemTier type = inventory[i].itemData.itemTier;
+                ItemTier type = inventory.subInventory[i].itemData.itemTier;
 
-            inventorySlot[i].itemColor = itemTypeColorDict.GetValueOrDefault(type, Color.white);
-            //inventorySlot[i].enabled = true;
+                inventorySlot[i].itemColor = itemTypeColorDict.GetValueOrDefault(type, Color.white);
+                //inventorySlot[i].enabled = true;
+            }
         }
     }
 

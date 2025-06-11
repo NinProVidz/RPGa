@@ -20,7 +20,7 @@ public class SubInventory
 public class Inventory : MonoBehaviour
 {
     public float sigma;
-    public static event Action<List<InventoryItem>> OnInventoryChange;
+    public static event Action<ItemType, SubInventory> OnInventoryChange;
 
     public List<ItemTypeInventoryPair> itemTypeInventories;
     private Dictionary<ItemType, SubInventory> itemTypeInventoryDict;
@@ -54,7 +54,7 @@ public class Inventory : MonoBehaviour
             {
                 item.AddToStack();
                 Debug.Log($"{item.itemData.displayName} total stack is now {item.stackSize}");
-                OnInventoryChange?.Invoke(inventory.subInventory);
+                OnInventoryChange?.Invoke(itemData.itemType, inventory);
             }
             else
             {
@@ -62,7 +62,7 @@ public class Inventory : MonoBehaviour
                 inventory.subInventory.Add(newItem);
                 inventory.itemDictionary.Add(itemData, newItem);
                 Debug.Log($"Added {newItem.itemData.displayName} to the inventory for the first time.");
-                OnInventoryChange?.Invoke(inventory.subInventory);
+                OnInventoryChange?.Invoke(itemData.itemType, inventory);
             }
         }
     }
@@ -79,7 +79,7 @@ public class Inventory : MonoBehaviour
                     inventory.subInventory.Remove(item);
                     inventory.itemDictionary.Remove(itemData);
                 }
-                OnInventoryChange?.Invoke(inventory.subInventory);
+                OnInventoryChange?.Invoke(itemData.itemType, inventory);
             }
         }
     }
