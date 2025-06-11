@@ -3,12 +3,38 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+[System.Serializable]
+public struct ItemTypeInventoryPair
+{
+    public ItemType itemType;
+    public SubInventory inventory;
+}
+
+[System.Serializable]
+public class SubInventory
+{
+    public List<InventoryItem> subInventory = new List<InventoryItem>();
+    public Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+}
+
 public class Inventory : MonoBehaviour
 {
+    public float sigma;
     public static event Action<List<InventoryItem>> OnInventoryChange;
 
-    public List<InventoryItem> inventory = new List<InventoryItem>();
-    private Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+    public List<ItemTypeInventoryPair> itemTypeInventories;
+    private Dictionary<ItemType, SubInventory> itemTypeInventoryDict;
+
+    //public Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
+
+    private void Awake()
+    {
+        itemTypeInventoryDict = new Dictionary<ItemType, SubInventory>();
+        foreach (var pair in itemTypeInventories)
+        {
+            itemTypeInventoryDict[pair.itemType] = pair.inventory;
+        }
+    }
 
     private void OnEnable()
     {
@@ -22,34 +48,39 @@ public class Inventory : MonoBehaviour
 
     public void Add(ItemData itemData)
     {
-        if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
+        if(itemTypeInventoryDict.TryGetValue(itemData.itemType, out SubInventory inventory))
         {
-            item.AddToStack();
-            Debug.Log($"{item.itemData.displayName} total stack is now {item.stackSize}");
-            OnInventoryChange?.Invoke(inventory);
+            if (inventory.itemDictionary.TryGetValue(itemData, out InventoryItem item))
+            {
+                item.AddToStack();
+                Debug.Log($"{item.itemData.displayName} total stack is now {item.stackSize}");
+                OnInventoryChange?.Invoke(inventory.subInventory);
+            }
+            else
+            {
+                InventoryItem newItem = new InventoryItem(itemData);
+                inventory.subInventory.Add(newItem);
+                inventory.itemDictionary.Add(itemData, newItem);
+                Debug.Log($"Added {newItem.itemData.displayName} to the inventory for the first time.");
+                OnInventoryChange?.Invoke(inventory.subInventory);
+            }
         }
-        else
-        {
-            InventoryItem newItem = new InventoryItem(itemData);
-            inventory.Add(newItem);
-            itemDictionary.Add(itemData, newItem);
-            Debug.Log($"Added {newItem.itemData.displayName} to the inventory for the first time.");
-            OnInventoryChange?.Invoke(inventory);
-        }
-
     }
 
     public void Remove(ItemData itemData)
     {
-        if (itemDictionary.TryGetValue(itemData, out InventoryItem item))
+        if (itemTypeInventoryDict.TryGetValue(itemData.itemType, out SubInventory inventory))
         {
-            item.RemoveFromStack();
-            if(item.stackSize == 0)
+            if (inventory.itemDictionary.TryGetValue(itemData, out InventoryItem item))
             {
-                inventory.Remove(item);
-                itemDictionary.Remove(itemData);
+                item.RemoveFromStack();
+                if (item.stackSize == 0)
+                {
+                    inventory.subInventory.Remove(item);
+                    inventory.itemDictionary.Remove(itemData);
+                }
+                OnInventoryChange?.Invoke(inventory.subInventory);
             }
-            OnInventoryChange?.Invoke(inventory);
         }
     }
 }

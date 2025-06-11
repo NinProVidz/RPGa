@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject slotPrefab;
     public List<InventorySlot> inventorySlot = new List<InventorySlot>(20);
 
+
     public InventorySlot selectedSlot;
 
     [Header("Item Type Colors")]
