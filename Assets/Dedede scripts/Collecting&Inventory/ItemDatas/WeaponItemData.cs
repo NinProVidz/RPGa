@@ -16,6 +16,7 @@ public class WeaponItemData : ItemData
     public override string GetMainDesc()
     {
         string mainDesc = mainDescription;
-        return mainDescription.Replace("{damage}", damage.ToString());
+        mainDesc = mainDesc.Replace("{damage}", damage.ToString());
+        return mainDesc;
     }
 }

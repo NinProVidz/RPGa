@@ -170,6 +170,7 @@ MonoBehaviour:
   item:
     itemData: {fileID: 0}
     stackSize: 0
+  inventoryManager: {fileID: 0}
   slotObj: {fileID: 6175529273653831820}
   icon: {fileID: 4585316171590847351}
   highlight: {fileID: 2145531026296041808}

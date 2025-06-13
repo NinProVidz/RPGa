@@ -17,7 +17,25 @@ public class InventoryManager : MonoBehaviour
     public GameObject slotPrefab;
     public List<InventorySlot> inventorySlot = new List<InventorySlot>(20);
 
-    public InventorySlot selectedSlot;
+    public ItemInfoDisplay itemInfoDisplay;
+
+    private InventorySlot selectedSlot;
+
+    public InventorySlot SelectedSlot
+    {
+        get => selectedSlot;
+        set
+        {
+            if (selectedSlot != value)
+            {
+                selectedSlot = value;
+                if (itemInfoDisplay != null)
+                {
+                    itemInfoDisplay.DisplayItemInfo(selectedSlot); // Call method only when set to a new non-null slot
+                }
+            }
+        }
+    }
 
     [Header("Item Type Colors")]
     public List<ItemTypeColorPair> itemTypeColors;
@@ -35,9 +53,14 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+    }
+
 
     private void OnEnable()
     {
+        DrawInventory(inventoryType, Inventory.itemTypeInventoryDict.GetValueOrDefault(inventoryType));
         Inventory.OnInventoryChange += DrawInventory;
     }
 
@@ -92,19 +115,19 @@ public class InventoryManager : MonoBehaviour
     public void SelectSlot(InventorySlot selectedSlot)
     {
 
-        if (this.selectedSlot != null)
+        if (SelectedSlot != null)
         {
-            this.selectedSlot.isSelected = false;
+            SelectedSlot.isSelected = false;
         }
 
-        if(this.selectedSlot == selectedSlot)
+        if(SelectedSlot == selectedSlot)
         {
-            this.selectedSlot = null;
+            SelectedSlot = null;
         }
         else
         {
             selectedSlot.isSelected = true;
-            this.selectedSlot = selectedSlot;
+            SelectedSlot = selectedSlot;
         }
         
     }
