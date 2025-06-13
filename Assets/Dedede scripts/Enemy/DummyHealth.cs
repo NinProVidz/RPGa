@@ -11,6 +11,7 @@ public class DummyHealth : MonoBehaviour
     public bool isGrounded;
     public static bool questActive;
     DestroyEnemiesQuestStep destroyEnemiesQuestStep;
+    FinishingSequenceQuestStep finishingSequenceQuestStep;
 
     private void Start()
     {
@@ -32,11 +33,13 @@ public class DummyHealth : MonoBehaviour
         if(questActive == true)
         {
             destroyEnemiesQuestStep = FindObjectOfType<DestroyEnemiesQuestStep>();
+            finishingSequenceQuestStep = FindObjectOfType<FinishingSequenceQuestStep>();
         }
         if(eHealth <= dmgThreshHold && questActive == true)
         {
             eHealth = 0;
             destroyEnemiesQuestStep.EnemyDefeated();
+            finishingSequenceQuestStep.EnemyDefeatProgression();
             Destroy(gameObject);
         }
     }
