@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90fa82825e54e7b49b1dd6277c227916, type: 3}
+  m_Name: FinshingSequenceQuest
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: FinshingSequenceQuest
+  displayName: Final Battle! Defeat the onslaught of enemies!
+  monthRequirement: 7
+  dayRequirement: 9
+  questPrerequisites:
+  - {fileID: 11400000, guid: 148e299ce7af83347b00f39c11652d33, type: 2}
+  questStepPrefabs:
+  - {fileID: 4786352371931686331, guid: f2bc4cd9eecae4c48ac51e2c478fd813, type: 3}
+  currencyReward: 0
