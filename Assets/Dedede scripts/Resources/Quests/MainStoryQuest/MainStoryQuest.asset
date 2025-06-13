@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90fa82825e54e7b49b1dd6277c227916, type: 3}
+  m_Name: MainStoryQuest
+  m_EditorClassIdentifier: 
+  <id>k__BackingField: MainStoryQuest
+  displayName: Complete the map to take back the city!
+  monthRequirement: 7
+  dayRequirement: 2
+  questPrerequisites: []
+  questStepPrefabs:
+  - {fileID: 4239221521618903784, guid: 395498e51f4498444817646a8e057e2d, type: 3}
+  currencyReward: 1000000

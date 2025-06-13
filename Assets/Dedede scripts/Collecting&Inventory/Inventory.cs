@@ -23,7 +23,7 @@ public class Inventory : MonoBehaviour
     public static event Action<ItemType, SubInventory> OnInventoryChange;
 
     public List<ItemTypeInventoryPair> itemTypeInventories;
-    private Dictionary<ItemType, SubInventory> itemTypeInventoryDict;
+    public static Dictionary<ItemType, SubInventory> itemTypeInventoryDict;
 
     //public Dictionary<ItemData, InventoryItem> itemDictionary = new Dictionary<ItemData, InventoryItem>();
 

@@ -29,6 +29,7 @@ public abstract class ItemData : ScriptableObject
     public ItemTier itemTier;
     [TextArea()]
     public string mainDescription;
+    [TextArea()]
     public string description;
 
     public virtual string GetMainDesc()

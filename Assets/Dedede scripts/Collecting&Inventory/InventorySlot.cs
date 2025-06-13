@@ -47,7 +47,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void DrawSlot(InventoryItem item)
     {
-        Debug.Log("what");
         if(item == null)
         {
             ClearSlot();
@@ -65,7 +64,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         stackSizeText.enabled = true;
         stackSizeText.text = item.stackSize.ToString();
-        Debug.Log("what2");
     }
 
     public bool isHovering = false;
@@ -76,6 +74,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public void OnPointerEnter(PointerEventData eventData)
     {
         isHovering = true;
+        PlayerUIManager.instance.PlaySound("Highlight");
         
     }
 
@@ -93,7 +92,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Update()
     {
-        Debug.Log("what3");
         if (isHovering)
         {
             hoverProg = Mathf.Clamp01(hoverProg + Time.deltaTime / hoverTime);
@@ -129,6 +127,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if (isHovering)
         {
+            PlayerUIManager.instance.PlaySound("Click");
             inventoryManager.SelectSlot(this);
             StopAllCoroutines();
             StartCoroutine(Select());

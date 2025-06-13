@@ -15,5 +15,9 @@ MonoBehaviour:
   displayName: Flower
   Icon: {fileID: 21300000, guid: 2bd5fdc4e764b4f4ead05cfb209fc700, type: 3}
   itemType: 4
-  description: Just a flower.
+  itemTier: 0
+  mainDescription: Just a flower.
+  description: 'Freaky ahhh Flower
+
+'
   value: 5

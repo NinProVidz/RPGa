@@ -16,6 +16,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: cc9855f7753f75d49b3152b73bff3749, type: 3}
   itemType: 0
   itemTier: 4
+  mainDescription: 'Damage: {damage}'
   description: Skeppy weppy
   value: 999
   damage: 999
