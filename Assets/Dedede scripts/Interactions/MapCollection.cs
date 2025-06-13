@@ -5,9 +5,9 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class MapCollection : MonoBehaviour
 {
-    [SerializeField] public static float mapCompletion;
-    [SerializeField] public static float mapCompleted = 5;
-    [SerializeField] public static float mapPercentage;
+    [SerializeField] public static int mapCompletion;
+    [SerializeField] public static int mapCompleted = 5;
+    [SerializeField] public static int mapPercentage;
     [SerializeField] public bool isPlayerNear;
 
     private void Start()
@@ -51,5 +51,10 @@ public class MapCollection : MonoBehaviour
         }
         isPlayerNear = false;
         Destroy(gameObject);
+    }
+
+    public int GetMapCompletion()
+    {
+        return mapCompletion;
     }
 }
