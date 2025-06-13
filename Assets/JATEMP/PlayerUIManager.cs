@@ -16,8 +16,14 @@ public class PlayerUIManager : MonoBehaviour
 
     public static PlayerUIManager instance;
 
+    [Header("UI")]
     [SerializeField] private GameObject gameOverlay;
     [SerializeField] private GameObject gameMenu;
+    [SerializeField] private GameObject pausedMenu;
+
+    [Header("Binding")]
+    [SerializeField] private KeyCode GMKey = KeyCode.B;
+    [SerializeField] private KeyCode PMKey = KeyCode.M;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -44,16 +50,78 @@ public class PlayerUIManager : MonoBehaviour
     {
         DontDestroyOnLoad(gameObject);
         audioSource = GetComponent<AudioSource>();
+        OpenGO();
     }
 
     private void Update()
     {
-        
+        if (Input.GetKeyDown(GMKey))
+        {
+            if(gameMenu.activeSelf == false)
+            {
+                OpenGM();
+            }
+            else
+            {
+                OpenGO();
+            }
+        }
+        else if(Input.GetKeyDown(PMKey))
+        {
+            if (pausedMenu.activeSelf == false)
+            {
+                OpenPM();
+            }
+            else
+            {
+                OpenGO();
+            }
+        }
     }
 
     #endregion
 
+    public void OpenGO()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        ShowOnly(0);
+    }
+    public void OpenGM()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        ShowOnly(1);
+    }
 
+    public void OpenPM()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        ShowOnly(2);
+    }
+
+    public void ShowOnly(int m)
+    {
+        CloseAll();
+
+        switch (m)
+        {
+            case 0:
+                gameOverlay.SetActive(true);
+                break;
+            case 1:
+                gameMenu.SetActive(true);
+                break;
+            case 2:
+                pausedMenu.SetActive(true);
+                break;
+        }
+    }
+
+    public void CloseAll()
+    {
+        gameOverlay.SetActive(false);
+        gameMenu.SetActive(false);
+        pausedMenu.SetActive(false);
+    }
 
     #region Sound
 
