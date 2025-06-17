@@ -158,45 +158,7 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
 
     private void LateUpdate()
     {
-        HandleGroundCheck();
-        player.animator.SetBool("isGrounded", player.isGrounded);
-
-        if (player.isGrounded)
-        {
-            if (!wasGrounded && !player.isJumping)
-            {
-                hasLanded = true;
-                player.playerAnimatorManager.PlayTargetActionAnimation("Land", false, false);
-            }
-
-            if (yVelocity.y < 0)
-            {
-                inAirTimer = 0;
-                player.animator.SetFloat("inAirTimer", inAirTimer);
-                player.isJumping = false;
-                fallingVelocityHasBeenSet = false;
-                yVelocity.y = 0;
-            }
-        }
-        else
-        {
-            if (!player.isJumping && !fallingVelocityHasBeenSet)
-            {
-                fallingVelocityHasBeenSet = true;
-                yVelocity.y = fallStartVelocity;
-            }
-
-            inAirTimer += Time.deltaTime;
-            player.animator.SetFloat("inAirTimer", inAirTimer);
-            yVelocity.y += gravityForce * Time.deltaTime;
-        }
-
-        player.characterController.Move(yVelocity * Time.deltaTime);
-
-        wasGrounded = player.isGrounded;
-        hasLanded = false;
         HandleTilt();
-        Debug.DrawRay(transform.position, moveDirection);
     }
 
     public void LoadData(GameData data)
@@ -211,15 +173,107 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         data.playerPosition = this.transform.position;
     }
 
+    private float groundedGraceTime = 0.2f;
+    private float lastGroundedTime;
+    public bool isGrounded;
     private void HandleGroundCheck()
     {
         Vector3 origin = groundCheckTransform.position + Vector3.up * 0.05f;
-        player.isGrounded = Physics.CheckSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
+
+        // Sphere check for general ground detection
+        bool sphereGrounded = Physics.CheckSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
+
+        // Raycast check for platform detection
+        Ray ray = new Ray(origin, Vector3.down);
+        bool rayHit = Physics.Raycast(ray, out RaycastHit hitInfo, 0.3f, groundLayer, QueryTriggerInteraction.Ignore);
+
+        if (sphereGrounded || rayHit)
+        {
+            lastGroundedTime = Time.time;
+            isGrounded = true;
+
+            if (rayHit)
+            {
+                currentMovingPlatform = hitInfo.collider.GetComponentInParent<MovingPlatform>();
+            }
+            else
+            {
+                // Fallback: try to find platform from sphere hits
+                Collider[] hits = Physics.OverlapSphere(origin, groundCheckSphereRadius, groundLayer, QueryTriggerInteraction.Ignore);
+                currentMovingPlatform = null;
+                foreach (var hit in hits)
+                {
+                    var platform = hit.GetComponentInParent<MovingPlatform>();
+                    if (platform != null)
+                    {
+                        currentMovingPlatform = platform;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            isGrounded = (Time.time - lastGroundedTime) < groundedGraceTime;
+            if (!isGrounded)
+                currentMovingPlatform = null;
+        }
+
+        player.isGrounded = isGrounded;
+    }
+
+    private Transform currentPlatform;
+    private MovingPlatform currentMovingPlatform;
+
+    private Vector3 lastPlatformDelta = Vector3.zero;
+    private float platformDeltaDecayTime = 2f; // seconds to decay to zero
+    private float timeSincePlatformLost = Mathf.Infinity;
+
+    void CheckForPlatform()
+    {
+        Ray ray = new Ray(transform.position, Vector3.down);
+        if (Physics.Raycast(ray, out RaycastHit hit, 0.2f)) // Adjust as needed
+        {
+            MovingPlatform mp = hit.collider.GetComponentInParent<MovingPlatform>();
+            if (mp != null)
+            {
+                currentPlatform = mp.transform;
+                currentMovingPlatform = mp;
+                return;
+            }
+        }
+
+        currentPlatform = null;
+        currentMovingPlatform = null;
     }
 
     public void HandleAllMovement()
     {
-        HandleGroundedMovemnt();
+        Vector3 platformDelta = Vector3.zero;
+
+        if (currentMovingPlatform != null)
+        {
+            platformDelta = currentMovingPlatform.DeltaMovement;
+            lastPlatformDelta = platformDelta;
+            timeSincePlatformLost = 0f;
+        }
+        else
+        {
+            timeSincePlatformLost += Time.deltaTime;
+            float decayPercent = Mathf.Clamp01(timeSincePlatformLost / platformDeltaDecayTime);
+            platformDelta = Vector3.Lerp(lastPlatformDelta, Vector3.zero, decayPercent);
+        }
+
+        Vector3 verticalDisp = HandleVerticalMovement();   // Includes gravity/jump
+        Vector3 horizontalDisp = HandleGroundedMovemnt();  // Based on input
+
+        Vector3 finalMovement = platformDelta
+                              + verticalDisp * Time.smoothDeltaTime
+                              + horizontalDisp * Time.deltaTime;
+
+        player.characterController.Move(finalMovement);
+
+        CheckForPlatform(); // Should set or clear currentMovingPlatform
     }
 
     private void HandleTilt()
@@ -262,8 +316,10 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
         moveAmount = PlayerInputManager.instance.moveAmount;
     }
 
-    private void HandleGroundedMovemnt()
+    private Vector3 HandleGroundedMovemnt()
     {
+        
+
         GetVerticalAndHorizontalInputs();
 
         moveDirection = player.transform.forward * verticalMovement + player.transform.right * horizontalMovement;
@@ -284,7 +340,52 @@ public class PlayerLocomotionManager : MonoBehaviour, IDataPersistence
             speed = runningSpeed;
         }
 
-        player.characterController.Move(moveDirection * speed * Time.smoothDeltaTime);
+        //player.characterController.Move(moveDirection * speed * Time.smoothDeltaTime);
+
+        return moveDirection * speed;
+    }
+
+    private Vector3 HandleVerticalMovement()
+    {
+        HandleGroundCheck();
+        player.animator.SetBool("isGrounded", player.isGrounded);
+
+        if (player.characterController.isGrounded)
+        {
+            if (!wasGrounded && !player.isJumping)
+            {
+                hasLanded = true;
+                player.playerAnimatorManager.PlayTargetActionAnimation("Land", false, false);
+            }
+
+            if (yVelocity.y < 0)
+            {
+                inAirTimer = 0;
+                player.animator.SetFloat("inAirTimer", inAirTimer);
+                player.isJumping = false;
+                fallingVelocityHasBeenSet = false;
+                yVelocity.y = 0;
+            }
+        }
+        else
+        {
+            if (!player.isJumping && !fallingVelocityHasBeenSet)
+            {
+                fallingVelocityHasBeenSet = true;
+                yVelocity.y = fallStartVelocity;
+            }
+
+            inAirTimer += Time.deltaTime;
+            player.animator.SetFloat("inAirTimer", inAirTimer);
+            yVelocity.y += gravityForce * Time.deltaTime;
+        }
+
+        wasGrounded = player.characterController.isGrounded;
+        hasLanded = false;
+
+        Debug.DrawRay(transform.position, moveDirection);
+
+        return yVelocity;
     }
 
     public void HandleRunning()

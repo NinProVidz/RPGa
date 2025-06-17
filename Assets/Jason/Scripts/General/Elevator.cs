@@ -5,7 +5,7 @@ using UnityEngine;
 public class Elevator : MonoBehaviour
 {
 
-    [SerializeField] float moveTime;
+    [SerializeField] public float moveTime;
 
     [SerializeField] Vector3 upPos;
     [SerializeField] Vector3 downPos;

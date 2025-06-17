@@ -91977,7 +91977,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1485118149}
           m_TargetAssemblyTypeName: SceneHandler, Assembly-CSharp
-          m_MethodName: GoToTutorial2ShortScene
+          m_MethodName: GoToTutorial2Scene
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -95249,6 +95249,7 @@ MonoBehaviour:
   topRange: 1300
   bottomOff: 500
   bottomrange: -1300
+  animationDuration: 0.5
 --- !u!95 &1540431540
 Animator:
   serializedVersion: 5
@@ -149326,6 +149327,8 @@ MonoBehaviour:
     m_Bits: 0
   leftAndRightLookAngle: 331
   upAndDownLookAngle: 36.7
+  yawDampTime: 0.05
+  pitchDampTime: 0.05
 --- !u!1 &751016447401540451
 GameObject:
   m_ObjectHideFlags: 0
@@ -151942,6 +151945,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b389102edb7d144bfff3a034ef999b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverlay: {fileID: 0}
+  gameMenu: {fileID: 0}
+  pausedMenu: {fileID: 0}
+  GMKey: 98
+  PMKey: 109
+  audioSource: {fileID: 0}
+  highlightSFX: {fileID: 0}
+  clickSFX: {fileID: 0}
 --- !u!23 &942702275906159580
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -169036,6 +169047,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7656418147666150459}
   inputEnabled: 0
+  lomotionEnabled: 1
+  cameraEnabled: 1
+  obstacleLayers:
+    serializedVersion: 2
+    m_Bits: 0
   movementInput: {x: 0, y: 1}
   horizontalInput: 0
   verticalInput: 0
@@ -169049,6 +169065,7 @@ MonoBehaviour:
   sprintInput: 0
   jumpInput: 0
   crouchInput: 0
+  canClimb: 0
 --- !u!23 &1559440677566665550
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -220633,6 +220650,17 @@ MonoBehaviour:
   wallLayer:
     serializedVersion: 2
     m_Bits: 0
+  w1: 0
+  w2: 0
+  w3: 0
+  w4: 0
+  w5: 0
+  animRotWeight: 0
+  animRotWeight2: 0
+  lookAtDist: 0
+  head: {fileID: 0}
+  crouchHeight: 0.65
+  angleMultiplier: 1.5
 --- !u!222 &5879443527004143254
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -258622,6 +258650,7 @@ MonoBehaviour:
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
+  moveDirection: {x: 0, y: 0, z: 0}
   jumpHeight: 1
   walkingSpeed: 2
   runningSpeed: 4
@@ -258629,7 +258658,22 @@ MonoBehaviour:
   crouchSpeed: 1
   crouchStrafeSpeed: 1
   rotationSpeed: 15
+  ledgeDetectRange: 1.5
+  ledgeAirMinHeight: 1
+  ledgeMinHeight: 1
+  ledgeMaxHeight: 2.5
+  ledgeCheckRadius: 0.3
+  ledgeLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  climbUpDuration: 1
+  climbUpStandDuration: 1
+  standHeight: 0
+  climbTime: 0.5
+  ledgeOffset: 0
+  isClimbingLedge: 0
   tiltBone: {fileID: 0}
+  tiltBone2: {fileID: 0}
   tiltAngle: 30
   tiltSpeed: 5
   maxHoldTime: 1
@@ -258652,6 +258696,8 @@ MonoBehaviour:
   groundedVelocity: -20
   fallStartVelocity: -5
   inAirTimer: 0
+  ledgePoint: {x: 0, y: 0, z: 0}
+  isGrounded: 0
 --- !u!33 &7561794236347161055
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -266213,6 +266259,7 @@ MonoBehaviour:
   bottomMin: -8.5
   bottomMax: 41
   eyePercent: 0
+  animationDuration: 0.5
 --- !u!95 &7903287097823669640
 Animator:
   serializedVersion: 5

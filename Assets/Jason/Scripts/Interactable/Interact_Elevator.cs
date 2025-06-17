@@ -34,6 +34,7 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
     [SerializeField] Elevator elevator;
 
     [SerializeField] Interact_Elevator upInteract;
+    [SerializeField] Interact_Elevator ElevatorInteract;
     [SerializeField] Interact_Elevator downInteract;
 
     [SerializeField] int type;
@@ -70,14 +71,11 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
 
         if(type == 0)
         {
-            StartCoroutine(elevator.upElevator());
-            StartCoroutine(openElevator());
+            StartCoroutine(actionZero());
         }
         else if(type == 1)
         {
-            StartCoroutine(upInteract.closeElevator());
-            StartCoroutine(elevator.downElevator());
-            StartCoroutine(openElevator());
+            StartCoroutine(actionOne());
         }
 
         
@@ -85,10 +83,31 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
         
     }
 
+    public IEnumerator actionZero()
+    {
+        
+        StartCoroutine(elevator.upElevator());
+        yield return new WaitForSeconds(elevator.moveTime);
+        StartCoroutine(openElevator());
+        yield return new WaitForSeconds(moveTime);
+        ElevatorInteract.enabled = true;
+        yield return null;
+    }
+
+    public IEnumerator actionOne()
+    {
+        StartCoroutine(upInteract.closeElevator());
+        yield return new WaitForSeconds(upInteract.moveTime);
+        StartCoroutine(elevator.downElevator());
+        yield return new WaitForSeconds(elevator.moveTime);
+        StartCoroutine(openElevator());
+
+        yield return null;
+    }
+
 
     public IEnumerator openElevator()
     {
-        yield return new WaitForSeconds(waitTime);
 
         aS.PlayOneShot(doorOpen);
         float elapsed = 0f;
@@ -104,7 +123,6 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
 
     public IEnumerator closeElevator()
     {
-        yield return new WaitForSeconds(waitTime);
 
         aS.PlayOneShot(doorClose);
 
@@ -112,8 +130,8 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
 
         while (elapsed < moveTime)
         {
-            door1.localPosition = Vector3.Lerp(door1ClosePos, door1OpenPos, elapsed / moveTime);
-            door2.localPosition = Vector3.Lerp(door2ClosePos, door2OpenPos, elapsed / moveTime);
+            door1.localPosition = Vector3.Lerp(door1OpenPos, door1ClosePos, elapsed / moveTime);
+            door2.localPosition = Vector3.Lerp(door2OpenPos, door2ClosePos, elapsed / moveTime);
             elapsed += Time.deltaTime;
             yield return null;
         }
