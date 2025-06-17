@@ -84,17 +84,26 @@ public class PlayerUIManager : MonoBehaviour
     public void OpenGO()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        PlayerInputManager.instance.lomotionEnabled = true;
+        PlayerInputManager.instance.cameraEnabled = true;
+        Time.timeScale = 1;
         ShowOnly(0);
     }
     public void OpenGM()
     {
         Cursor.lockState = CursorLockMode.None;
+        PlayerInputManager.instance.lomotionEnabled = false;
+        PlayerInputManager.instance.cameraEnabled = false;
+        Time.timeScale = 1;
         ShowOnly(1);
     }
 
     public void OpenPM()
     {
         Cursor.lockState = CursorLockMode.None;
+        PlayerInputManager.instance.lomotionEnabled = false;
+        PlayerInputManager.instance.cameraEnabled = false;
+        Time.timeScale = 0;
         ShowOnly(2);
     }
 

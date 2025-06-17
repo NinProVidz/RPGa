@@ -1982,7 +1982,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 939
+  m_VersionIndex: 942
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5426,9 +5426,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5ec737a120f14645b5df202cea71cd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventory:
-  - {fileID: 8655290910836205154}
-  - {fileID: 397434896113400983}
+  inventoryToggles:
+  - inventory: {fileID: 8655290910836205154}
+    toggle: {fileID: 6081201887082525319}
+  - inventory: {fileID: 397434896113400983}
+    toggle: {fileID: 327689781626085293}
   hoverSFX: {fileID: 0}
   selectSFX: {fileID: 0}
 --- !u!114 &4507742658360155270
@@ -5443,7 +5445,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2fafe2cfe61f6974895a912c3755e8f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AllowSwitchOff: 1
+  m_AllowSwitchOff: 0
 --- !u!82 &7622345526493765568
 AudioSource:
   m_ObjectHideFlags: 0
@@ -6084,6 +6086,108 @@ Transform:
   m_Father: {fileID: 5207876915668224038}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5058160852717256673
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6624305561942001335}
+  - component: {fileID: 7513405938199642298}
+  - component: {fileID: 3954883647039778540}
+  - component: {fileID: 5914040410373736451}
+  m_Layer: 0
+  m_Name: PausedMenu
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6624305561942001335
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058160852717256673}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3344639921572090680}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!223 &7513405938199642298
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058160852717256673}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &3954883647039778540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058160852717256673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &5914040410373736451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5058160852717256673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &5071390812723145691
 GameObject:
   m_ObjectHideFlags: 0
@@ -6920,7 +7024,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 942
+  m_VersionIndex: 945
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -7557,6 +7661,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 7656418146820796561}
   inputEnabled: 1
+  lomotionEnabled: 1
+  cameraEnabled: 1
   obstacleLayers:
     serializedVersion: 2
     m_Bits: 1
@@ -8111,6 +8217,7 @@ Transform:
   m_Children:
   - {fileID: 6660626594385486748}
   - {fileID: 5205655062276226818}
+  - {fileID: 6624305561942001335}
   m_Father: {fileID: 1286111900343765814}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8126,6 +8233,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b389102edb7d144bfff3a034ef999b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameOverlay: {fileID: 1033730628784319849}
+  gameMenu: {fileID: 653809352380315982}
+  pausedMenu: {fileID: 5058160852717256673}
+  GMKey: 98
+  PMKey: 109
   audioSource: {fileID: 5721998244406331721}
   highlightSFX: {fileID: 8300000, guid: 5af941200dc71264d8b63a7c18c43bba, type: 3}
   clickSFX: {fileID: 8300000, guid: 752b395ff7436664192b71f8e144a34e, type: 3}
@@ -8727,8 +8839,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4618293281308476960}
         m_TargetAssemblyTypeName: InventoryMenu, Assembly-CSharp
-        m_MethodName: OpenInv
-        m_Mode: 3
+        m_MethodName: ChangeInv
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10310,7 +10422,7 @@ Transform:
   - {fileID: 1826937665379121888}
   - {fileID: 9079155924341406918}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7831282111186845528
 GameObject:
@@ -11047,8 +11159,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4618293281308476960}
         m_TargetAssemblyTypeName: InventoryMenu, Assembly-CSharp
-        m_MethodName: OpenInv
-        m_Mode: 3
+        m_MethodName: ChangeInv
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

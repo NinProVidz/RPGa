@@ -1,31 +1,50 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+
+[System.Serializable]
+public struct InventoryTogglePair
+{
+    public GameObject inventory;
+    public Toggle toggle;
+}
 
 public class InventoryMenu : MonoBehaviour
 {
-    public GameObject[] inventory;
+    public List<InventoryTogglePair> inventoryToggles;
+
+    private Dictionary<GameObject, Toggle> inventoryTogglesDict;
 
     public AudioClip hoverSFX;
 
     public AudioClip selectSFX;
 
-    private void OnEnable()
+    private void Awake()
     {
-        foreach (GameObject inv in inventory)
+        inventoryTogglesDict = new Dictionary<GameObject, Toggle>();
+        foreach (var pair in inventoryToggles)
         {
-            inv.SetActive(false);
+            inventoryTogglesDict[pair.inventory] = pair.toggle;
         }
     }
 
-    public void OpenInv(int i)
+    private void OnEnable()
     {
-        foreach(GameObject inv in inventory)
+        foreach (GameObject inv in inventoryTogglesDict.Keys)
         {
-            inv.SetActive(false);
+            inv.SetActive(inventoryTogglesDict.GetValueOrDefault(inv).isOn);
         }
 
-        inventory[i].SetActive(true);
+
+    }
+
+    public void ChangeInv()
+    {
+        foreach(GameObject inv in inventoryTogglesDict.Keys)
+        {
+            inv.SetActive(inventoryTogglesDict.GetValueOrDefault(inv).isOn);
+        }
     }
     
 }

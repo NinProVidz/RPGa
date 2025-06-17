@@ -26,6 +26,18 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
     [SerializeField] float waitTime;
     [SerializeField] float moveTime;
 
+    [SerializeField] AudioClip buttonPress;
+    [SerializeField] AudioClip doorOpen;
+    [SerializeField] AudioClip doorClose;
+    [SerializeField] AudioSource aS;
+
+    [SerializeField] Elevator elevator;
+
+    [SerializeField] Interact_Elevator upInteract;
+    [SerializeField] Interact_Elevator downInteract;
+
+    [SerializeField] int type;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,16 +66,51 @@ public class Interact_Elevator : MonoBehaviour, IInteractable
     {
         isInteracted = true;
 
-        StartCoroutine(openElevator());
+        aS.PlayOneShot(buttonPress);
+
+        if(type == 0)
+        {
+            StartCoroutine(elevator.upElevator());
+            StartCoroutine(openElevator());
+        }
+        else if(type == 1)
+        {
+            StartCoroutine(upInteract.closeElevator());
+            StartCoroutine(elevator.downElevator());
+            StartCoroutine(openElevator());
+        }
+
+        
+
+        
     }
 
-    private IEnumerator openElevator()
+
+    public IEnumerator openElevator()
     {
         yield return new WaitForSeconds(waitTime);
 
+        aS.PlayOneShot(doorOpen);
         float elapsed = 0f;
 
         while(elapsed < moveTime)
+        {
+            door1.localPosition = Vector3.Lerp(door1ClosePos, door1OpenPos, elapsed / moveTime);
+            door2.localPosition = Vector3.Lerp(door2ClosePos, door2OpenPos, elapsed / moveTime);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    public IEnumerator closeElevator()
+    {
+        yield return new WaitForSeconds(waitTime);
+
+        aS.PlayOneShot(doorClose);
+
+        float elapsed = 0f;
+
+        while (elapsed < moveTime)
         {
             door1.localPosition = Vector3.Lerp(door1ClosePos, door1OpenPos, elapsed / moveTime);
             door2.localPosition = Vector3.Lerp(door2ClosePos, door2OpenPos, elapsed / moveTime);

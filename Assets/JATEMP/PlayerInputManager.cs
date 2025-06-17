@@ -8,6 +8,8 @@ public class PlayerInputManager : MonoBehaviour
     public PlayerManager player;
 
     public bool inputEnabled = true;
+    public bool lomotionEnabled = true;
+    public bool cameraEnabled = true;
 
     private PlayerControls playerControls;
 
@@ -74,26 +76,29 @@ public class PlayerInputManager : MonoBehaviour
 
         if (inputEnabled)
         {
-            //playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
-            //playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
+            if (lomotionEnabled)
+            {
+                //playerControls.PlayerMovement.Movement.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+                //playerControls.PlayerMovement.Movement.canceled += ctx => movementInput = Vector2.zero;
 
-           //playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
-           //playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
+                //playerControls.PlayerCamera.CameraControls.performed += i => cameraInput = i.ReadValue<Vector2>();
+                //playerControls.PlayerCamera.CameraControls.canceled += i => cameraInput = Vector2.zero;
 
-            playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
-            //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
+                playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+                //playerControls.PlayerActions.Jump.canceled += i => jumpInput = false;
 
-            playerControls.PlayerActions.Run.performed += i => runInput = true;
-            playerControls.PlayerActions.Run.canceled += i => runInput = false;
+                playerControls.PlayerActions.Run.performed += i => runInput = true;
+                playerControls.PlayerActions.Run.canceled += i => runInput = false;
 
-            playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
-            playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+                playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+                playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
 
-            playerControls.PlayerActions.Crouch.performed += i => crouchInput = true;
-            playerControls.PlayerActions.Crouch.canceled += i => crouchInput = false;
+                playerControls.PlayerActions.Crouch.performed += i => crouchInput = true;
+                playerControls.PlayerActions.Crouch.canceled += i => crouchInput = false;
 
-            //playerControls.PlayerMovement.Tilt.performed += ctx => tiltInput = ctx.ReadValue<Vector2>().x;
-            //playerControls.PlayerMovement.Tilt.canceled += ctx => tiltInput = 0;
+                //playerControls.PlayerMovement.Tilt.performed += ctx => tiltInput = ctx.ReadValue<Vector2>().x;
+                //playerControls.PlayerMovement.Tilt.canceled += ctx => tiltInput = 0;
+            }
         }
     }
 
@@ -114,9 +119,24 @@ public class PlayerInputManager : MonoBehaviour
     {
         if (inputEnabled)
         {
-            cameraInput = playerControls.PlayerCamera.CameraControls.ReadValue<Vector2>();
-            movementInput = playerControls.PlayerMovement.Movement.ReadValue<Vector2>();
-            tiltInput = playerControls.PlayerMovement.Tilt.ReadValue<Vector2>().x;
+            if (cameraEnabled)
+            {
+                cameraInput = playerControls.PlayerCamera.CameraControls.ReadValue<Vector2>();
+            }
+            else
+            {
+                cameraInput = Vector2.zero;
+            }
+            if (lomotionEnabled)
+            {
+                movementInput = playerControls.PlayerMovement.Movement.ReadValue<Vector2>();
+                tiltInput = playerControls.PlayerMovement.Tilt.ReadValue<Vector2>().x;
+            }
+            else
+            {
+                movementInput = Vector2.zero;
+                tiltInput = 0;
+            }
         }
 
         canClimb = player.playerLocomotionManager.DetectLedge(out Vector3 ledgePoint);
